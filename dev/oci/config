@@ -1,0 +1,6 @@
+[DEFAULT]
+user=ocid1.user.oc1..aaaaaaaawmfrb57774dn4cbmyx7pkzb6uduhwevhaqprmtziamxlcqnpztga
+fingerprint=40:ff:0c:1b:45:6b:09:43:a0:d2:5a:46:e8:72:49:a2
+tenancy=ocid1.tenancy.oc1..aaaaaaaafcuqak7novhzalbc6mqrmuzbcodyc3zicprqmb4jtwkp6agfdsrq
+region=us-ashburn-1
+key_file=oci/harish.va1910@gmail.com_2024-06-10T15 46 09.812Z.pem
