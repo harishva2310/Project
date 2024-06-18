@@ -31,7 +31,7 @@ const MyCarousel: React.FC = () => {
         return <SpinnerLoading />;
     }
 
-    const chunkArray = (array: any[], chunkSize: number) => {
+    /*const chunkArray = (array: any[], chunkSize: number) => {
         const chunks = [];
         for (let i = 0; i < array.length; i += chunkSize) {
             chunks.push(array.slice(i, i + chunkSize));
@@ -61,50 +61,47 @@ const MyCarousel: React.FC = () => {
             
             </Carousel>
         </>
-    );
-
-    /*return (
-        <div className='container mt-5' style={{ height: 550 }}>
-            <div className='homepage-carousel-title'>
-                <h3>Find your next "I stayed up too late reading" vehicle.</h3>
-            </div>
-            <div id='carouselExampleControls' className='carousel carousel-dark slide mt-5 
-                d-none d-lg-block' data-bs-interval='false'>
-
-                
-                <div className='carousel-inner'>
-                    <div className='carousel-item active'>
-                        <div className='row d-flex justify-content-center align-items-center'>
-                            {vehicles.slice(0, 3).map(vehicle => (
-                                <ReturnVehicle vehicle={vehicle} key ={vehicle.vehicle_id} />
-                            ))}
-                        </div>
-                    </div>
-                    
-                </div>
-                <button className='carousel-control-prev' type='button'
-                    data-bs-target='#carouselExampleControls' data-bs-slide='prev'>
-                    <span className='carousel-control-prev-icon' aria-hidden='true'></span>
-                    <span className='visually-hidden'>Previous</span>
-                </button>
-                <button className='carousel-control-next' type='button'
-                    data-bs-target='#carouselExampleControls' data-bs-slide='next'>
-                    <span className='carousel-control-next-icon' aria-hidden='true'></span>
-                    <span className='visually-hidden'>Next</span>
-                </button>
-            </div>
-
-            
-            <div className='d-lg-none mt-3'>
-                <div className='row d-flex justify-content-center align-items-center'>
-                    <ReturnVehicle vehicle={vehicles[1]} key={vehicles[1].vehicle_id}/>
-                </div>
-            </div>
-            <div className='homepage-carousel-title mt-3'>
-                <Link className='btn btn-outline-secondary btn-lg' to='/search'>View More</Link>
-            </div>
-        </div>
     );*/
+
+    return (
+        <>
+        <div id="vehicleCarousel" className="carousel slide" data-bs-ride="carousel">
+          <div className="carousel-indicators">
+            {vehicles.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                data-bs-target="#vehicleCarousel"
+                data-bs-slide-to={index}
+                className={index === 0 ? 'active' : ''}
+                aria-current={index === 0 ? 'true' : 'false'}
+                aria-label={`Slide ${index + 1}`}
+              ></button>
+            ))}
+          </div>
+          <div className="carousel-inner">
+            {vehicles.map((vehicle, index) => (
+              <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                <img src={`data:image/jpg;base64,${vehicle.img}`} className="d-block w-100" alt="Vehicle Image" />
+                <div className="carousel-caption d-none d-md-block">
+                  <h5>{vehicle.vehicle_name}</h5>
+                  <p>{vehicle.vehicle_description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="carousel-control-prev" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="prev">
+            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button className="carousel-control-next" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="next">
+            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Next</span>
+          </button>
+        </div>
+        </>
+      );
+    
 
 };
 

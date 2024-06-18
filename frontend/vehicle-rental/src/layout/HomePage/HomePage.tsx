@@ -7,7 +7,7 @@ export const HomePage = () => {
         <>
         <ExploreVehicle />
         <MyCarousel />
-        <AddNewVehicle />
+        
         </>
     );
 }
