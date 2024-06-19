@@ -40,7 +40,7 @@ export const Navbar = () => {
                             <NavLink className='nav-link' to='/home'>Home</NavLink>
                         </li>
                         <li className='nav-item'>
-                            <NavLink className='nav-link' to='/search'>Search Vehicles</NavLink>
+                            <NavLink className='nav-link' to='/searchvehicles'>Search Vehicles</NavLink>
                         </li>
                     </ul>
                     <ul className='navbar-nav ms-auto'>

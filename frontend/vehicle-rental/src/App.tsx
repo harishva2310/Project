@@ -14,6 +14,7 @@ import LoginWidget from './Auth/Login';
 import AddNewVehicle from './layout/AddNewVehicle/AddNewVehicle';
 import ProtectedRoute from './Auth/ProtectedRoute';
 import { RequiredAuth } from './Auth/SecureRoute';
+import SearchVehicle from './layout/SearchVehicle/SearchVehicle';
 
 
 
@@ -35,10 +36,13 @@ export const App = () => {
   return (
     <div className='d-flex flex-column min-vh-100'>
       <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} onAuthRequired={customAuthHandler}>
+      <Navbar />
+      <div className='flex-grow-1'>
         <Routes>
-          <Route path="/" element={<><Navbar /><HomePage /><Footer /></>} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginWidget config={oktaConfig} />} />
           <Route path="/login/callback" element={<LoginCallback />} />
+          <Route path="/searchvehicles" element={<SearchVehicle />} />
           <Route
             path="/addnewvehicle"
             element={<RequiredAuth />}>
@@ -46,6 +50,8 @@ export const App = () => {
           </Route>
 
         </Routes>
+        </div>
+        <Footer />
       </Security>
     </div>
   );
