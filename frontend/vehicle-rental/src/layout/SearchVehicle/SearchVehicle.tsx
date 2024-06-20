@@ -65,7 +65,7 @@ const SearchVehicle: React.FC = () => {
                 <div>
 
                     <div className='row mt-5'>
-                        <div className='col-md-4'>
+                        <div className='col-md-6'>
                             <div className='d-flex mb-3'>
                                 <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select">
                                     <option value="">Select a city</option>
@@ -78,20 +78,9 @@ const SearchVehicle: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className='col-md-4'>
-                            <div className="mb-3">
-                                <select id="state" value={selectedState} onChange={handleStateChange} className="form-select">
-                                    <option value="">Select a state</option>
-                                    {uniqueStates.map(state => (
-                                        <option key={state} value={state}>
-                                            {state}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
+                        
 
-                        <div className='col-md-4'>
+                        <div className='col-md-6'>
                             <div className="mb-3">
                                 <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select">
                                     <option value="">Select Country</option>
