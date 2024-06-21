@@ -1,7 +1,7 @@
 import axios from "axios";
 import VehicleBookingModel from "../model/VehicleBookingModel";
 
-export async function fetchVehicleData(): Promise<VehicleBookingModel[]> {
+export async function fetchVehicleBookingData(): Promise<VehicleBookingModel[]> {
     const apiUrl = process.env.REACT_APP_API;
     if (!apiUrl) {
         throw new Error('REACT_APP_API environment variable is not set');

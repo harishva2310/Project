@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,14 +49,18 @@ public class VehicleController {
     }
 
     @GetMapping("/availablevehicles")
-    public ResponseEntity<List<Object[]>> getAvailableVehicles(
+    public ResponseEntity<Page<Object[]>> getAvailableVehicles(
             @RequestParam("fromdate") String fromDateStr,
             @RequestParam("todate") String toDateStr,
-            @RequestParam("city") String city) {
+            @RequestParam("city") String city,
+            @RequestParam("country") String country,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         try {
             Timestamp fromDate = Timestamp.valueOf(fromDateStr.replace("T", " "));
             Timestamp toDate = Timestamp.valueOf(toDateStr.replace("T", " "));
-            List<Object[]> availableVehicles = vehicleService.getAvailableVehicles(fromDate, toDate, city);
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Object[]> availableVehicles = vehicleService.getAvailableVehicles(fromDate, toDate, city, country, pageable);
             return ResponseEntity.ok(availableVehicles);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);

@@ -1,0 +1,1 @@
+export type AvailableVehicleResponse = [number, string, number, number];

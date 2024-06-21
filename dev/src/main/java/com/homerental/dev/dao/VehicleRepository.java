@@ -2,8 +2,9 @@ package com.homerental.dev.dao;
 
 
 import java.sql.Timestamp;
-import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,7 +30,9 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             )
             SELECT
                 v1.vehicle_id,
-                v1.vehicle_name
+                v1.vehicle_name,
+                vl1.vehicle_location_id,
+                l1.location_id
             FROM
                 vehicle v1
             JOIN
@@ -41,6 +44,12 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             WHERE
                 bv.vehicle_id IS NULL
                 AND l1.location_city = :city
+                AND l1.location_country= :country
             """, nativeQuery = true)
-    List<Object[]> findAvailableVehicles(@Param("fromdate") Timestamp fromDate, @Param("todate") Timestamp toDate, @Param("city") String city);
+            Page<Object[]> findAvailableVehicles(
+                @Param("fromdate") Timestamp fromDate, 
+                @Param("todate") Timestamp toDate, 
+                @Param("city") String city, 
+                @Param("country") String country,
+                Pageable pageable);
 }
