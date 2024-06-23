@@ -28,4 +28,7 @@ public class User {
 
     @Column(name="user_driver_license_num")
     private String user_driver_license_num;
+
+    @Column(name="user_email")
+    private String user_email;
 }
