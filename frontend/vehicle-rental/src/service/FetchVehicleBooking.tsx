@@ -20,6 +20,7 @@ export async function fetchVehicleBookingData(): Promise<VehicleBookingModel[]> 
         item.location_id,
         item.user_id,
         item.from_date,
-        item.to_date
+        item.to_date,
+        item.total_fare
     ));
 }

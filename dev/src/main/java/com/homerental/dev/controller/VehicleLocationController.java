@@ -25,9 +25,9 @@ private VehicleLocationRepository vehiclelocationRepository;
         return ResponseEntity.ok(vehicleLocations);
     }
 
-    @GetMapping("/vehicleLocations/{vehicle_location_id}")
-    public ResponseEntity<VehicleLocation> getVehicleLocationById(@PathVariable Long locationId) {
-        Optional<VehicleLocation> vehicleLocation = vehiclelocationRepository.findById(locationId);
+    @GetMapping("/{vehicleLocationId}")
+    public ResponseEntity<VehicleLocation> getVehicleLocationById(@PathVariable Long vehicleLocationId) {
+        Optional<VehicleLocation> vehicleLocation = vehiclelocationRepository.findById(vehicleLocationId);
         if (vehicleLocation.isPresent()) {
             return ResponseEntity.ok(vehicleLocation.get());
         } else {

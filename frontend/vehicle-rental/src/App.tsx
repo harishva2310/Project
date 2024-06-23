@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Navbar } from './layout/NavbarAndFooter/Navbar';
 import { Footer } from './layout/NavbarAndFooter/Footer';
-import { Route, useNavigate, Routes } from 'react-router-dom';
+import { Route, useNavigate, Routes, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
 import HomePage from './layout/HomePage/HomePage';
@@ -15,6 +15,7 @@ import AddNewVehicle from './layout/AddNewVehicle/AddNewVehicle';
 import ProtectedRoute from './Auth/ProtectedRoute';
 import { RequiredAuth } from './Auth/SecureRoute';
 import SearchVehicle from './layout/SearchVehicle/SearchVehicle';
+import Checkout from './layout/Checkout/Checkout';
 
 
 
@@ -39,10 +40,12 @@ export const App = () => {
       <Navbar />
       <div className='flex-grow-1'>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/login" element={<LoginWidget config={oktaConfig} />} />
           <Route path="/login/callback" element={<LoginCallback />} />
           <Route path="/searchvehicles" element={<SearchVehicle />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route
             path="/addnewvehicle"
             element={<RequiredAuth />}>

@@ -6,6 +6,7 @@ class VehicleBookingModel{
 	vehicle_location_id: number;
 	from_date: string;
 	to_date: string;
+    total_fare: number;
 	
     constructor (vehicle_booking_id: number | undefined,
         location_id: number,
@@ -13,7 +14,8 @@ class VehicleBookingModel{
 	user_id: number,
 	vehicle_location_id: number,
 	from_date: string,
-	to_date: string
+	to_date: string,
+    total_fare: number
     )
         {
             this.vehicle_booking_id=vehicle_booking_id;
@@ -23,7 +25,7 @@ class VehicleBookingModel{
 			this.vehicle_location_id=vehicle_location_id;
 			this.from_date=from_date;
 			this.to_date=to_date;
-
+            this.total_fare=total_fare;
         }
 }
 export default VehicleBookingModel;

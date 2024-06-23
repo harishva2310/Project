@@ -29,7 +29,7 @@ public class LocationController {
         return ResponseEntity.ok(locations);
     }
 
-    @GetMapping("/locations/{location_id}")
+    @GetMapping("/{locationId}")
     public ResponseEntity<Location> getLocationById(@PathVariable Long locationId) {
         Optional<Location> location = locationRepository.findById(locationId);
         if (location.isPresent()) {

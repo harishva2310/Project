@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import VehicleModel from '../../model/VehicleModel';
 import LocationModel from '../../model/LocationModel';
+import VehicleModel from '../../model/VehicleModel';
+import VehicleLocationModel from '../../model/VehicleLocationModel';
 import { fetchLocationData } from '../../service/LocationService';
+import { fetchVehicleDataByID } from '../../service/FetchVehicleByID';
+import { fetchLocationDataByID } from '../../service/FetchLocationByID';
+import { fetchVehicleLocationDataByID } from '../../service/FetchVehicleLocationByID';
 import { SpinnerLoading } from '../../util/SpinnerLoading';
 import { AvailableVehicleResponse } from './components/AvailableVehicleResponse';
-const SearchVehicle: React.FC = () => {
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+
+
+const SearchVehicle = () => {
     const apiUrl = process.env.REACT_APP_API;
     const [locations, setLocations] = useState<LocationModel[]>([]);
+    const [selectedlocations, setSelectedLocations] = useState<LocationModel[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>('');
     const [selectedCountry, setSelectedCountry] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
@@ -15,20 +25,24 @@ const SearchVehicle: React.FC = () => {
     const [toDate, setToDate] = useState<string>('');
     const [fromTime, setFromTime] = useState<string>('00:00');
     const [toTime, setToTime] = useState<string>('23:59');
-    const [vehicles, setVehicles] = useState<AvailableVehicleResponse[]>([]);
+    const [availableVehicles, setAvailableVehicles] = useState<AvailableVehicleResponse[]>([]);
+    const [vehicles, setVehicles] = useState<VehicleModel[]>([]);
+    const [vehicleLocations, setVehicleLocations] = useState<VehicleLocationModel[]>([]);
     const [page, setPage] = useState<number>(0);
     const [size, setSize] = useState<number>(10);
     const [totalPages, setTotalPages] = useState<number>(0);
 
-    
 
+    const navigate = useNavigate();
+
+    
     useEffect(() => {
         async function loadLocations() {
             try {
                 const data = await fetchLocationData();
                 setLocations(data);
             } catch (error) {
-                console.error('Error fetching vehicles:', error);
+                console.error('Error fetching locations:', error);
             } finally {
                 setLoading(false);
             }
@@ -44,8 +58,6 @@ const SearchVehicle: React.FC = () => {
     const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCity(event.target.value);
     };
-
-
 
     const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCountry(event.target.value);
@@ -71,15 +83,12 @@ const SearchVehicle: React.FC = () => {
         return `${date}T${time}:00`;
     };
 
-
     const getUniqueValues = (arr: string[]): string[] => {
-        return arr.filter((value, index, self) => {
-            return self.indexOf(value) === index;
-        });
+        return arr.filter((value, index, self) => self.indexOf(value) === index);
     };
 
-
     const handleSearch = async () => {
+        setLoading(true);
         try {
             const fromDateTime = formatDateTime(fromDate, fromTime);
             const toDateTime = formatDateTime(toDate, toTime);
@@ -93,22 +102,40 @@ const SearchVehicle: React.FC = () => {
                     size: size
                 }
             });
-            setVehicles(response.data.content);
+            setAvailableVehicles(response.data.content);
             setTotalPages(response.data.totalPages);
+            loadVehicleData(response.data.content);
         } catch (error) {
             console.error('Error fetching available vehicles:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
-    // Filter unique cities
+    const loadVehicleData = async (availableVehicles: AvailableVehicleResponse[]) => {
+        setVehicles([]);
+        setSelectedLocations([]);
+        setVehicleLocations([]);
+        for (const vehicle of availableVehicles) {
+            const [vehicleId, , vehicleLocationId, locationId] = vehicle;
+            try {
+                const vehicleData = await fetchVehicleDataByID(vehicleId);
+                setVehicles(prevVehicles => [...prevVehicles, vehicleData]);
+                const locationData = await fetchLocationDataByID(locationId);
+                setSelectedLocations(prevLocations => [...prevLocations, locationData]);
+                const vehicleLocationData = await fetchVehicleLocationDataByID(vehicleLocationId);
+                setVehicleLocations(prevVehicleLocations => [...prevVehicleLocations, vehicleLocationData])
+            } catch (error) {
+                console.error('Error fetching vehicle data:', error);
+            }
+        }
+    };
+
+
+
+
     const uniqueCities = getUniqueValues(locations.map(location => location.location_city));
-
-    // Filter unique states
-
-
-    // Filter unique countries
     const uniqueCountries = getUniqueValues(locations.map(location => location.location_country));
-
 
     const handleNextPage = () => {
         if (page < totalPages - 1) {
@@ -124,113 +151,127 @@ const SearchVehicle: React.FC = () => {
         }
     };
 
+    
+
+    const handleViewDetails = (availableVehicles: AvailableVehicleResponse) => {
+        const vehicleDetails = {
+            vehicle_id: availableVehicles[0],
+            location_id: availableVehicles[3],
+            vehicle_location_id: availableVehicles[2],
+            from_date: fromDate,
+            to_date: toDate,
+            
+        };
+
+        navigate('/checkout', { state: vehicleDetails });
+    };
 
     return (
-        <div>
-            <div className='container'>
-                <div>
-
-                    <div className='row mt-5'>
-                        <div className='col-md-6'>
-                            <div className='d-flex mb-3'>
-                                <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select" required>
-                                    <option value="">Select a city</option>
-                                    {uniqueCities.map(city => (
-                                        <option key={city} value={city}>
-                                            {city}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-
-
-
-                        <div className='col-md-6'>
-                            <div className="mb-3">
-                                <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select" required>
-                                    <option value="">Select Country</option>
-                                    {uniqueCountries.map(country => (
-                                        <option key={country} value={country}>
-                                            {country}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-
-                        {/* Date Input Fields */}
-                        <div className='col-md-6'>
-                            <div className="mb-3">
-                                <label htmlFor="fromDate" className="form-label">From</label>
-                                <input type="date" id="fromDate" className="form-control" required value={fromDate} onChange={handleFromDateChange} />
-                            </div>
-                        </div>
-
-                        <div className='col-md-6'>
-                            <div className="mb-3">
-                                <label htmlFor="toDate" className="form-label">To</label>
-                                <input type="date" id="toDate" className="form-control" required value={toDate} onChange={handleToDateChange}/>
-                            </div>
-                        </div>
-
-                        <div className='col-md-6'>
-                            <div className="mb-3">
-                                <label htmlFor="fromTime" className="form-label">To Time</label>
-                                <input type="time" id="fromTime" className="form-control" value={fromTime} onChange={handleFromTimeChange} required min="09:00:00" max="17:00:00"/>
-                            </div>
-                        </div>
-
-                        <div className='col-md-6'>
-                            <div className="mb-3">
-                                <label htmlFor="toTime" className="form-label">To Time</label>
-                                <input type="time" id="toTime" className="form-control" value={toTime} onChange={handleToTimeChange} required min="09:00:00" max="17:00:00"/>
-                            </div>
-                        </div>
-
-                        {/* Search Button */}
-                        <div className='col-12 text-center'>
-                            <button type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
-                        </div>
-
-
-                        {/* Display Results */}
+        <>
+            <div>
+                <div className='container'>
+                    <div>
                         <div className='row mt-5'>
-                            <div className='col-12'>
-                                {vehicles.length > 0 ? (
-                                    <div>
-                                        <h3>Available Vehicles</h3>
-                                        <ul>
-                                            {vehicles.map((vehicle,index) => (
-                                                <li key={index}>{vehicle[1]}</li>
-                                            ))}
-                                        </ul>
-                                        <div className="pagination">
-                                            <button className="btn btn-secondary" onClick={handlePreviousPage} disabled={page === 0}>
-                                                Previous
-                                            </button>
-                                            <span> Page {page + 1} of {totalPages} </span>
-                                            <button className="btn btn-secondary" onClick={handleNextPage} disabled={page === totalPages - 1}>
-                                                Next
-                                            </button>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <p>No available vehicles found.</p>
-                                )}
+                            <div className='col-md-6'>
+                                <div className='d-flex mb-3'>
+                                    <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select" required>
+                                        <option value="">Select a city</option>
+                                        {uniqueCities.map(city => (
+                                            <option key={city} value={city}>
+                                                {city}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className='col-md-6'>
+                                <div className="mb-3">
+                                    <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select" required>
+                                        <option value="">Select Country</option>
+                                        {uniqueCountries.map(country => (
+                                            <option key={country} value={country}>
+                                                {country}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className='col-md-6'>
+                                <div className="mb-3">
+                                    <label htmlFor="fromDate" className="form-label">From</label>
+                                    <input type="date" id="fromDate" className="form-control" required value={fromDate} onChange={handleFromDateChange} />
+                                </div>
+                            </div>
+                            <div className='col-md-6'>
+                                <div className="mb-3">
+                                    <label htmlFor="toDate" className="form-label">To</label>
+                                    <input type="date" id="toDate" className="form-control" required value={toDate} onChange={handleToDateChange} />
+                                </div>
+                            </div>
+                            <div className='col-md-6'>
+                                <div className="mb-3">
+                                    <label htmlFor="fromTime" className="form-label">From Time</label>
+                                    <input type="time" id="fromTime" className="form-control" value={fromTime} onChange={handleFromTimeChange} required min="09:00" max="17:00" />
+                                </div>
+                            </div>
+                            <div className='col-md-6'>
+                                <div className="mb-3">
+                                    <label htmlFor="toTime" className="form-label">To Time</label>
+                                    <input type="time" id="toTime" className="form-control" value={toTime} onChange={handleToTimeChange} required min="09:00" max="17:00" />
+                                </div>
+                            </div>
+                            <div className='col-12 text-center'>
+                                <button type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
                             </div>
                         </div>
-
-
-
-
                     </div>
+                </div>
 
+
+                <div className='container'>
+                    <div className='row mt-8'>
+                        {availableVehicles.length > 0 && (
+                            <>
+                                {vehicles.map((vehicle, index) => (
+
+                                    <div className="card mb-3 mt-3 custom-card" key={vehicle.vehicle_id}>
+
+
+                                        <div className="row g-0">
+                                            <div className="col-md-4">
+                                                <img src={`data:image/jpg;base64,${vehicle.img}`} className="img-fluid rounded-start custom-card-img" alt="..." />
+                                            </div>
+                                            <div className="col-md-8">
+                                                <div className="card-body">
+                                                    <h5 className="card-title">{vehicle.vehicle_name}</h5>
+                                                    <p className="card-text">{vehicle.vehicle_description}</p>
+                                                    <p className="card-text">Per Day rate : {vehicle.day_rate} USD</p>
+                                                    <p className="card-text">Total rate : {vehicle.day_rate} USD</p>
+                                                    <button className='btn btn-primary' onClick={() => handleViewDetails(availableVehicles[index])}>
+                                                        View Details
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                ))}
+                            </>
+                        )}
+
+                        <div className="d-flex justify-content-center mt-5 mb-5">
+                            <button className="btn btn-primary me-2" onClick={handlePreviousPage} disabled={page === 0}>
+                                Previous Page
+                            </button>
+                            <button className="btn btn-primary ms-2" onClick={handleNextPage} disabled={page === totalPages - 1}>
+                                Next Page
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
-
 }
 
 export default SearchVehicle;
