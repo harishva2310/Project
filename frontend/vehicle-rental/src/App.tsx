@@ -45,11 +45,12 @@ export const App = () => {
           <Route path="/login" element={<LoginWidget config={oktaConfig} />} />
           <Route path="/login/callback" element={<LoginCallback />} />
           <Route path="/searchvehicles" element={<SearchVehicle />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route
-            path="/addnewvehicle"
-            element={<RequiredAuth />}>
+          
+          <Route path="/addnewvehicle" element={<RequiredAuth />}>
             <Route path='' element={<AddNewVehicle />} />
+          </Route>
+          <Route path="/checkout" element={<RequiredAuth />}>
+            <Route path='' element={<Checkout />} />
           </Route>
 
         </Routes>

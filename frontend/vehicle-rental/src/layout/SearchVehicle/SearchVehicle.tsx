@@ -158,8 +158,8 @@ const SearchVehicle = () => {
             vehicle_id: availableVehicles[0],
             location_id: availableVehicles[3],
             vehicle_location_id: availableVehicles[2],
-            from_date: fromDate,
-            to_date: toDate,
+            from_date: formatDateTime(fromDate, fromTime),
+            to_date: formatDateTime(toDate, toTime),
             
         };
 
@@ -246,7 +246,7 @@ const SearchVehicle = () => {
                                                     <h5 className="card-title">{vehicle.vehicle_name}</h5>
                                                     <p className="card-text">{vehicle.vehicle_description}</p>
                                                     <p className="card-text">Per Day rate : {vehicle.day_rate} USD</p>
-                                                    <p className="card-text">Total rate : {vehicle.day_rate} USD</p>
+                                                    
                                                     <button className='btn btn-primary' onClick={() => handleViewDetails(availableVehicles[index])}>
                                                         View Details
                                                     </button>
