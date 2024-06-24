@@ -22,8 +22,8 @@ public class VehicleBooking {
     @Column(name = "location_id")
     private Long location_id;
 
-    @Column(name = "user_id")
-    private Long user_id;
+    @Column(name = "user_email")
+    private String user_email;
 
     @Column(name = "vehicle_id")
     private Long vehicle_id;
@@ -31,11 +31,6 @@ public class VehicleBooking {
     @Column(name = "vehicle_location_id")
     private Long vehicle_location_id;
 
-    @Column(name="vehicle_name")
-    private String vehicle_name;
-
-    @Column(name="location_name")
-    private String location_name;
 
     @Column(name="from_date")
     private Date from_Date;

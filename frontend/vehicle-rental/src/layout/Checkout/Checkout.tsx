@@ -26,9 +26,10 @@ const Checkout = () => {
     const [totalRate, setTotalRate] = useState<number>(0);
     const { authState, oktaAuth } = useOktaAuth();
     const [userInfo, setUserInfo] = useState<UserClaims<CustomUserClaims> | null>(null);
-    const [user, setUser]=useState<UserModel | null>(null);
+    const [user, setUser] = useState<UserModel | null>(null);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const formData = new FormData();
 
-    
 
     const calculateTotalRate = (dayRate: number, fromDate: string, toDate: string) => {
         const from = new Date(fromDate);
@@ -50,20 +51,20 @@ const Checkout = () => {
     useEffect(() => {
         console.log(authState, oktaAuth)
         if (!authState || !authState.isAuthenticated) {
-          // When user isn't authenticated, forget any user info
-          setUserInfo(null);
+            // When user isn't authenticated, forget any user info
+            setUserInfo(null);
         } else {
-          
-          oktaAuth.token.getUserInfo().then(info => {
-              console.log(info)
-            setUserInfo(info);
-          }).catch((err) => {
-            console.error(err);
-          });
-        }
-      }, [authState, oktaAuth]);
 
-      
+            oktaAuth.token.getUserInfo().then(info => {
+                console.log(info)
+                setUserInfo(info);
+            }).catch((err) => {
+                console.error(err);
+            });
+        }
+    }, [authState, oktaAuth]);
+
+
 
     useEffect(() => {
         async function loadLocations() {
@@ -101,12 +102,12 @@ const Checkout = () => {
         async function loadUser() {
             if (userInfo && userInfo.email) {
                 try {
-                    const response = await axios.get(`${apiUrl}/users/byemail`,{
+                    const response = await axios.get(`${apiUrl}/users/byemail`, {
                         params:
                         {
                             email: userInfo.email
                         }
-                    } );
+                    });
                     console.log("Get user details")
                     console.log(response.data.content);
                     const userDataArray = response.data[0];
@@ -132,6 +133,45 @@ const Checkout = () => {
         return new UserModel(user_id, user_first_name, user_last_name, user_driver_license_num, user_address, user_email);
     };
 
+    const handlePayLaterClick = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    const handleConfirmBooking = async () => {
+        setShowModal(false);
+        try {
+            console.log("Vehicle ID:", vehicleDetails.vehicle_id)
+            formData.append('vehicle_id', vehicleDetails.vehicle_id);
+            formData.append('location_id', vehicleDetails.location_id);
+            formData.append('vehicle_location_id',vehicleDetails.vehicle_location_id)
+            formData.append('total_fare',totalRate.toString())
+            formData.append('from_date', vehicleDetails.from_date)
+            formData.append('to_date', vehicleDetails.to_date)
+            if (userInfo?.email) {
+                formData.append('user_email', userInfo.email);
+              }
+
+            const response = await axios.post(`${apiUrl}/vehicleBookings`, formData, 
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                  },
+            }
+        
+        
+        );
+            console.log('Booking confirmed:', response.data);
+            // Handle any further logic or state updates after successful booking
+        } catch (error) {
+            console.error('Error confirming booking:', error);
+        }
+    };
+
+
     return (
         /*<>
         <div>
@@ -156,7 +196,8 @@ const Checkout = () => {
                         <p className="lead mb-4">User: {userInfo.name}</p>
                         <p className="lead mb-4">Email: {userInfo.email}</p>
                         <p className="lead mb-4">Address: {user?.user_address}</p>
-                        
+
+
                     </div>
                 )}
                 <h3 className="display-5 fw-bold text-body-emphasis">Location Pickup/Drop Details</h3>
@@ -175,12 +216,36 @@ const Checkout = () => {
 
                 <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
                     <button type="button" className="btn btn-primary btn-lg px-4 gap-3">Pay Now</button>
-                    <button type="button" className="btn btn-outline-secondary btn-lg px-4">Pay Later</button>
+                    <button type="button" className="btn btn-outline-secondary btn-lg px-4" onClick={handlePayLaterClick}>Pay Later</button>
                 </div>
 
 
             </div>
+
+            {showModal && (
+                <div className="modal fade show d-block" tabIndex={-1} role="dialog">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Confirm Booking</h5>
+                                <button type="button" className="close" aria-label="Close" onClick={handleCloseModal}>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <p>Do you want to finish the booking?</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-primary" onClick={handleConfirmBooking}>Confirm</button>
+                                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
+
+
     );
 };
 

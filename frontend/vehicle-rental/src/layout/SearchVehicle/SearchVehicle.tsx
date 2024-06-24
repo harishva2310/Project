@@ -9,7 +9,7 @@ import { fetchLocationDataByID } from '../../service/FetchLocationByID';
 import { fetchVehicleLocationDataByID } from '../../service/FetchVehicleLocationByID';
 import { SpinnerLoading } from '../../util/SpinnerLoading';
 import { AvailableVehicleResponse } from './components/AvailableVehicleResponse';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -88,7 +88,9 @@ const SearchVehicle = () => {
     };
 
     const handleSearch = async () => {
+
         setLoading(true);
+        
         try {
             const fromDateTime = formatDateTime(fromDate, fromTime);
             const toDateTime = formatDateTime(toDate, toTime);
@@ -110,6 +112,7 @@ const SearchVehicle = () => {
         } finally {
             setLoading(false);
         }
+    
     };
 
     const loadVehicleData = async (availableVehicles: AvailableVehicleResponse[]) => {
@@ -221,7 +224,7 @@ const SearchVehicle = () => {
                                 </div>
                             </div>
                             <div className='col-12 text-center'>
-                                <button type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
+                                <button type="submit" className="btn btn-primary" onClick={handleSearch}>Search</button>
                             </div>
                         </div>
                     </div>
