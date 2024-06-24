@@ -1,0 +1,1 @@
+export type userResponse = [number, string,string,number,string,string]

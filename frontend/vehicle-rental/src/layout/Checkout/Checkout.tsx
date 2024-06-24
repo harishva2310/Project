@@ -7,7 +7,9 @@ import { SpinnerLoading } from '../../util/SpinnerLoading';
 import { fetchVehicleDataByID } from '../../service/FetchVehicleByID';
 import { useOktaAuth } from '@okta/okta-react';
 import { CustomUserClaims, UserClaims } from '@okta/okta-auth-js';
-
+import UserModel from '../../model/UserModel';
+import { userResponse } from './components/userResponse';
+import axios from 'axios';
 export interface UserInfo {
     name?: string;
     email?: string;
@@ -15,6 +17,7 @@ export interface UserInfo {
 }
 
 const Checkout = () => {
+    const apiUrl = process.env.REACT_APP_API;
     const location = useLocation();
     const vehicleDetails = location.state;
     const [locations, setLocations] = useState<LocationModel>();
@@ -23,6 +26,7 @@ const Checkout = () => {
     const [totalRate, setTotalRate] = useState<number>(0);
     const { authState, oktaAuth } = useOktaAuth();
     const [userInfo, setUserInfo] = useState<UserClaims<CustomUserClaims> | null>(null);
+    const [user, setUser]=useState<UserModel | null>(null);
 
     
 
@@ -92,11 +96,41 @@ const Checkout = () => {
         loadVehicles();
     }, [vehicleDetails.vehicle_id]);
 
+
+    useEffect(() => {
+        async function loadUser() {
+            if (userInfo && userInfo.email) {
+                try {
+                    const response = await axios.get(`${apiUrl}/users/byemail`,{
+                        params:
+                        {
+                            email: userInfo.email
+                        }
+                    } );
+                    console.log("Get user details")
+                    console.log(response.data.content);
+                    const userDataArray = response.data[0];
+                    const userModel = mapArrayToUserModel(userDataArray);
+                    setUser(userModel);
+                } catch (error) {
+                    console.error('Error fetching user:', error);
+                } finally {
+                    setLoading(false);
+                }
+            }
+        }
+
+        loadUser();
+    }, [userInfo]);
+
     if (loading) {
         return <SpinnerLoading />;
     }
 
-    
+    const mapArrayToUserModel = (data: any[]): UserModel => {
+        const [user_id, user_first_name, user_last_name, user_driver_license_num, user_address, user_email] = data;
+        return new UserModel(user_id, user_first_name, user_last_name, user_driver_license_num, user_address, user_email);
+    };
 
     return (
         /*<>
@@ -121,6 +155,8 @@ const Checkout = () => {
                     <div>
                         <p className="lead mb-4">User: {userInfo.name}</p>
                         <p className="lead mb-4">Email: {userInfo.email}</p>
+                        <p className="lead mb-4">Address: {user?.user_address}</p>
+                        
                     </div>
                 )}
                 <h3 className="display-5 fw-bold text-body-emphasis">Location Pickup/Drop Details</h3>
@@ -135,10 +171,14 @@ const Checkout = () => {
                 <p className="lead mb-4">Total Rate: {totalRate} USD</p>
                 <p className="lead mb-4">From : {formatDate(vehicleDetails.from_date)} </p>
                 <p className="lead mb-4">To : {formatDate(vehicleDetails.to_date)} </p>
+
+
                 <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
                     <button type="button" className="btn btn-primary btn-lg px-4 gap-3">Pay Now</button>
                     <button type="button" className="btn btn-outline-secondary btn-lg px-4">Pay Later</button>
                 </div>
+
+
             </div>
         </div>
     );
