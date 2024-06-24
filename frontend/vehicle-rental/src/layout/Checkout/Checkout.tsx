@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import LocationModel from '../../model/LocationModel';
 import VehicleModel from '../../model/VehicleModel';
 import { fetchLocationDataByID } from '../../service/FetchLocationByID';
@@ -29,7 +29,7 @@ const Checkout = () => {
     const [user, setUser] = useState<UserModel | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const formData = new FormData();
-
+    const navigate = useNavigate();
 
     const calculateTotalRate = (dayRate: number, fromDate: string, toDate: string) => {
         const from = new Date(fromDate);
@@ -166,6 +166,8 @@ const Checkout = () => {
         );
             console.log('Booking confirmed:', response.data);
             // Handle any further logic or state updates after successful booking
+            navigate('/myBookings');
+            
         } catch (error) {
             console.error('Error confirming booking:', error);
         }

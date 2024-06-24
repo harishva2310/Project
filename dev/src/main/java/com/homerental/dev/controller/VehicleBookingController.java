@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.homerental.dev.dao.VehicleBookingRepository;
 import com.homerental.dev.entity.VehicleBooking;
-
-
+import com.homerental.dev.service.VehicleBookingService;
 
 @RestController
 @RequestMapping("/vehicleBookings")
@@ -25,37 +24,49 @@ public class VehicleBookingController {
     @Autowired
     private VehicleBookingRepository vehicleBookingRepository;
 
+    @Autowired
+    private VehicleBookingService vehicleBookingService;
+
     @GetMapping()
     public ResponseEntity<List<VehicleBooking>> getAllVehicleBookings() {
-        List<VehicleBooking> vehicleBooking=vehicleBookingRepository.findAll();
+        List<VehicleBooking> vehicleBooking = vehicleBookingRepository.findAll();
         return ResponseEntity.ok(vehicleBooking);
     }
-    
+
+    @GetMapping("/getuserbookings")
+    public ResponseEntity<List<VehicleBooking>> getAllUserBookingsByEmail(@RequestParam String email) {
+        try {
+            List<VehicleBooking> userBooking = vehicleBookingService.getAllUserBookingsByEmail(email);
+            return ResponseEntity.ok(userBooking);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 
     @PostMapping
     public ResponseEntity<?> addVehicleBooking(
-        @RequestParam("vehicle_id") Long vehicleId,
-        @RequestParam("location_id") Long locationId,
-        @RequestParam("vehicle_location_id") Long vehicleLocationId,
-        @RequestParam("total_fare") Double totalFare,
-        @RequestParam("from_date") String fromDate,
-        @RequestParam("to_date") String toDate,
-        @RequestParam("user_email") String userEmail) throws ParseException{
+            @RequestParam("vehicle_id") Long vehicleId,
+            @RequestParam("location_id") Long locationId,
+            @RequestParam("vehicle_location_id") Long vehicleLocationId,
+            @RequestParam("total_fare") Double totalFare,
+            @RequestParam("from_date") String fromDate,
+            @RequestParam("to_date") String toDate,
+            @RequestParam("user_email") String userEmail) throws ParseException {
 
-            VehicleBooking vehicleBooking=new VehicleBooking();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Date parsedFromDate = dateFormat.parse(fromDate);
-            Date parsedToDate= dateFormat.parse(toDate);
-            vehicleBooking.setVehicle_id(vehicleId);
-            vehicleBooking.setFrom_Date(parsedFromDate);
-            vehicleBooking.setTo_date(parsedToDate);
-            vehicleBooking.setLocation_id(locationId);
-            
-            vehicleBooking.setVehicle_location_id(vehicleLocationId);
-            vehicleBooking.setTotal_fare(totalFare);
-            vehicleBooking.setUser_email(userEmail);
+        VehicleBooking vehicleBooking = new VehicleBooking();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date parsedFromDate = dateFormat.parse(fromDate);
+        Date parsedToDate = dateFormat.parse(toDate);
+        vehicleBooking.setVehicle_id(vehicleId);
+        vehicleBooking.setFrom_date(parsedFromDate);
+        vehicleBooking.setTo_date(parsedToDate);
+        vehicleBooking.setLocation_id(locationId);
 
-            vehicleBookingRepository.save(vehicleBooking);
-            return ResponseEntity.ok("Booking added successfully");
-        }
+        vehicleBooking.setVehicle_location_id(vehicleLocationId);
+        vehicleBooking.setTotal_fare(totalFare);
+        vehicleBooking.setUser_email(userEmail);
+
+        vehicleBookingRepository.save(vehicleBooking);
+        return ResponseEntity.ok("Booking added successfully");
+    }
 }

@@ -1,11 +1,11 @@
 class VehicleModel{
-    vehicle_id?: number;
+    vehicle_id: number;
     vehicle_name: string;
     vehicle_type: string;
     vehicle_description: string;
     day_rate: number;
     img: string | null;
-    constructor (vehicle_id: number | undefined,
+    constructor (vehicle_id: number,
         vehicle_name: string,
         vehicle_type: string,
         vehicle_description: string,

@@ -1,5 +1,5 @@
 class VehicleBookingModel{
-    vehicle_booking_id?: number;
+    vehicle_booking_id: number;
     location_id: number;
     vehicle_id: number;
     user_email: string;
@@ -8,7 +8,7 @@ class VehicleBookingModel{
 	to_date: string;
     total_fare: number;
 	
-    constructor (vehicle_booking_id: number | undefined,
+    constructor (vehicle_booking_id: number,
         location_id: number,
     vehicle_id: number,
 	user_email: string,

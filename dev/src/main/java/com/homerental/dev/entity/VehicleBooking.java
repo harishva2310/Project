@@ -33,7 +33,7 @@ public class VehicleBooking {
 
 
     @Column(name="from_date")
-    private Date from_Date;
+    private Date from_date;
 
     @Column(name="to_date")
     private Date to_date;

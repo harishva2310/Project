@@ -16,6 +16,7 @@ import ProtectedRoute from './Auth/ProtectedRoute';
 import { RequiredAuth } from './Auth/SecureRoute';
 import SearchVehicle from './layout/SearchVehicle/SearchVehicle';
 import Checkout from './layout/Checkout/Checkout';
+import UserBookings from './layout/UserBookings/UserBookings';
 
 
 
@@ -51,6 +52,9 @@ export const App = () => {
           </Route>
           <Route path="/checkout" element={<RequiredAuth />}>
             <Route path='' element={<Checkout />} />
+          </Route>
+          <Route path="/myBookings" element={<RequiredAuth />}>
+            <Route path='' element={<UserBookings />} />
           </Route>
 
         </Routes>
