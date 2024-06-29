@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vehicle-rental-spring-boot-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vehicle-rental-spring-boot-app
+  template:
+    metadata:
+      labels:
+        app: vehicle-rental-spring-boot-app
+    spec:
+      containers:
+      - name: vehicle-rental-spring-boot-app
+        image: harishva1910/backend:latest
+        ports:
+        - containerPort: 8080

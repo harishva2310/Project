@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vehicle-rental-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vehicle-rental-app
+  template:
+    metadata:
+      labels:
+        app: vehicle-rental-app
+    spec:
+      containers:
+      - name: vehicle-rental-app
+        image: harishva1910/frontend:latest
+        ports:
+        - containerPort: 80
