@@ -5,10 +5,10 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the JAR file into the container
-COPY target/my-spring-boot-app.jar /app/my-spring-boot-app.jar
+COPY target/DevApplication.jar /app/DevApplication.jar
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
 # Run the application
-ENTRYPOINT ["java", "-jar", "/app/my-spring-boot-app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/DevApplication.jar"]
