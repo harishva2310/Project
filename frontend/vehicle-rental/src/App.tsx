@@ -43,12 +43,15 @@ export const App = () => {
         <Routes>
         <Route path="/home" element={<HomePage />} />
         <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/login" element={<LoginWidget config={oktaConfig} />} />
+          
           <Route path="/login/callback" element={<LoginCallback />} />
           <Route path="/searchvehicles" element={<SearchVehicle />} />
           
           <Route path="/addnewvehicle" element={<RequiredAuth />}>
             <Route path='' element={<AddNewVehicle />} />
+          </Route>
+          <Route path="/login" element={<RequiredAuth />}>
+            <Route path='' element={<Navigate to="/home" />}/>
           </Route>
           <Route path="/checkout" element={<RequiredAuth />}>
             <Route path='' element={<Checkout />} />

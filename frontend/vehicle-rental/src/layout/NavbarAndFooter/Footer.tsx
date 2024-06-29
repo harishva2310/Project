@@ -13,7 +13,7 @@ export const Footer = () => {
                         </Link>
                     </li>
                     <li className='nav-item'>
-                        <Link to='/search' className='nav-link px-2 text-white'>
+                        <Link to='/searchvehicles' className='nav-link px-2 text-white'>
                             Search Vehicles
                         </Link>
                     </li>
