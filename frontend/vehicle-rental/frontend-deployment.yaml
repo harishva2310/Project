@@ -17,3 +17,9 @@ spec:
         image: harishva1910/frontend:latest
         ports:
         - containerPort: 80
+        env:
+        - name: REACT_APP_API
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-config
+              key: REACT_APP_API
