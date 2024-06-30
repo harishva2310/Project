@@ -11,8 +11,10 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application
-COPY . .
+COPY . ./
 
+ARG REACT_APP_API
+ENV REACT_APP_API=$REACT_APP_API
 # Build the application
 RUN npm run build
 
