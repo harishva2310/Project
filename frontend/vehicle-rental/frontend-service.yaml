@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: react-app-service
+  name: vehicle-rental-service
 spec:
   type: LoadBalancer
   selector:
