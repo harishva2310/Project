@@ -14,7 +14,7 @@ import com.homerental.dev.dao.VehicleLocationRepository;
 import com.homerental.dev.entity.VehicleLocation;
 
 @RestController
-@RequestMapping("/vehicleLocations")
+@RequestMapping("/api/vehicleLocations")
 public class VehicleLocationController {
 @Autowired
 private VehicleLocationRepository vehiclelocationRepository;

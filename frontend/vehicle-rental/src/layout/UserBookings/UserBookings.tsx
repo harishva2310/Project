@@ -57,7 +57,7 @@ const UserBookings = () => {
         async function loadUser() {
             if (userInfo && userInfo.email) {
                 try {
-                    const response = await axios.get(`/users/byemail`, {
+                    const response = await axios.get(`/api/users/byemail`, {
                         params:
                         {
                             email: userInfo.email

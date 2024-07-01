@@ -12,7 +12,7 @@ export async function fetchVehicleData(): Promise<VehicleModel[]> {
     {
         console.log(apiUrl);
     }
-    const response = await axios.get(`/vehicles`, { responseType: 'json' }); // Adjust the endpoint as needed
+    const response = await axios.get(`/api/vehicles`, { responseType: 'json' }); // Adjust the endpoint as needed
     const data = response.data;
     console.log(data);
     return data.map((item: any) => new VehicleModel(

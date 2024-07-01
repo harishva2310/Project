@@ -23,7 +23,7 @@ import com.homerental.dev.dao.VehicleRepository;
 import com.homerental.dev.entity.Vehicle;
 import com.homerental.dev.service.VehicleService;
 @RestController
-@RequestMapping("/vehicles")
+@RequestMapping("/api/vehicles")
 public class VehicleController {
 
     @Autowired

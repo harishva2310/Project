@@ -103,7 +103,7 @@ const Checkout = () => {
         async function loadUser() {
             if (userInfo && userInfo.email) {
                 try {
-                    const response = await axios.get(`${apiUrl}/users/byemail`, {
+                    const response = await axios.get(`/users/byemail`, {
                         params:
                         {
                             email: userInfo.email
@@ -156,7 +156,7 @@ const Checkout = () => {
                 formData.append('user_email', userInfo.email);
               }
 
-            const response = await axios.post(`${apiUrl}/vehicleBookings`, formData, 
+            const response = await axios.post(`/api/vehicleBookings`, formData, 
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',

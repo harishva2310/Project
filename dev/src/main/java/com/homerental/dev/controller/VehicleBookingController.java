@@ -18,7 +18,7 @@ import com.homerental.dev.entity.VehicleBooking;
 import com.homerental.dev.service.VehicleBookingService;
 
 @RestController
-@RequestMapping("/vehicleBookings")
+@RequestMapping("/api/vehicleBookings")
 public class VehicleBookingController {
 
     @Autowired

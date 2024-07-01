@@ -17,7 +17,7 @@ import com.homerental.dev.entity.Location;
 
 
 @RestController
-@RequestMapping("/locations")
+@RequestMapping("/api/locations")
 public class LocationController {
 
     @Autowired

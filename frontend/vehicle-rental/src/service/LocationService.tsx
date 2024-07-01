@@ -11,7 +11,7 @@ export async function fetchLocationData(): Promise<LocationModel[]> {
     {
         console.log(apiUrl);
     }
-    const response = await axios.get(`/locations`, { responseType: 'json' }); // Adjust the endpoint as needed
+    const response = await axios.get(`/api/locations`, { responseType: 'json' }); // Adjust the endpoint as needed
     const data = response.data;
     console.log(data);
     return data.map((item: any) => new LocationModel(

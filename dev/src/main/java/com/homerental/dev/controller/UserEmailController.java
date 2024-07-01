@@ -15,10 +15,10 @@ import com.homerental.dev.dao.UserRepository;
 import com.homerental.dev.entity.User;
 import com.homerental.dev.service.UserService;
 
-
 @RestController
-@RequestMapping("/users")
-public class UserEmailController{
+@RequestMapping("/api/users")
+public class UserEmailController {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -26,8 +26,8 @@ public class UserEmailController{
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers(){
-        List<User> users=userRepository.findAll();
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll();
         return ResponseEntity.ok(users);
     }
 
@@ -40,17 +40,16 @@ public class UserEmailController{
             return ResponseEntity.notFound().build();
         }
     }
-    
+
     @GetMapping("/byemail")
     public ResponseEntity<List<Object[]>> getUserEmailAddress(
-        @RequestParam String email) {
-    try {
-    List<Object[]> userbyEmail=userService.getUserEmailAddress(email); 
-    return ResponseEntity.ok(userbyEmail);
+            @RequestParam String email) {
+        try {
+            List<Object[]> userbyEmail = userService.getUserEmailAddress(email);
+            return ResponseEntity.ok(userbyEmail);
 
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
-    catch (IllegalArgumentException e) {
-        return ResponseEntity.badRequest().body(null);
-    }
-  }
 }

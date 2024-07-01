@@ -11,7 +11,7 @@ export async function fetchUserBookingData(email: string): Promise<VehicleBookin
     {
         console.log(apiUrl);
     }
-    const response = await axios.get(`/vehicleBookings/getuserbookings?email=${email}`, 
+    const response = await axios.get(`/api/vehicleBookings/getuserbookings?email=${email}`, 
         {
              responseType: 'json' 
         }
