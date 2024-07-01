@@ -11,7 +11,7 @@ export async function fetchVehicleBookingData(): Promise<VehicleBookingModel[]> 
     {
         console.log(apiUrl);
     }
-    const response = await axios.get(`${apiUrl}/vehicleBookings`, { responseType: 'json' }); // Adjust the endpoint as needed
+    const response = await axios.get(`/vehicleBookings`, { responseType: 'json' }); // Adjust the endpoint as needed
     const data = response.data;
     console.log(data);
     return data.map((item: any) => new VehicleBookingModel(

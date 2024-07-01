@@ -95,7 +95,7 @@ const SearchVehicle = () => {
         try {
             const fromDateTime = formatDateTime(fromDate, fromTime);
             const toDateTime = formatDateTime(toDate, toTime);
-            const response = await axios.get(`${apiUrl}/vehicles/availablevehicles`, {
+            const response = await axios.get(`/vehicles/availablevehicles`, {
                 params: {
                     fromdate: fromDateTime,
                     todate: toDateTime,

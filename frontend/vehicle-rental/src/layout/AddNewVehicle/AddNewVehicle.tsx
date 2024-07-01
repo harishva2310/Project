@@ -43,7 +43,7 @@ const AddNewVehicle: React.FC = () => {
     }
 
     try {
-      const response = await axios.post(`${apiUrl}/vehicles`, formData, {
+      const response = await axios.post(`/vehicles`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
