@@ -17,7 +17,8 @@ export interface UserInfo {
 }
 
 const Checkout = () => {
-    const apiUrl = process.env.REACT_APP_API;
+    const defaultApiUrl = "http://vehicle-rental-service:8080";
+    const apiUrl = process.env.REACT_APP_API || defaultApiUrl;
     const location = useLocation();
     const vehicleDetails = location.state;
     const [locations, setLocations] = useState<LocationModel>();

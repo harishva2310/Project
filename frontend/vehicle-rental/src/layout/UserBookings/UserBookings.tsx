@@ -14,7 +14,8 @@ import { useNavigate } from "react-router-dom";
 
 
 const UserBookings = () => {
-    const apiUrl = process.env.REACT_APP_API;
+    const defaultApiUrl = "http://vehicle-rental-service:8080";
+    const apiUrl = process.env.REACT_APP_API || defaultApiUrl;
     const [locations, setLocations] = useState<Record<number, LocationModel>>({});
     const [vehicles, setVehicles] = useState<Record<number, VehicleModel>>({});
     const { authState, oktaAuth } = useOktaAuth();

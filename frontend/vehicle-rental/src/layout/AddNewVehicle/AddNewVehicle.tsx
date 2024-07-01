@@ -19,7 +19,8 @@ const AddNewVehicle: React.FC = () => {
   });
 
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const apiUrl = process.env.REACT_APP_API;
+  const defaultApiUrl = "http://vehicle-rental-service:8080";
+  const apiUrl = process.env.REACT_APP_API || defaultApiUrl;
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setVehicle({ ...vehicle, [event.target.name]: event.target.value });
   };

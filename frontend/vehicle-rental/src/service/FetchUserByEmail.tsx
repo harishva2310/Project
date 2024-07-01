@@ -2,8 +2,8 @@ import axios from "axios";
 import UserModel from "../model/UserModel";
 
 export async function fetchUserbyEmail(email: string): Promise<UserModel>{
-
-    const apiUrl = process.env.REACT_APP_API;
+    const defaultApiUrl = "http://vehicle-rental-service:8080";
+    const apiUrl = process.env.REACT_APP_API || defaultApiUrl;
     if (!apiUrl) {
         throw new Error('REACT_APP_API environment variable is not set');
     }

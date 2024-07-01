@@ -2,7 +2,8 @@ import axios from "axios";
 import VehicleLocationModel from "../model/VehicleLocationModel";
 
 export async function fetchVehicleLocationDataByID(vehicle_location_id: number): Promise<VehicleLocationModel> {
-    const apiUrl = process.env.REACT_APP_API;
+    const defaultApiUrl = "http://vehicle-rental-service:8080";
+    const apiUrl = process.env.REACT_APP_API || defaultApiUrl;
     if (!apiUrl) {
         throw new Error('REACT_APP_API environment variable is not set');
     }

@@ -15,7 +15,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 const SearchVehicle = () => {
-    const apiUrl = process.env.REACT_APP_API;
+    const defaultApiUrl = "http://vehicle-rental-service:8080";
+    const apiUrl = process.env.REACT_APP_API || defaultApiUrl;
     const [locations, setLocations] = useState<LocationModel[]>([]);
     const [selectedlocations, setSelectedLocations] = useState<LocationModel[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>('');
