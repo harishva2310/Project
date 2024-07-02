@@ -212,7 +212,7 @@ const Checkout = () => {
                 <p className="lead mb-4">{locations?.location_zip}</p>
                 <h3 className="display-5 fw-bold text-body-emphasis">Fare Details</h3>
                 <p className="lead mb-4">Rate per day: {vehicles?.day_rate} USD</p>
-                <p className="lead mb-4">Total Rate: {totalRate} USD</p>
+                <p className="lead mb-4">Total Fare: {totalRate} USD</p>
                 <p className="lead mb-4">From : {formatDate(vehicleDetails.from_date)} </p>
                 <p className="lead mb-4">To : {formatDate(vehicleDetails.to_date)} </p>
 
