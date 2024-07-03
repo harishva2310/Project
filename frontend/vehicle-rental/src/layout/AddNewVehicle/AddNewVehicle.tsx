@@ -57,50 +57,63 @@ const AddNewVehicle: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="vehicle_name">Vehicle Name:</label>
-      <input
-        type="text"
-        id="vehicle_name"
-        name="vehicle_name"
-        value={vehicle.vehicle_name}
-        onChange={handleChange}
-        required
-      />
-
-      <label htmlFor="vehicle_type">Vehicle Type:</label>
-      <input
-        type="text"
-        id="vehicle_type"
-        name="vehicle_type"
-        value={vehicle.vehicle_type}
-        onChange={handleChange}
-        required
-      />
-
-      <label htmlFor="vehicle_description">Vehicle Description:</label>
-      <textarea
-        id="vehicle_description"
-        name="vehicle_description"
-        value={vehicle.vehicle_description}
-        onChange={handleChange}
-        required
-      />
-
-      <label htmlFor="day_rate">Day Rate:</label>
+    <form onSubmit={handleSubmit} className="row g-3 needs-validation" noValidate>
+      <div className="col-md-4">
+        <label htmlFor="vehicle_name" className="form-label">Vehicle Name:</label>
+        <input
+          type="text"
+          id="vehicle_name"
+          name="vehicle_name"
+          className="form-control"
+          value={vehicle.vehicle_name}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="col-md-4">
+      <label htmlFor="vehicle_type" className="form-label">Vehicle Type:</label>
+      
+        <input
+          type="text"
+          id="vehicle_type"
+          name="vehicle_type"
+          className="form-control"
+          value={vehicle.vehicle_type}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="col-md-6">
+      <label htmlFor="vehicle_description" className="form-label">Vehicle Description:</label>
+      
+        <textarea
+          id="vehicle_description"
+          name="vehicle_description"
+          className="form-control"
+          value={vehicle.vehicle_description}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="col-md-3">
+      <label htmlFor="day_rate" className="form-label">Day Rate:</label>
       <input
         type="number"
         id="day_rate"
         name="day_rate"
+        className="form-control"
         value={vehicle.day_rate}
         onChange={handleChange}
         required
       />
-
-      <label htmlFor="img">Vehicle Image:</label>
-      <input type="file" id="img" name="img" onChange={handleImageChange} />
-
-      <button type="submit">Add Vehicle</button>
+      </div>
+      <div className="col-md-3">
+      <label htmlFor="img" className="form-label">Vehicle Image:</label>
+      <input type="file" id="img" name="img" className="form-control" onChange={handleImageChange} />
+      </div>
+      <div className="col-12">
+      <button type="submit" className="btn btn-primary">Add Vehicle</button>
+      </div>
     </form>
   );
 };
