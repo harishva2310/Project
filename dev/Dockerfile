@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/*.jar /app/DevApplication.jar
 
 # Make port 8080 available to the world outside this container
-EXPOSE 8080
+EXPOSE 8443
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "/app/DevApplication.jar"]
