@@ -60,6 +60,10 @@ export const App = () => {
             <Route path='' element={<UserBookings />} />
           </Route>
 
+          <Route path="/admin" element={<RequiredAuth />}>
+            <Route path='' element={<AddNewVehicle />} />
+          </Route>
+
         </Routes>
         </div>
         <Footer />
