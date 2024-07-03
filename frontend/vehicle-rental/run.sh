@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo docker rmi --force harishva1910/frontend
+sudo docker rmi --force harishva1910/frontend|| true
 
 sudo docker build --no-cache -t harishva1910/frontend:latest .
 
