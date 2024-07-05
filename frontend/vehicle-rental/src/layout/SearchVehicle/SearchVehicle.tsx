@@ -257,12 +257,10 @@ const SearchVehicle = () => {
                                                                 <p className="mbr-text mbr-fonts-style display-7">
                                                                 {vehicle.vehicle_description}
                                                                 </p>
-                                                                <p className="mbr-text mbr-fonts-style display-7">
-                                                                {vehicle.day_rate}
-                                                                </p>
+                                                                
                                                             </div>
                                                             <div className="col-md-auto">
-                                                                <p className="price mbr-fonts-style display-2">$29</p>
+                                                                <p className="price mbr-fonts-style display-2">{vehicle.day_rate}</p>
                                                                 <div className="mbr-section-btn"><a
                                                                     className="btn btn-primary display-4" onClick={() => handleViewDetails(availableVehicles[index])}>
                                                                     Buy Now
