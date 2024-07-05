@@ -231,40 +231,54 @@ const SearchVehicle = () => {
                     </div>
                 </div>
 
+                <section data-bs-version="5.1" className="features9 cid-uhChHy94BR mbr-parallax-background" id="features9-0">
 
-                
 
-                <div className='container'>
-                    <div className='row mt-8'>
+
+
+                    <div className="mbr-overlay" style={{ opacity: 0.5, backgroundColor: 'rgb(190, 211, 249)' }}>
+                    </div>
+
+                    <div className="container">
                         {availableVehicles.length > 0 && (
                             <>
                                 {vehicles.map((vehicle, index) => (
-
-                                    <div className="card mb-3 mt-3 custom-card" key={vehicle.vehicle_id}>
-
-
-                                        <div className="row g-0">
-                                            <div className="col-md-4">
-                                                <img src={`data:image/jpg;base64,${vehicle.img}`} className="img-fluid rounded-start custom-card-img" alt="..." />
-                                            </div>
-                                            <div className="col-md-8">
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{vehicle.vehicle_name}</h5>
-                                                    <p className="card-text">{vehicle.vehicle_description}</p>
-                                                    <p className="card-text">Per Day rate : {vehicle.day_rate} USD</p>
-
-                                                    <button className='btn btn-primary' onClick={() => handleViewDetails(availableVehicles[index])}>
-                                                        View Details
-                                                    </button>
+                                    <div className="item features-image" key={vehicle.vehicle_id}>
+                                        <div className="item-wrapper">
+                                            <div className="row align-items-center">
+                                                <div className="col-12 col-md-4">
+                                                    <div className="image-wrapper">
+                                                        <img src={`data:image/jpg;base64,${vehicle.img}`} alt="..." />
+                                                    </div>
+                                                </div>
+                                                <div className="col-12 col-md">
+                                                    <div className="card-box">
+                                                        <div className="row">
+                                                            <div className="col-md">
+                                                                <h6 className="card-title mbr-fonts-style display-5">
+                                                                    <strong> {vehicle.vehicle_name} </strong>
+                                                                </h6>
+                                                                <p className="mbr-text mbr-fonts-style display-7">
+                                                                {vehicle.vehicle_description}
+                                                                </p>
+                                                            </div>
+                                                            <div className="col-md-auto">
+                                                                <p className="price mbr-fonts-style display-2">${vehicle.day_rate}</p>
+                                                                <div className="mbr-section-btn"><a 
+                                                                    className="btn btn-primary display-4" onClick={() => handleViewDetails(availableVehicles[index])}>
+                                                                    View Details
+                                                                </a></div>
+                                                            </div>
+                                                            <div></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 ))}
                             </>
                         )}
-
                         <div className="d-flex justify-content-center mt-5 mb-5">
                             <button className="btn btn-primary me-2" onClick={handlePreviousPage} disabled={page === 0}>
                                 Previous Page
@@ -274,7 +288,10 @@ const SearchVehicle = () => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </section>
+
+
+                
             </div>
         </>
     );
