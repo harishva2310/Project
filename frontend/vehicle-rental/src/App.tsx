@@ -36,10 +36,10 @@ export const App = () => {
   };
 
   return (
-    <div className='d-flex flex-column min-vh-100'>
+    <>
       <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} onAuthRequired={customAuthHandler}>
       <Navbar />
-      <div className='flex-grow-1'>
+      
         <Routes>
         <Route path="/home" element={<HomePage />} />
         <Route path="/" element={<Navigate to="/home" />} />
@@ -65,9 +65,9 @@ export const App = () => {
           </Route>
 
         </Routes>
-        </div>
+        
         <Footer />
       </Security>
-    </div>
+      </>
   );
 };
