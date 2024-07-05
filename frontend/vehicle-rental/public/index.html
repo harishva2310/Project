@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="generator" content="Mobirise v5.9.18, mobirise.com">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
@@ -73,5 +75,14 @@
     <script src="assets/dropdown/js/navbar-dropdown.js"></script>
     <script src="assets/theme/js/script.js"></script>
     <script src="assets/formoid/formoid.min.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Execute the navbar-dropdown.js after DOM is fully loaded
+        const script = document.createElement('script');
+        script.src = 'assets/dropdown/js/navbar-dropdown.js';
+        document.body.appendChild(script);
+      });
+    </script>
   </body>
 </html>
