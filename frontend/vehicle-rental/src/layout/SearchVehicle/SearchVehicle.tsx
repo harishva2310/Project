@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LocationModel from '../../model/LocationModel';
 import VehicleModel from '../../model/VehicleModel';
@@ -32,7 +32,7 @@ const SearchVehicle = () => {
     const [page, setPage] = useState<number>(0);
     const [size, setSize] = useState<number>(10);
     const [totalPages, setTotalPages] = useState<number>(0);
-    const dropdownRef = useRef(null);
+
 
     const navigate = useNavigate();
 
@@ -169,12 +169,6 @@ const SearchVehicle = () => {
 
         navigate('/checkout', { state: vehicleDetails });
     };
-    useEffect(() => {
-        if (dropdownRef.current) {
-          // Dropdown initialization logic goes here (assuming navbar-dropdown.js doesn't handle it)
-          // You can access the dropdown element using dropdownRef.current
-        }
-      }, [dropdownRef]);
 
     return (
         <>
@@ -184,7 +178,7 @@ const SearchVehicle = () => {
                         <div className='row mt-5'>
                             <div className='col-md-6'>
                                 <div className='d-flex mb-3'>
-                                    <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select" required ref={dropdownRef}>
+                                    <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select" required>
                                         <option value="">Select a city</option>
                                         {uniqueCities.map(city => (
                                             <option key={city} value={city}>
@@ -196,7 +190,7 @@ const SearchVehicle = () => {
                             </div>
                             <div className='col-md-6'>
                                 <div className="mb-3">
-                                    <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select" required ref={dropdownRef}>
+                                    <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select" required>
                                         <option value="">Select Country</option>
                                         {uniqueCountries.map(country => (
                                             <option key={country} value={country}>
@@ -209,25 +203,25 @@ const SearchVehicle = () => {
                             <div className='col-md-6'>
                                 <div className="mb-3">
                                     <label htmlFor="fromDate" className="form-label">From</label>
-                                    <input type="date" id="fromDate" className="form-control" required value={fromDate} onChange={handleFromDateChange} ref={dropdownRef} />
+                                    <input type="date" id="fromDate" className="form-control" required value={fromDate} onChange={handleFromDateChange} />
                                 </div>
                             </div>
                             <div className='col-md-6'>
                                 <div className="mb-3">
                                     <label htmlFor="toDate" className="form-label">To</label>
-                                    <input type="date" id="toDate" className="form-control" required value={toDate} onChange={handleToDateChange} ref={dropdownRef}/>
+                                    <input type="date" id="toDate" className="form-control" required value={toDate} onChange={handleToDateChange} />
                                 </div>
                             </div>
                             <div className='col-md-6'>
                                 <div className="mb-3">
                                     <label htmlFor="fromTime" className="form-label">From Time</label>
-                                    <input type="time" id="fromTime" className="form-control" value={fromTime} onChange={handleFromTimeChange} required min="09:00" max="17:00" ref={dropdownRef} />
+                                    <input type="time" id="fromTime" className="form-control" value={fromTime} onChange={handleFromTimeChange} required min="09:00" max="17:00" />
                                 </div>
                             </div>
                             <div className='col-md-6'>
                                 <div className="mb-3">
                                     <label htmlFor="toTime" className="form-label">To Time</label>
-                                    <input type="time" id="toTime" className="form-control" value={toTime} onChange={handleToTimeChange} required min="09:00" max="17:00" ref={dropdownRef} />
+                                    <input type="time" id="toTime" className="form-control" value={toTime} onChange={handleToTimeChange} required min="09:00" max="17:00" />
                                 </div>
                             </div>
                             <div className='col-12 text-center'>
@@ -238,50 +232,39 @@ const SearchVehicle = () => {
                 </div>
 
 
-                <section data-bs-version="5.1" className="features9 cid-uhChHy94BR mbr-parallax-background" id="features9-0">
-                    <div className="mbr-overlay" style={{ opacity: 0.5, backgroundColor: 'rgb(190, 211, 249)' }}>
-                    </div>
-                    <div className="container">
+                
+
+                <div className='container'>
+                    <div className='row mt-8'>
                         {availableVehicles.length > 0 && (
                             <>
                                 {vehicles.map((vehicle, index) => (
-                                    <div className="item features-image">
-                                        <div className="item-wrapper">
-                                            <div className="row align-items-center">
-                                                <div className="col-12 col-md-4">
-                                                    <div className="image-wrapper">
-                                                        <img src={`data:image/jpg;base64,${vehicle.img}`} alt="Vehicle Image" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-12 col-md">
-                                                    <div className="card-box">
-                                                        <div className="row">
-                                                            <div className="col-md">
-                                                                <h6 className="card-title mbr-fonts-style display-5">
-                                                                    <strong> {vehicle.vehicle_name} </strong>
-                                                                </h6>
-                                                                <p className="mbr-text mbr-fonts-style display-7">
-                                                                {vehicle.vehicle_description}
-                                                                </p>
-                                                                
-                                                            </div>
-                                                            <div className="col-md-auto">
-                                                                <p className="price mbr-fonts-style display-2">{vehicle.day_rate}</p>
-                                                                <div className="mbr-section-btn"><a
-                                                                    className="btn btn-primary display-4" onClick={() => handleViewDetails(availableVehicles[index])}>
-                                                                    Buy Now
-                                                                </a></div>
-                                                            </div>
-                                                            <div></div>
-                                                        </div>
-                                                    </div>
+
+                                    <div className="card mb-3 mt-3 custom-card" key={vehicle.vehicle_id}>
+
+
+                                        <div className="row g-0">
+                                            <div className="col-md-4">
+                                                <img src={`data:image/jpg;base64,${vehicle.img}`} className="img-fluid rounded-start custom-card-img" alt="..." />
+                                            </div>
+                                            <div className="col-md-8">
+                                                <div className="card-body">
+                                                    <h5 className="card-title">{vehicle.vehicle_name}</h5>
+                                                    <p className="card-text">{vehicle.vehicle_description}</p>
+                                                    <p className="card-text">Per Day rate : {vehicle.day_rate} USD</p>
+
+                                                    <button className='btn btn-primary' onClick={() => handleViewDetails(availableVehicles[index])}>
+                                                        View Details
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 ))}
                             </>
                         )}
+
                         <div className="d-flex justify-content-center mt-5 mb-5">
                             <button className="btn btn-primary me-2" onClick={handlePreviousPage} disabled={page === 0}>
                                 Previous Page
@@ -291,11 +274,7 @@ const SearchVehicle = () => {
                             </button>
                         </div>
                     </div>
-
-
-                </section>
-
-                
+                </div>
             </div>
         </>
     );
