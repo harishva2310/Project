@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useRef } from 'react';
 import axios from 'axios';
 import LocationModel from '../../model/LocationModel';
 import VehicleModel from '../../model/VehicleModel';
@@ -32,7 +32,7 @@ const SearchVehicle = () => {
     const [page, setPage] = useState<number>(0);
     const [size, setSize] = useState<number>(10);
     const [totalPages, setTotalPages] = useState<number>(0);
-
+    const dropdownRef = useRef(null);
 
     const navigate = useNavigate();
 
@@ -169,6 +169,12 @@ const SearchVehicle = () => {
 
         navigate('/checkout', { state: vehicleDetails });
     };
+    useEffect(() => {
+        if (dropdownRef.current) {
+          // Dropdown initialization logic goes here (assuming navbar-dropdown.js doesn't handle it)
+          // You can access the dropdown element using dropdownRef.current
+        }
+      }, [dropdownRef]);
 
     return (
         <>
@@ -178,7 +184,7 @@ const SearchVehicle = () => {
                         <div className='row mt-5'>
                             <div className='col-md-6'>
                                 <div className='d-flex mb-3'>
-                                    <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select" required>
+                                    <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select" required ref={dropdownRef}>
                                         <option value="">Select a city</option>
                                         {uniqueCities.map(city => (
                                             <option key={city} value={city}>
@@ -190,7 +196,7 @@ const SearchVehicle = () => {
                             </div>
                             <div className='col-md-6'>
                                 <div className="mb-3">
-                                    <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select" required>
+                                    <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select" required ref={dropdownRef}>
                                         <option value="">Select Country</option>
                                         {uniqueCountries.map(country => (
                                             <option key={country} value={country}>
@@ -203,25 +209,25 @@ const SearchVehicle = () => {
                             <div className='col-md-6'>
                                 <div className="mb-3">
                                     <label htmlFor="fromDate" className="form-label">From</label>
-                                    <input type="date" id="fromDate" className="form-control" required value={fromDate} onChange={handleFromDateChange} />
+                                    <input type="date" id="fromDate" className="form-control" required value={fromDate} onChange={handleFromDateChange} ref={dropdownRef} />
                                 </div>
                             </div>
                             <div className='col-md-6'>
                                 <div className="mb-3">
                                     <label htmlFor="toDate" className="form-label">To</label>
-                                    <input type="date" id="toDate" className="form-control" required value={toDate} onChange={handleToDateChange} />
+                                    <input type="date" id="toDate" className="form-control" required value={toDate} onChange={handleToDateChange} ref={dropdownRef}/>
                                 </div>
                             </div>
                             <div className='col-md-6'>
                                 <div className="mb-3">
                                     <label htmlFor="fromTime" className="form-label">From Time</label>
-                                    <input type="time" id="fromTime" className="form-control" value={fromTime} onChange={handleFromTimeChange} required min="09:00" max="17:00" />
+                                    <input type="time" id="fromTime" className="form-control" value={fromTime} onChange={handleFromTimeChange} required min="09:00" max="17:00" ref={dropdownRef} />
                                 </div>
                             </div>
                             <div className='col-md-6'>
                                 <div className="mb-3">
                                     <label htmlFor="toTime" className="form-label">To Time</label>
-                                    <input type="time" id="toTime" className="form-control" value={toTime} onChange={handleToTimeChange} required min="09:00" max="17:00" />
+                                    <input type="time" id="toTime" className="form-control" value={toTime} onChange={handleToTimeChange} required min="09:00" max="17:00" ref={dropdownRef} />
                                 </div>
                             </div>
                             <div className='col-12 text-center'>
