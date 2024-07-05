@@ -240,7 +240,7 @@ const SearchVehicle = () => {
                     </div>
 
                     <div className="container">
-                        {availableVehicles.length > 0 && (
+                        {availableVehicles.length > 0 ? (
                             <>
                                 {vehicles.map((vehicle, index) => (
                                     <div className="item features-image" key={vehicle.vehicle_id}>
@@ -259,12 +259,12 @@ const SearchVehicle = () => {
                                                                     <strong> {vehicle.vehicle_name} </strong>
                                                                 </h6>
                                                                 <p className="mbr-text mbr-fonts-style display-7">
-                                                                {vehicle.vehicle_description}
+                                                                    {vehicle.vehicle_description}
                                                                 </p>
                                                             </div>
                                                             <div className="col-md-auto">
                                                                 <p className="price mbr-fonts-style display-2">${vehicle.day_rate}</p>
-                                                                <div className="mbr-section-btn"><a 
+                                                                <div className="mbr-section-btn"><a
                                                                     className="btn btn-primary display-4" onClick={() => handleViewDetails(availableVehicles[index])}>
                                                                     View Details
                                                                 </a></div>
@@ -277,21 +277,26 @@ const SearchVehicle = () => {
                                         </div>
                                     </div>
                                 ))}
+                                <div className="d-flex justify-content-center mt-5 mb-5">
+                                    <button className="btn btn-primary me-2" onClick={handlePreviousPage} disabled={page === 0}>
+                                        Previous Page
+                                    </button>
+                                    <button className="btn btn-primary ms-2" onClick={handleNextPage} disabled={page === totalPages - 1}>
+                                        Next Page
+                                    </button>
+                                </div>
                             </>
-                        )}
-                        <div className="d-flex justify-content-center mt-5 mb-5">
-                            <button className="btn btn-primary me-2" onClick={handlePreviousPage} disabled={page === 0}>
-                                Previous Page
-                            </button>
-                            <button className="btn btn-primary ms-2" onClick={handleNextPage} disabled={page === totalPages - 1}>
-                                Next Page
-                            </button>
-                        </div>
+                        ):(
+
+                            <p>Please select all options to view results</p>
+                    
+                    )}
+
                     </div>
                 </section>
 
 
-                
+
             </div>
         </>
     );
