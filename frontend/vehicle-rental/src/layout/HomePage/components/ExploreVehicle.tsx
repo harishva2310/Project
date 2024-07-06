@@ -15,6 +15,7 @@ export const ExploreVehicle = () => {
         </div>*/
 
         <section data-bs-version="5.1" className="header4 cid-uhHkGHhP3a mbr-fullscreen" id="header4-g">
+            <div className="mbr-overlay"></div>
             <div className="container">
                 <div className="row">
                     <div className="content-wrap">
