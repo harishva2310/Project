@@ -264,7 +264,18 @@ const Checkout = () => {
                                 <p className="mbr-fonts-style panel-text display-7">{locations?.location_zip}</p>
                             </div>
                         </div>
-                        <div id="collapse2_32" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        
+                    </div>
+                    <div className="card mb-3">
+                        <div className="card-header" role="tab" id="headingTwo">
+                            <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse2_31" aria-expanded="false" aria-controls="collapse2">
+                                <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>Fare Details </strong>
+                                </h6>
+                                <span className="sign mbr-iconfont mbri-arrow-down"></span>
+                            </a>
+
+                        </div>
+                        <div id="collapse2_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingTwo">
                             <div className="panel-body">
                                 <p className="mbr-fonts-style panel-text display-4"> Rate per day: {vehicles?.day_rate} USD</p>
                                 <p className="mbr-fonts-style panel-text display-4">Total Fare: {totalRate} USD</p>
@@ -272,6 +283,7 @@ const Checkout = () => {
                                 <p className="mbr-fonts-style panel-text display-4">To : {formatDate(vehicleDetails.to_date)} </p>
                             </div>
                         </div>
+                        
                     </div>
                     
                     
