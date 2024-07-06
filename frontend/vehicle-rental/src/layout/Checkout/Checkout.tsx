@@ -213,13 +213,90 @@ const Checkout = () => {
             <section data-bs-version="5.1" className="content17 cid-uhGpKnH4UK" id="content17-f">
 
 
+    <div className="container">
+
+        <div className="row justify-content-center">
+            <div className="col-12 col-md-10">
+                <div className="section-head align-center mb-4">
+                    <h3 className="mbr-section-title mb-0 mbr-fonts-style display-2">
+                        <strong>Booking Details</strong>
+                    </h3>
+
+                </div>
+
+                <div id="bootstrap-toggle" className="toggle-panel accordionStyles tab-content">
+                    <div className="card mb-3">
+                        <div className="card-header" role="tab" id="headingOne">
+                            <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse1_31" aria-expanded="false" aria-controls="collapse1">
+                                <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>User Details</strong>
+                                </h6>
+                                <span className="sign mbr-iconfont mbri-arrow-down"></span>
+                            </a>
+                        </div>
+                        <div id="collapse1_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingOne">
+                            <div className="panel-body">
+                                {userInfo && (
+                                    <div className="panel-body">
+                                        <p className="mbr-fonts-style panel-text display-7">User: {userInfo.name}</p>
+                                        <p className="mbr-fonts-style panel-text display-7">Email: {userInfo.email}</p>
+                                        <p className="mbr-fonts-style panel-text display-7">Address: {user?.user_address}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="card mb-3">
+                        <div className="card-header" role="tab" id="headingTwo">
+                            <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse2_31" aria-expanded="false" aria-controls="collapse2">
+                                <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>Location Pickup/Drop Details </strong>
+                                </h6>
+                                <span className="sign mbr-iconfont mbri-arrow-down"></span>
+                            </a>
+
+                        </div>
+                        <div id="collapse2_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div className="panel-body">
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_name} </p>
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_address}</p>
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_city}</p>
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_state}</p>
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_country}</p>
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_zip}</p>
+                            </div>
+                        </div>
+                        <div id="collapse2_32" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div className="panel-body">
+                                <p className="mbr-fonts-style panel-text display-4"> Rate per day: {vehicles?.day_rate} USD</p>
+                                <p className="mbr-fonts-style panel-text display-4">Total Fare: {totalRate} USD</p>
+                                <p className="mbr-fonts-style panel-text display-4">From : {formatDate(vehicleDetails.from_date)} </p>
+                                <p className="mbr-fonts-style panel-text display-4">To : {formatDate(vehicleDetails.to_date)} </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                <div>
+                    <button type="button" className="btn btn-primary btn-lg px-4 gap-3">Pay Now</button>
+                    <button type="button" className="btn btn-outline-secondary btn-lg px-4" onClick={handlePayLaterClick}>Pay Later</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+            <section data-bs-version="5.1" className="content17 cid-uhGpKnH4UK" id="content17-f">
+
+
                 <div className="container">
 
                     <div className="row justify-content-center">
                         <div className="col-12 col-md-10">
                             <div className="section-head align-center mb-4">
                                 <h3 className="mbr-section-title mb-0 mbr-fonts-style display-2">
-                                    <strong>Booking Details</strong>
+                                    <strong>Toggle FAQ</strong>
                                 </h3>
 
                             </div>
@@ -228,27 +305,22 @@ const Checkout = () => {
                                 <div className="card mb-3">
                                     <div className="card-header" role="tab" id="headingOne">
                                         <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse1_31" aria-expanded="false" aria-controls="collapse1">
-                                            <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>User Details</strong>
+                                            <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>How to create more items in this list?</strong>
                                             </h6>
                                             <span className="sign mbr-iconfont mbri-arrow-down"></span>
                                         </a>
                                     </div>
                                     <div id="collapse1_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingOne">
                                         <div className="panel-body">
-                                            {userInfo && (
-                                                <div className="panel-body">
-                                                    <p className="mbr-fonts-style panel-text display-7">User: {userInfo.name}</p>
-                                                    <p className="mbr-fonts-style panel-text display-7">Email: {userInfo.email}</p>
-                                                    <p className="mbr-fonts-style panel-text display-7">Address: {user?.user_address}</p>
-                                                </div>
-                                            )}
+                                            <p className="mbr-fonts-style panel-text display-7">The number of items is limited in this block. Open
+                                                the Block parameters to change the amount of items.</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="card mb-3">
                                     <div className="card-header" role="tab" id="headingTwo">
                                         <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse2_31" aria-expanded="false" aria-controls="collapse2">
-                                            <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>Location Pickup/Drop Details </strong>
+                                            <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>What is Mobirise Kit?</strong>
                                             </h6>
                                             <span className="sign mbr-iconfont mbri-arrow-down"></span>
                                         </a>
@@ -256,30 +328,72 @@ const Checkout = () => {
                                     </div>
                                     <div id="collapse2_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingTwo">
                                         <div className="panel-body">
-                                            <p className="mbr-fonts-style panel-text display-7">{locations?.location_name} </p>
-                                            <p className="mbr-fonts-style panel-text display-7">{locations?.location_address}</p>
-                                            <p className="mbr-fonts-style panel-text display-7">{locations?.location_city}</p>
-                                            <p className="mbr-fonts-style panel-text display-7">{locations?.location_state}</p>
-                                            <p className="mbr-fonts-style panel-text display-7">{locations?.location_country}</p>
-                                            <p className="mbr-fonts-style panel-text display-7">{locations?.location_zip}</p>
+                                            <p className="mbr-fonts-style panel-text display-7">Mobirise Kit is a service that provides the access to all current and new themes/extensions developed by Mobirise. New themes/extensions are released every month and will be available in your account during your plan period, without any additional charge.</p>
                                         </div>
                                     </div>
                                 </div>
-
-
-                            </div>
-                            <div>
-                                <button type="button" className="btn btn-primary btn-lg px-4 gap-3">Pay Now</button>
-                                <button type="button" className="btn btn-outline-secondary btn-lg px-4" onClick={handlePayLaterClick}>Pay Later</button>
+                                <div className="card mb-3">
+                                    <div className="card-header" role="tab" id="headingThree">
+                                        <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse3_31" aria-expanded="false" aria-controls="collapse3">
+                                            <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>Can I create sites for commerical projects?</strong>
+                                            </h6>
+                                            <span className="sign mbr-iconfont mbri-arrow-down"></span>
+                                        </a>
+                                    </div>
+                                    <div id="collapse3_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingThree">
+                                        <div className="panel-body">
+                                            <p className="mbr-fonts-style panel-text display-7">Yes, Mobirise is free for both non-profit and commercial sites.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="card mb-3">
+                                    <div className="card-header" role="tab" id="headingThree">
+                                        <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse4_31" aria-expanded="false" aria-controls="collapse4">
+                                            <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>What is Code Editor?</strong>
+                                            </h6>
+                                            <span className="sign mbr-iconfont mbri-arrow-down"></span>
+                                        </a>
+                                    </div>
+                                    <div id="collapse4_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingThree">
+                                        <div className="panel-body">
+                                            <p className="mbr-fonts-style panel-text display-7">
+                                                This extension allows editing the code of block in the app. Also, it's possible to add code to the head and body parts of pages.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="card mb-3">
+                                    <div className="card-header" role="tab" id="headingThree">
+                                        <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse5_31" aria-expanded="false" aria-controls="collapse5">
+                                            <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>What is Mobirise Kit?</strong></h6>
+                                            <span className="mbr-iconfont mobi-mbri-arrow-down mobi-mbri"></span>
+                                        </a>
+                                    </div>
+                                    <div id="collapse5_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingThree">
+                                        <div className="panel-body">
+                                            <p className="mbr-fonts-style panel-text display-7">
+                                                Mobirise Kit is a service that provides the access to all current and new themes/extensions developed by Mobirise. New themes/extensions are released every month and will be available in your account during your plan period, without any additional charge.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="card mb-3">
+                                    <div className="card-header" role="tab" id="headingThree">
+                                        <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse6_31" aria-expanded="false" aria-controls="collapse6">
+                                            <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>Can I create sites for commerical projects?</strong></h6>
+                                            <span className="mbr-iconfont mobi-mbri-arrow-down mobi-mbri"></span>
+                                        </a>
+                                    </div>
+                                    <div id="collapse6_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingThree">
+                                        <div className="panel-body">
+                                            <p className="mbr-fonts-style panel-text display-7">
+                                                Yes, Mobirise is free for both non-profit and commercial sites.</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-
-
-
-
 
             {showModal && (
                 <div className="modal fade show d-block" tabIndex={-1} role="dialog">
