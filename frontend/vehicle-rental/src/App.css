@@ -37,17 +37,3 @@ background-color: #3bafe4 ;
 
 
 
-.d-flex.justify-content-center.mt-5.mb-5 {
-  display: flex;
-  justify-content: center;
-  margin-top: 3rem !important; /* Add space at the top */
-  margin-bottom: 3rem !important; /* Add space at the bottom */
-}
-
-.d-flex.justify-content-center.mt-5.mb-5 .btn {
-  margin: 0 5px; /* Add some spacing between the buttons */
-}
-
-.text-center.mb-5 {
-  margin-bottom: 3rem !important; /* Add space below the search button */
-}
