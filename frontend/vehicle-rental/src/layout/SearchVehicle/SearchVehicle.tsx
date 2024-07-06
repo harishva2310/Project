@@ -286,11 +286,15 @@ const SearchVehicle = () => {
                                     </button>
                                 </div>
                             </>
-                        ):(
+                        ) : (
 
-                            <p>Please select all options to view results</p>
-                    
-                    )}
+                            <div className="mbr-section-head">
+                                <h4 className="mbr-section-title mbr-fonts-style align-center mb-5 display-2">
+                                    <strong>Get Started</strong></h4>
+
+                            </div>
+
+                        )}
 
                     </div>
                 </section>
