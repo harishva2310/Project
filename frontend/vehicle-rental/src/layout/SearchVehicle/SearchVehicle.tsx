@@ -290,7 +290,7 @@ const SearchVehicle = () => {
 
                             <div className="mbr-section-head">
                                 <h4 className="mbr-section-title mbr-fonts-style align-center mb-5 display-2">
-                                    <strong>Get Started</strong></h4>
+                                    <strong>Select the location and timings to see all available Vehicles</strong></h4>
 
                             </div>
 
