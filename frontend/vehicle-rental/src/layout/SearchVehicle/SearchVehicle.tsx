@@ -193,7 +193,8 @@ const SearchVehicle = () => {
                     <div>
                         <div className='row mt-5'>
                             <div className='col-md-6'>
-                                <div className='d-flex mb-3'>
+                                <div className='mb-3'>
+                                <label htmlFor="city" className="form-label">City</label>
                                     <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select" required>
                                         <option value="">Select a city</option>
                                         {uniqueCities.map(city => (
@@ -206,6 +207,7 @@ const SearchVehicle = () => {
                             </div>
                             <div className='col-md-6'>
                                 <div className="mb-3">
+                                <label htmlFor="country" className="form-label">Country</label>
                                     <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select" required>
                                         <option value="">Select Country</option>
                                         {uniqueCountries.map(country => (
