@@ -59,8 +59,13 @@ public class VehicleBookingController {
             @RequestParam("total_fare") Double totalFare,
             @RequestParam("from_date") String fromDate,
             @RequestParam("to_date") String toDate,
-            @RequestParam("user_email") String userEmail) throws ParseException {
-
+            @RequestParam("user_email") String userEmail
+            ,JwtAuthenticationToken jwtAuthenticationToken) throws ParseException {
+                String authenticatedEmail = jwtAuthenticationToken.getToken().getSubject();
+                System.out.println("authenticated email= "+authenticatedEmail);
+                if (!userEmail.equals(authenticatedEmail)) {
+                    return ResponseEntity.status(403).build();
+                }
         VehicleBooking vehicleBooking = new VehicleBooking();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date parsedFromDate = dateFormat.parse(fromDate);

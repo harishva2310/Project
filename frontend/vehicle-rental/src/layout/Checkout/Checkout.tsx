@@ -160,6 +160,7 @@ const Checkout = () => {
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${authState?.accessToken?.accessToken}`
                     },
                 }
 
@@ -189,7 +190,27 @@ const Checkout = () => {
         </div>
         </>*/
         <>
-
+        {showModal && (
+                <div className="modal fade show d-block" tabIndex={-1} role="dialog">
+                    <div className="modal-dialog modal-dialog-centered" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Confirm Booking</h5>
+                                <button type="button" className="close" aria-label="Close" onClick={handleCloseModal}>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <p>Do you want to finish the booking?</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-primary" onClick={handleConfirmBooking}>Confirm</button>
+                                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
             <section data-bs-version="5.1" className="header14 cid-sFzz5E692j" id="header14-1j">
                 <div className="container">
                     <div className="row justify-content-center align-items-center">
@@ -266,8 +287,8 @@ const Checkout = () => {
                         
                     </div>
                     <div className="card mb-3">
-                        <div className="card-header" role="tab" id="headingTwo">
-                            <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse2_31" aria-expanded="false" aria-controls="collapse2">
+                        <div className="card-header" role="tab" id="headingThree">
+                            <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse2_31" aria-expanded="false" aria-controls="collapse3">
                                 <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>Fare Details </strong>
                                 </h6>
                                 <span className="sign mbr-iconfont mbri-arrow-down"></span>
@@ -287,7 +308,7 @@ const Checkout = () => {
                     
                     
                 </div>
-                <div>
+                <div className="d-flex justify-content-between">
                     <button type="button" className="btn btn-primary btn-lg px-4 gap-3">Pay Now</button>
                     <button type="button" className="btn btn-outline-secondary btn-lg px-4" onClick={handlePayLaterClick}>Pay Later</button>
                 </div>
@@ -300,27 +321,7 @@ const Checkout = () => {
 
             
 
-            {showModal && (
-                <div className="modal fade show d-block" tabIndex={-1} role="dialog">
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Confirm Booking</h5>
-                                <button type="button" className="close" aria-label="Close" onClick={handleCloseModal}>
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div className="modal-body">
-                                <p>Do you want to finish the booking?</p>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-primary" onClick={handleConfirmBooking}>Confirm</button>
-                                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+            
 
 
         </>
