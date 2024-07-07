@@ -24,7 +24,7 @@ export const Navbar = () => {
 
     console.log(authState);
     return (
-        <nav className='navbar navbar-expand-lg navbar-dark main-color py-3'>
+       /* <nav className='navbar navbar-expand-lg navbar-dark main-color py-3'>
             <div className='container-fluid'>
                 <span className='navbar-brand'>Vehicle Rental</span>
                 <button className='navbar-toggler' type='button'
@@ -69,6 +69,69 @@ export const Navbar = () => {
                     
                 </div>
             </div>
-        </nav>
+        </nav>*/
+
+        <section data-bs-version="5.1" className="menu menu3 cid-uhCiPZpBJT" id="menu3-d">
+
+    <nav className="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+        <div className="container-fluid">
+            <div className="navbar-brand">
+                <span className="navbar-logo">
+
+                    <img src="assets/images/vehicle_rental_logo.png" alt="Mobirise Website Builder" style={{height: '3.0rem' }} />
+
+                </span>
+                <span className="navbar-caption-wrap"><a className="navbar-caption text-white display-7">Vehicle
+                        Rental</a></span>
+            </div>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-bs-toggle="collapse"
+                data-target="#navbarSupportedContent" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <div className="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul className="navbar-nav nav-dropdown" data-app-modern-menu="true">
+                    <li className="nav-item">
+                            <NavLink className="nav-link link text-white display-4" to='/home'>Home</NavLink>
+                        </li>
+
+
+                    <li className="nav-item">
+                            <NavLink className="nav-link link text-white display-4" to='/searchvehicles'>Search Vehicles</NavLink>
+                       </li>
+
+                    {!authState.isAuthenticated ?
+                    <></>
+                    :
+                    <li className="nav-item">
+                            <NavLink className="nav-link link text-white display-4" to='/myBookings'>My Bookings</NavLink>
+                        
+                    </li>
+                    }
+                </ul>
+                    
+                <div className="navbar-buttons mbr-section-btn">
+                        <ul className='navbar-nav ms-auto'>
+                            {!authState.isAuthenticated ?
+                            <li>
+                                <Link type='button' className='btn btn-primary display-4' to='/login'>Sign in</Link>
+                            </li>
+                            :
+                            <li>
+                                <button className='btn btn-primary display-4' onClick={handleLogout}>Logout</button>
+                            </li>
+                            }
+                        </ul>
+
+                    </div>
+            </div>
+        </div>
+    </nav>
+</section>
     )
 }

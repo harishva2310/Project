@@ -223,6 +223,11 @@ const Checkout = () => {
                                     <strong> {vehicles?.vehicle_name} </strong>
                                 </h1>
                                 <p className="mbr-text mbr-fonts-style display-7">{vehicles?.vehicle_description}</p>
+                                <p className="mbr-fonts-style panel-text display-7">Pickup and Drop Location: {locations?.location_name} </p>
+                                <p className="mbr-fonts-style panel-text display-7"> Rate per day: {vehicles?.day_rate} USD</p>
+                                <p className="mbr-fonts-style panel-text display-7">Total Fare: {totalRate} USD</p>
+                                <p className="mbr-fonts-style panel-text display-7">From : {formatDate(vehicleDetails.from_date)} </p>
+                                <p className="mbr-fonts-style panel-text display-7">To : {formatDate(vehicleDetails.to_date)} </p>
                                 
                             </div>
                         </div>
