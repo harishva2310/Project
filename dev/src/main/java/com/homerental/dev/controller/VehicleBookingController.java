@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +35,15 @@ public class VehicleBookingController {
     }
 
     @GetMapping("/getuserbookings")
-    public ResponseEntity<List<VehicleBooking>> getAllUserBookingsByEmail(@RequestParam String email) {
+    public ResponseEntity<List<VehicleBooking>> getAllUserBookingsByEmail(@RequestParam String email,JwtAuthenticationToken jwtAuthenticationToken) {
         try {
+
+            String authenticatedEmail = jwtAuthenticationToken.getToken().getSubject();
+            System.out.println("authenticated email= "+authenticatedEmail);
+            if (!email.equals(authenticatedEmail)) {
+                return ResponseEntity.status(403).build();
+            }
+
             List<VehicleBooking> userBooking = vehicleBookingService.getAllUserBookingsByEmail(email);
             return ResponseEntity.ok(userBooking);
         } catch (IllegalArgumentException e) {
