@@ -32,7 +32,7 @@ export const App = () => {
 
 
   const restoreOriginalUri = async (_oktaAuth: any, originalUri: any) => {
-    navigate(toRelativeUrl(originalUri || '/', window.location.origin), { replace: true });
+    navigate(toRelativeUrl(originalUri || '/home', window.location.origin), { replace: true });
   };
 
   return (

@@ -32,9 +32,20 @@ const SearchVehicle = () => {
     const [page, setPage] = useState<number>(0);
     const [size, setSize] = useState<number>(10);
     const [totalPages, setTotalPages] = useState<number>(0);
-
+    const [totalRate, setTotalRate] = useState<number[]>([]);
 
     const navigate = useNavigate();
+
+    const calculateTotalRate = (dayRate: number, fromDate: string, toDate: string) => {
+        const from = new Date(fromDate);
+        const to = new Date(toDate);
+        console.log(from);
+        console.log(to);
+        const timeDifference = to.getTime() - from.getTime();
+        const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24)); // Calculate number of days
+        const total = daysDifference * dayRate;
+        setTotalRate(prevRates => [...prevRates, total]);
+    };
 
 
     useEffect(() => {
@@ -124,7 +135,12 @@ const SearchVehicle = () => {
             const [vehicleId, , vehicleLocationId, locationId] = vehicle;
             try {
                 const vehicleData = await fetchVehicleDataByID(vehicleId);
+                const fromDateTime = formatDateTime(fromDate, fromTime);
+                const toDateTime = formatDateTime(toDate, toTime);
+                calculateTotalRate(vehicleData.day_rate, fromDateTime, toDateTime);
                 setVehicles(prevVehicles => [...prevVehicles, vehicleData]);
+                
+                
                 const locationData = await fetchLocationDataByID(locationId);
                 setSelectedLocations(prevLocations => [...prevLocations, locationData]);
                 const vehicleLocationData = await fetchVehicleLocationDataByID(vehicleLocationId);
@@ -261,9 +277,12 @@ const SearchVehicle = () => {
                                                                 <p className="mbr-text mbr-fonts-style display-7">
                                                                     {vehicle.vehicle_description}
                                                                 </p>
+                                                                <p className="mbr-text mbr-fonts-style display-7">
+                                                                   Rate per day: ${vehicle.day_rate}
+                                                                </p>
                                                             </div>
                                                             <div className="col-md-auto">
-                                                                <p className="price mbr-fonts-style display-2">${vehicle.day_rate}</p>
+                                                                <p className="price mbr-fonts-style display-2">${totalRate[index]}</p>
                                                                 <div className="mbr-section-btn"><a
                                                                     className="btn btn-primary display-4" onClick={() => handleViewDetails(availableVehicles[index])}>
                                                                     View Details
