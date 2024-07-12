@@ -45,6 +45,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
                 bv.vehicle_id IS NULL
                 AND l1.location_city = :city
                 AND l1.location_country= :country
+            ORDER BY v1.vehicle_name
             """, nativeQuery = true)
             Page<Object[]> findAvailableVehicles(
                 @Param("fromdate") Timestamp fromDate, 

@@ -31,6 +31,7 @@ const Checkout = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const formData = new FormData();
     const navigate = useNavigate();
+    const [showPayNowModal, setPayNowShowModal]= useState<boolean>(false);
 
     const calculateTotalRate = (dayRate: number, fromDate: string, toDate: string) => {
         const from = new Date(fromDate);
@@ -134,6 +135,15 @@ const Checkout = () => {
         return new UserModel(user_id, user_first_name, user_last_name, user_driver_license_num, user_address, user_email);
     };
 
+
+    const handlePayNowClick = () =>{
+        setPayNowShowModal(true);
+    }
+
+    const handlePayNowClose = () =>{
+        setPayNowShowModal(false);
+    }
+
     const handlePayLaterClick = () => {
         setShowModal(true);
     };
@@ -141,6 +151,21 @@ const Checkout = () => {
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
+    const handleStripeConfirmBooking = () => {
+        console.log("Navigating to Payment");
+        const bookingDetails = {
+            vehicle_id: vehicleDetails.vehicle_id,
+            location_id: vehicleDetails.location_id,
+            vehicle_location_id: vehicleDetails.vehicle_location_id,
+            total_fare: totalRate,
+            from_date: vehicleDetails.from_date,
+            to_date: vehicleDetails.to_date,
+            user_email: userInfo?.email
+        };
+
+        navigate('/payment', { state: bookingDetails });
+    }
 
     const handleConfirmBooking = async () => {
         setShowModal(false);
@@ -168,7 +193,16 @@ const Checkout = () => {
             );
             console.log('Booking confirmed:', response.data);
             // Handle any further logic or state updates after successful booking
-            navigate('/myBookings');
+            const bookingDetails = {
+                vehicle_id: vehicleDetails.vehicle_id,
+                location_id: vehicleDetails.location_id,
+                vehicle_location_id: vehicleDetails.vehicle_location_id,
+                total_fare: totalRate.toString(),
+                from_date: vehicleDetails.from_date,
+                to_date: vehicleDetails.to_date,
+                user_email: userInfo?.email
+            };
+            navigate('/confirmation', { state: bookingDetails });
 
         } catch (error) {
             console.error('Error confirming booking:', error);
@@ -201,7 +235,7 @@ const Checkout = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <p>Do you want to finish the booking?</p>
+                                <p>Do you want to finish the booking without paying now?</p>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-primary" onClick={handleConfirmBooking}>Confirm</button>
@@ -211,6 +245,29 @@ const Checkout = () => {
                     </div>
                 </div>
             )}
+
+{showPayNowModal && (
+                <div className="modal fade show d-block" tabIndex={-1} role="dialog">
+                    <div className="modal-dialog modal-dialog-centered" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Confirm Booking</h5>
+                                <button type="button" className="close" aria-label="Close" onClick={handlePayNowClose}>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <p>Do you want to finish the booking? This will lead you to a Stripe Payment page for entering Credit card Details. Use test cards provided in Stripe Docs for testing</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-primary" onClick={handleStripeConfirmBooking}>Confirm</button>
+                                <button type="button" className="btn btn-secondary" onClick={handlePayNowClose}>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <section data-bs-version="5.1" className="header14 cid-sFzz5E692j" id="header14-1j">
                 <div className="container">
                     <div className="row justify-content-center align-items-center">
@@ -314,7 +371,7 @@ const Checkout = () => {
                     
                 </div>
                 <div className="d-flex justify-content-between">
-                    <button type="button" className="btn btn-primary btn-lg px-4 gap-3">Pay Now</button>
+                    <button type="button" className="btn btn-primary btn-lg px-4 gap-3" onClick={handlePayNowClick}>Pay Now</button>
                     <button type="button" className="btn btn-outline-secondary btn-lg px-4" onClick={handlePayLaterClick}>Pay Later</button>
                 </div>
             </div>

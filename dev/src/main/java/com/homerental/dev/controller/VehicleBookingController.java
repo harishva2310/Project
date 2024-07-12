@@ -2,6 +2,7 @@ package com.homerental.dev.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.homerental.dev.dao.PaymentRepository;
 import com.homerental.dev.dao.VehicleBookingRepository;
 import com.homerental.dev.entity.VehicleBooking;
 import com.homerental.dev.service.VehicleBookingService;
@@ -27,6 +29,9 @@ public class VehicleBookingController {
 
     @Autowired
     private VehicleBookingService vehicleBookingService;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @GetMapping()
     public ResponseEntity<List<VehicleBooking>> getAllVehicleBookings() {
@@ -45,6 +50,7 @@ public class VehicleBookingController {
             }
 
             List<VehicleBooking> userBooking = vehicleBookingService.getAllUserBookingsByEmail(email);
+            userBooking.sort(Comparator.comparing(VehicleBooking::getVehicle_booking_id).reversed());
             return ResponseEntity.ok(userBooking);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
@@ -78,6 +84,8 @@ public class VehicleBookingController {
         vehicleBooking.setVehicle_location_id(vehicleLocationId);
         vehicleBooking.setTotal_fare(totalFare);
         vehicleBooking.setUser_email(userEmail);
+
+        
 
         vehicleBookingRepository.save(vehicleBooking);
         return ResponseEntity.ok("Booking added successfully");
