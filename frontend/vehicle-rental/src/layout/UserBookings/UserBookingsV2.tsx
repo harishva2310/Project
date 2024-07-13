@@ -159,6 +159,8 @@ return (
                     <th>Booking ID</th>
                     <th>Vehicle</th>
                     <th>Location</th>
+                    <th>City</th>
+                    
                     <th>From Date</th>
                     <th>To Date</th>
                     <th>Total Fare</th>
@@ -170,6 +172,7 @@ return (
                         <td>{booking.vehicleBookingId}</td>
                         <td>{booking.vehicleName} </td>
                         <td>{booking.locationName}</td>
+                        <td>{booking.locationCity}</td>
                         <td>{formatDate(booking.fromDate)}</td>
                         <td>{formatDate(booking.toDate)}</td>
                         <td>{booking.totalFare}</td>
