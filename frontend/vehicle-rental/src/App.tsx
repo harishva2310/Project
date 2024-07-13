@@ -19,6 +19,7 @@ import Checkout from './layout/Checkout/Checkout';
 import UserBookings from './layout/UserBookings/UserBookings';
 import Payment from './layout/PaymentPage/PaymentPage';
 import ConfirmationPage from './layout/ConfirmationPage/ConfirmationPage';
+import UserBookingsV2 from './layout/UserBookings/UserBookingsV2';
 
 
 
@@ -60,7 +61,7 @@ export const App = () => {
             <Route path='' element={<Checkout />} />
           </Route>
           <Route path="/myBookings" element={<RequiredAuth />}>
-            <Route path='' element={<UserBookings />} />
+            <Route path='' element={<UserBookingsV2 />} />
           </Route>
 
           <Route path="/admin" element={<RequiredAuth />}>

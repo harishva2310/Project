@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.homerental.dev.dao.PaymentRepository;
 import com.homerental.dev.dao.VehicleBookingRepository;
 import com.homerental.dev.entity.VehicleBooking;
+import com.homerental.dev.responseModels.BookingResponse;
 import com.homerental.dev.service.VehicleBookingService;
 
 @RestController
@@ -56,6 +57,14 @@ public class VehicleBookingController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @GetMapping("/v2/getuserbookings")
+    public List<BookingResponse> getBookings(@RequestParam String email) {
+        return vehicleBookingService.getBookingsByUserEmail(email);
+    }
+
+   
+
 
     @PostMapping
     public ResponseEntity<?> addVehicleBooking(
