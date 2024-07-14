@@ -59,8 +59,17 @@ public class VehicleBookingController {
     }
 
     @GetMapping("/v2/getuserbookings")
-    public List<BookingResponse> getBookings(@RequestParam String email) {
-        return vehicleBookingService.getBookingsByUserEmail(email);
+    public ResponseEntity<List<BookingResponse>> getBookings(@RequestParam String email,JwtAuthenticationToken jwtAuthenticationToken) {
+        try { 
+        String authenticatedEmail = jwtAuthenticationToken.getToken().getSubject();
+        System.out.println("authenticated email= "+authenticatedEmail);
+        if (!email.equals(authenticatedEmail)) {
+            return ResponseEntity.status(403).build();
+        }
+        return ResponseEntity.ok(vehicleBookingService.getBookingsByUserEmail(email));
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
    

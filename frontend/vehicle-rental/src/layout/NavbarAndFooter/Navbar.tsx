@@ -105,14 +105,22 @@ export const Navbar = () => {
                             <NavLink className="nav-link link text-white display-4" to='/searchvehicles'>Search Vehicles</NavLink>
                        </li>
 
-                    {!authState.isAuthenticated ?
-                    <></>
-                    :
+                    {authState.isAuthenticated &&
+                    
                     <li className="nav-item">
                             <NavLink className="nav-link link text-white display-4" to='/myBookings'>My Bookings</NavLink>
                         
                     </li>
                     }
+
+                    {authState.isAuthenticated && (authState.accessToken?.claims?.userType=== 'admin') &&
+                    
+                    <li className="nav-item">
+                            <NavLink className="nav-link link text-white display-4" to='/addnewvehicle'>Admin</NavLink>
+                        
+                    </li>
+                    }
+
                 </ul>
                     
                 <div className="navbar-buttons mbr-section-btn">
