@@ -15,8 +15,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const SearchVehicle = () => {
-    const defaultApiUrl = "http://vehicle-rental-service:8080";
-    const apiUrl = process.env.REACT_APP_API || defaultApiUrl;
+    
     const [locations, setLocations] = useState<LocationModel[]>([]);
     const [selectedlocations, setSelectedLocations] = useState<LocationModel[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>('');
@@ -30,7 +29,7 @@ const SearchVehicle = () => {
     const [vehicles, setVehicles] = useState<VehicleModel[]>([]);
     const [vehicleLocations, setVehicleLocations] = useState<VehicleLocationModel[]>([]);
     const [page, setPage] = useState<number>(0);
-    const [size, setSize] = useState<number>(10);
+    const [size, setSize] = useState<number>(5);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [totalRate, setTotalRate] = useState<number[]>([]);
 
@@ -62,6 +61,10 @@ const SearchVehicle = () => {
 
         loadLocations();
     }, []);
+
+    useEffect(() => {
+        console.log("Total Pages in result:", totalPages);
+    }, [totalPages]);
 
     if (loading) {
         return <SpinnerLoading />;
@@ -99,7 +102,7 @@ const SearchVehicle = () => {
         return arr.filter((value, index, self) => self.indexOf(value) === index);
     };
 
-    const handleSearch = async () => {
+    const handleSearch = async (page: number = 0) => {
 
         setLoading(true);
 
@@ -117,7 +120,8 @@ const SearchVehicle = () => {
                 }
             });
             setAvailableVehicles(response.data.content);
-            setTotalPages(response.data.totalPages);
+            setTotalPages(response.data.page.totalPages);
+            
             loadVehicleData(response.data.content);
         } catch (error) {
             console.error('Error fetching available vehicles:', error);
@@ -160,17 +164,20 @@ const SearchVehicle = () => {
     const handleNextPage = () => {
         if (page < totalPages - 1) {
             setPage(page + 1);
-            handleSearch();
+            handleSearch(page + 1); // Ensure handleSearch updates with new page
         }
     };
-
+    
     const handlePreviousPage = () => {
         if (page > 0) {
-            setPage(page - 1);
-            handleSearch();
+            setPage(page-1);
+            handleSearch(page-1);
         }
     };
 
+    const handleSearchClick = () => {
+        handleSearch(page);
+    };
 
 
     const handleViewDetails = (availableVehicles: AvailableVehicleResponse) => {
@@ -185,6 +192,8 @@ const SearchVehicle = () => {
 
         navigate('/checkout', { state: vehicleDetails });
     };
+
+    
 
     return (
         <>
@@ -243,7 +252,7 @@ const SearchVehicle = () => {
                                 </div>
                             </div>
                             <div className='col-12 text-center'>
-                                <button type="submit" className="btn btn-primary" onClick={handleSearch}>Search</button>
+                                <button type="submit" className="btn btn-primary" onClick={handleSearchClick}>Search</button>
                             </div>
                         </div>
                     </div>

@@ -55,7 +55,7 @@ public class VehicleController {
             @RequestParam("city") String city,
             @RequestParam("country") String country,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "5") int size) {
         try {
             Timestamp fromDate = Timestamp.valueOf(fromDateStr.replace("T", " "));
             Timestamp toDate = Timestamp.valueOf(toDateStr.replace("T", " "));

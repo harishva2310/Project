@@ -65,11 +65,12 @@ const AddNewVehicle: React.FC = () => {
       console.log(imageFile);
       formData.append('img', imageFile);
     }
-
+if(authState!==null) {
     try {
       const response = await axios.post(`/api/vehicles`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${authState.accessToken?.accessToken}`
         },
       });
       console.log(response.data);
@@ -89,6 +90,7 @@ const AddNewVehicle: React.FC = () => {
       setAlertMessage({ type: 'danger', message: 'Failed to add vehicle. Please try again.' });
       // Handle errors, e.g., display error message to user
     }
+  }
   };
 
   if (authState?.accessToken?.claims.userType === undefined) {
