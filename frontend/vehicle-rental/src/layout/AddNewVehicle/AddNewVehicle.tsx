@@ -55,19 +55,20 @@ const AddNewVehicle: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    if(authState!==null) {
     const formData = new FormData();
     formData.append('vehicle_name', vehicle.vehicle_name);
     formData.append('vehicle_type', vehicle.vehicle_type);
     formData.append('vehicle_description', vehicle.vehicle_description);
     formData.append('day_rate', vehicle.day_rate.toString());
+    
     if (imageFile) {
       console.log(imageFile);
       formData.append('img', imageFile);
     }
-if(authState!==null) {
+
     try {
-      const response = await axios.post(`/api/vehicles`, formData, {
+      const response = await axios.post(`/api/vehicles?user_email=${userInfo?.email}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${authState.accessToken?.accessToken}`

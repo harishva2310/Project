@@ -2,6 +2,7 @@ package com.homerental.dev.controller;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,8 +75,14 @@ public class VehicleController {
             @RequestParam("vehicle_description") String vehicleDescription,
             @RequestParam("vehicle_type") String vehicleType,
             @RequestParam("day_rate") Double dayRate,
-            @RequestParam("img" ) MultipartFile img) {
-
+            @RequestParam("img" ) MultipartFile img,
+            @RequestParam("user_email") String userEmail,
+            JwtAuthenticationToken jwtAuthenticationToken) throws ParseException {
+                String authenticatedEmail = jwtAuthenticationToken.getToken().getSubject();
+                System.out.println("authenticated email= "+authenticatedEmail);
+                if (!userEmail.equals(authenticatedEmail)) {
+                    return ResponseEntity.status(403).build();
+                }
         Vehicle vehicle = new Vehicle();
         vehicle.setVehicle_name(vehicleName);
         vehicle.setVehicle_description(vehicleDescription);
