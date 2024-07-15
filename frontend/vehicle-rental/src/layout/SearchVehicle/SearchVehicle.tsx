@@ -135,13 +135,14 @@ const SearchVehicle = () => {
         setVehicles([]);
         setSelectedLocations([]);
         setVehicleLocations([]);
+        setTotalRate([]);
         for (const vehicle of availableVehicles) {
             const [vehicleId, , vehicleLocationId, locationId] = vehicle;
             try {
                 const vehicleData = await fetchVehicleDataByID(vehicleId);
                 const fromDateTime = formatDateTime(fromDate, fromTime);
                 const toDateTime = formatDateTime(toDate, toTime);
-                calculateTotalRate(vehicleData.day_rate, fromDateTime, toDateTime);
+                
                 setVehicles(prevVehicles => [...prevVehicles, vehicleData]);
                 
                 
@@ -149,6 +150,7 @@ const SearchVehicle = () => {
                 setSelectedLocations(prevLocations => [...prevLocations, locationData]);
                 const vehicleLocationData = await fetchVehicleLocationDataByID(vehicleLocationId);
                 setVehicleLocations(prevVehicleLocations => [...prevVehicleLocations, vehicleLocationData])
+                calculateTotalRate(vehicleData.day_rate, fromDateTime, toDateTime);
             } catch (error) {
                 console.error('Error fetching vehicle data:', error);
             }
