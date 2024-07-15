@@ -116,7 +116,7 @@ export const Navbar = () => {
                     {authState.isAuthenticated && (authState.accessToken?.claims?.userType=== 'admin') &&
                     
                     <li className="nav-item">
-                            <NavLink className="nav-link link text-white display-4" to='/addnewvehicle'>Admin</NavLink>
+                            <NavLink className="nav-link link text-white display-4" to='/admin'>Admin</NavLink>
                         
                     </li>
                     }

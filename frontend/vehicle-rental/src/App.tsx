@@ -20,6 +20,8 @@ import UserBookings from './layout/UserBookings/UserBookings';
 import Payment from './layout/PaymentPage/PaymentPage';
 import ConfirmationPage from './layout/ConfirmationPage/ConfirmationPage';
 import UserBookingsV2 from './layout/UserBookings/UserBookingsV2';
+import AddVehicleLocations from './layout/AddVehicleLocations/AddVehicleLocations';
+import AdminPage from './layout/AdminPage/AdminPage';
 
 
 
@@ -54,6 +56,9 @@ export const App = () => {
           <Route path="/addnewvehicle" element={<RequiredAuth />}>
             <Route path='' element={<AddNewVehicle />} />
           </Route>
+          <Route path="/addvehiclelocations" element={<RequiredAuth />}>
+            <Route path='' element={<AddVehicleLocations />} />
+          </Route>
           <Route path="/login" element={<RequiredAuth />}>
             <Route path='' element={<Navigate to="/home" />}/>
           </Route>
@@ -65,7 +70,7 @@ export const App = () => {
           </Route>
 
           <Route path="/admin" element={<RequiredAuth />}>
-            <Route path='' element={<AddNewVehicle />} />
+            <Route path='' element={<AdminPage />} />
           </Route>
           <Route path="/payment" element={<RequiredAuth />}>
             <Route path='' element={<Payment />} />

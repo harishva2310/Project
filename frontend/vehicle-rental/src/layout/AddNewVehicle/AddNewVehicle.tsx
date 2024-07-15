@@ -4,9 +4,6 @@ import { useOktaAuth } from '@okta/okta-react';
 import { CustomUserClaims, UserClaims } from '@okta/okta-auth-js';
 import { useNavigate } from 'react-router-dom';
 
-
-
-
 interface Vehicle {
   vehicle_name: string;
   vehicle_type: string;
@@ -19,6 +16,7 @@ const AddNewVehicle: React.FC = () => {
 
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState<UserClaims<CustomUserClaims> | null>(null);
+  const [alertMessage, setAlertMessage] = useState<{ type: 'success' | 'danger'; message: string } | null>(null);
   const navigate = useNavigate();
   const [vehicle, setVehicle] = useState<Vehicle>({
     vehicle_name: '',
@@ -76,8 +74,19 @@ const AddNewVehicle: React.FC = () => {
       });
       console.log(response.data);
       // Handle success, e.g., clear form or show success message
+      setAlertMessage({ type: 'success', message: 'Vehicle added successfully' });
+      // Clear form
+      setVehicle({
+        vehicle_name: '',
+        vehicle_type: '',
+        vehicle_description: '',
+        day_rate: 0,
+        img: null,
+      });
+      setImageFile(null);
     } catch (error) {
       console.error(error);
+      setAlertMessage({ type: 'danger', message: 'Failed to add vehicle. Please try again.' });
       // Handle errors, e.g., display error message to user
     }
   };
@@ -101,6 +110,11 @@ const AddNewVehicle: React.FC = () => {
         </div>
         <div className="row justify-content-center mt-4">
           <div className="col-lg-8 mx-auto mbr-form">
+          {alertMessage && (
+              <div className={`alert alert-${alertMessage.type}`} role="alert">
+                {alertMessage.message}
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="mbr-form form-with-styler mx-auto" noValidate>
               
               <div className="dragArea row">
