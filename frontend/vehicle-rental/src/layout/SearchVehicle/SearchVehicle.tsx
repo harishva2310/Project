@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import LocationModel from '../../model/LocationModel';
 import VehicleModel from '../../model/VehicleModel';
@@ -11,11 +11,12 @@ import { SpinnerLoading } from '../../util/SpinnerLoading';
 import { AvailableVehicleResponse } from './components/AvailableVehicleResponse';
 import { Link, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import _ from "lodash";
 
 
 
 const SearchVehicle = () => {
-    
+
     const [locations, setLocations] = useState<LocationModel[]>([]);
     const [selectedlocations, setSelectedLocations] = useState<LocationModel[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>('');
@@ -66,32 +67,42 @@ const SearchVehicle = () => {
         console.log("Total Pages in result:", totalPages);
     }, [totalPages]);
 
-    if (loading) {
-        return <SpinnerLoading />;
-    }
+    useEffect(() => {
+        if (selectedCity !== '' && selectedCountry !== '' && fromDate !== '' && toDate !== '' && fromTime !== '' && toTime !== '') {
+            handleSearch(page);
+        }
+    }, [selectedCity, selectedCountry, fromDate, toDate, fromTime, toTime]);
+
+    
 
     const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCity(event.target.value);
+        
     };
 
     const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCountry(event.target.value);
+        
     };
 
     const handleFromDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFromDate(event.target.value);
+        
     };
 
     const handleToDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setToDate(event.target.value);
+        
     };
 
     const handleFromTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFromTime(event.target.value);
+        
     };
 
     const handleToTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setToTime(event.target.value);
+        
     };
 
     const formatDateTime = (date: string, time: string) => {
@@ -102,34 +113,41 @@ const SearchVehicle = () => {
         return arr.filter((value, index, self) => self.indexOf(value) === index);
     };
 
-    const handleSearch = async (page: number = 0) => {
+    const handleSearch = useCallback(_.debounce(async (page: number = 0) => {
+        if (selectedCity !== '' && selectedCountry !== '' && fromDate !== '' && toDate !== '' && fromTime !== '' && toTime !== '') {
+            console.log("Selected city:", selectedCity)
+            setLoading(true);
+            setTotalPages(0);
+            setVehicles([]);
+            setSelectedLocations([]);
+            setVehicleLocations([]);
+            setTotalRate([]);
+            try {
+                const fromDateTime = formatDateTime(fromDate, fromTime);
+                const toDateTime = formatDateTime(toDate, toTime);
+                const response = await axios.get(`/api/vehicles/availablevehicles`, {
+                    params: {
+                        fromdate: fromDateTime,
+                        todate: toDateTime,
+                        city: selectedCity,
+                        country: selectedCountry,
+                        page: page,
+                        size: size
+                    }
+                });
+                setAvailableVehicles(response.data.content);
+                setTotalPages(response.data.page.totalPages);
 
-        setLoading(true);
-
-        try {
-            const fromDateTime = formatDateTime(fromDate, fromTime);
-            const toDateTime = formatDateTime(toDate, toTime);
-            const response = await axios.get(`/api/vehicles/availablevehicles`, {
-                params: {
-                    fromdate: fromDateTime,
-                    todate: toDateTime,
-                    city: selectedCity,
-                    country: selectedCountry,
-                    page: page,
-                    size: size
-                }
-            });
-            setAvailableVehicles(response.data.content);
-            setTotalPages(response.data.page.totalPages);
-            
-            loadVehicleData(response.data.content);
-        } catch (error) {
-            console.error('Error fetching available vehicles:', error);
-        } finally {
-            setLoading(false);
+                loadVehicleData(response.data.content);
+                
+            } catch (error) {
+                console.error('Error fetching available vehicles:', error);
+            } finally {
+                setLoading(false);
+            }
         }
 
-    };
+    }, 300), [selectedCity, selectedCountry, fromDate, toDate, fromTime, toTime]); // 300ms debounce delay
 
     const loadVehicleData = async (availableVehicles: AvailableVehicleResponse[]) => {
         setVehicles([]);
@@ -142,10 +160,10 @@ const SearchVehicle = () => {
                 const vehicleData = await fetchVehicleDataByID(vehicleId);
                 const fromDateTime = formatDateTime(fromDate, fromTime);
                 const toDateTime = formatDateTime(toDate, toTime);
-                
+
                 setVehicles(prevVehicles => [...prevVehicles, vehicleData]);
-                
-                
+
+
                 const locationData = await fetchLocationDataByID(locationId);
                 setSelectedLocations(prevLocations => [...prevLocations, locationData]);
                 const vehicleLocationData = await fetchVehicleLocationDataByID(vehicleLocationId);
@@ -157,7 +175,39 @@ const SearchVehicle = () => {
         }
     };
 
+    if (loading) {
+        return <SpinnerLoading />;
+    }
+    
+    const handlePageClick = (pageNumber: number) => {
+        setPage(pageNumber);
+        handleSearch(pageNumber);
+    };
 
+    const renderPageNumbers = () => {
+        const pageNumbers = [];
+        for (let i = 0; i < totalPages; i++) {
+            pageNumbers.push(
+                <ul className="pagination">
+
+
+                    <li key={i} className={`page-item ${i === page ? 'active' : ''}`}>
+                        <a
+                            className="page-link"
+                            onClick={() => handlePageClick(i)}
+
+                        >
+                            {i + 1}
+                        </a>
+                    </li>
+
+
+                </ul>
+
+            );
+        }
+        return pageNumbers;
+    };
 
 
     const uniqueCities = getUniqueValues(locations.map(location => location.location_city));
@@ -169,11 +219,11 @@ const SearchVehicle = () => {
             handleSearch(page + 1); // Ensure handleSearch updates with new page
         }
     };
-    
+
     const handlePreviousPage = () => {
         if (page > 0) {
-            setPage(page-1);
-            handleSearch(page-1);
+            setPage(page - 1);
+            handleSearch(page - 1);
         }
     };
 
@@ -195,7 +245,7 @@ const SearchVehicle = () => {
         navigate('/checkout', { state: vehicleDetails });
     };
 
-    
+
 
     return (
         <>
@@ -205,7 +255,7 @@ const SearchVehicle = () => {
                         <div className='row mt-5'>
                             <div className='col-md-6'>
                                 <div className='mb-3'>
-                                <label htmlFor="city" className="form-label">City</label>
+                                    <label htmlFor="city" className="form-label">City</label>
                                     <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select" required>
                                         <option value="">Select a city</option>
                                         {uniqueCities.map(city => (
@@ -218,7 +268,7 @@ const SearchVehicle = () => {
                             </div>
                             <div className='col-md-6'>
                                 <div className="mb-3">
-                                <label htmlFor="country" className="form-label">Country</label>
+                                    <label htmlFor="country" className="form-label">Country</label>
                                     <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select" required>
                                         <option value="">Select Country</option>
                                         {uniqueCountries.map(country => (
@@ -291,7 +341,7 @@ const SearchVehicle = () => {
                                                                     {vehicle.vehicle_description}
                                                                 </p>
                                                                 <p className="mbr-text mbr-fonts-style display-7">
-                                                                   Rate per day: ${vehicle.day_rate}
+                                                                    Rate per day: ${vehicle.day_rate}
                                                                 </p>
                                                             </div>
                                                             <div className="col-md-auto">
@@ -313,9 +363,24 @@ const SearchVehicle = () => {
                                     <button className="btn btn-primary me-2" onClick={handlePreviousPage} disabled={page === 0}>
                                         Previous Page
                                     </button>
+                                    
                                     <button className="btn btn-primary ms-2" onClick={handleNextPage} disabled={page === totalPages - 1}>
                                         Next Page
                                     </button>
+                                </div>
+                                <div className="d-flex justify-content-center mt-5 mb-5">
+                                    <ul className="pagination pagination-lg justify-content-end">
+                                        <li className="page-item">
+                                            <a className="page-link" onClick={handlePreviousPage}>Previous</a>
+                                        </li>
+
+                                        {renderPageNumbers()}
+                                        
+                                        <li className="page-item">
+                                            <a className="page-link" onClick={handleNextPage}>Next</a>
+                                        </li>
+
+                                    </ul>
                                 </div>
                             </>
                         ) : (
@@ -339,3 +404,5 @@ const SearchVehicle = () => {
 }
 
 export default SearchVehicle;
+
+
