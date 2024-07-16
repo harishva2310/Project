@@ -156,6 +156,7 @@ const SearchVehicle = () => {
         setTotalRate([]);
         for (const vehicle of availableVehicles) {
             const [vehicleId, , vehicleLocationId, locationId] = vehicle;
+            console.log("Available Vehicles Line 158: ",vehicle)
             try {
                 const vehicleData = await fetchVehicleDataByID(vehicleId);
                 const fromDateTime = formatDateTime(fromDate, fromTime);
@@ -253,8 +254,8 @@ const SearchVehicle = () => {
                 <div className='container'>
                     <div>
                         <div className='row mt-5'>
-                            <div className='col-md-6'>
-                                <div className='mb-3'>
+                            <div className='col-md-2'>
+                                <div className='mb-2'>
                                     <label htmlFor="city" className="form-label">City</label>
                                     <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select" required>
                                         <option value="">Select a city</option>
@@ -266,8 +267,8 @@ const SearchVehicle = () => {
                                     </select>
                                 </div>
                             </div>
-                            <div className='col-md-6'>
-                                <div className="mb-3">
+                            <div className='col-md-2'>
+                                <div className="mb-2">
                                     <label htmlFor="country" className="form-label">Country</label>
                                     <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select" required>
                                         <option value="">Select Country</option>
@@ -279,26 +280,26 @@ const SearchVehicle = () => {
                                     </select>
                                 </div>
                             </div>
-                            <div className='col-md-6'>
-                                <div className="mb-3">
+                            <div className='col-md-2'>
+                                <div className="mb-2">
                                     <label htmlFor="fromDate" className="form-label">From</label>
                                     <input type="date" id="fromDate" className="form-control" required value={fromDate} onChange={handleFromDateChange} />
                                 </div>
                             </div>
-                            <div className='col-md-6'>
-                                <div className="mb-3">
+                            <div className='col-md-2'>
+                                <div className="mb-2">
                                     <label htmlFor="toDate" className="form-label">To</label>
                                     <input type="date" id="toDate" className="form-control" required value={toDate} onChange={handleToDateChange} />
                                 </div>
                             </div>
-                            <div className='col-md-6'>
-                                <div className="mb-3">
+                            <div className='col-md-2'>
+                                <div className="mb-2">
                                     <label htmlFor="fromTime" className="form-label">From Time</label>
                                     <input type="time" id="fromTime" className="form-control" value={fromTime} onChange={handleFromTimeChange} required min="09:00" max="17:00" />
                                 </div>
                             </div>
-                            <div className='col-md-6'>
-                                <div className="mb-3">
+                            <div className='col-md-2'>
+                                <div className="mb-2">
                                     <label htmlFor="toTime" className="form-label">To Time</label>
                                     <input type="time" id="toTime" className="form-control" value={toTime} onChange={handleToTimeChange} required min="09:00" max="17:00" />
                                 </div>
@@ -359,15 +360,7 @@ const SearchVehicle = () => {
                                         </div>
                                     </div>
                                 ))}
-                                <div className="d-flex justify-content-center mt-5 mb-5">
-                                    <button className="btn btn-primary me-2" onClick={handlePreviousPage} disabled={page === 0}>
-                                        Previous Page
-                                    </button>
-                                    
-                                    <button className="btn btn-primary ms-2" onClick={handleNextPage} disabled={page === totalPages - 1}>
-                                        Next Page
-                                    </button>
-                                </div>
+                                
                                 <div className="d-flex justify-content-center mt-5 mb-5">
                                     <ul className="pagination pagination-lg justify-content-end">
                                         <li className="page-item">
