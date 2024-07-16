@@ -22,6 +22,7 @@ import ConfirmationPage from './layout/ConfirmationPage/ConfirmationPage';
 import UserBookingsV2 from './layout/UserBookings/UserBookingsV2';
 import AddVehicleLocations from './layout/AddVehicleLocations/AddVehicleLocations';
 import AdminPage from './layout/AdminPage/AdminPage';
+import SearchVehicleV2 from './layout/SearchVehicle/SearchVehicleV2';
 
 
 
@@ -51,7 +52,7 @@ export const App = () => {
         <Route path="/" element={<Navigate to="/home" />} />
           
           <Route path="/login/callback" element={<LoginCallback />} />
-          <Route path="/searchvehicles" element={<SearchVehicle />} />
+          <Route path="/searchvehicles" element={<SearchVehicleV2 />} />
           
           <Route path="/addnewvehicle" element={<RequiredAuth />}>
             <Route path='' element={<AddNewVehicle />} />
