@@ -54,6 +54,10 @@ const AdminPage = () => {
                             <td><Link type='button' className="btn btn-primary display-4" to='/addvehiclelocations'>Add Vehicle to Location</Link></td>
                             <td>Add vehicles already in inventory to the locations</td>
                         </tr>
+                        <tr>
+                            <td><Link type='button' className="btn btn-primary display-4" to='/addnewlocations'>Add New Locations</Link></td>
+                            <td>Add new locations</td>
+                        </tr>
                     
                 </tbody>
             </table>

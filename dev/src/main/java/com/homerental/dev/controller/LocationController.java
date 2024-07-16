@@ -64,6 +64,7 @@ public class LocationController {
         location.setLocation_name(location_name);
         location.setLocation_state(location_state);
         location.setLocation_zip(location_zip);
+        locationRepository.save(location);
         return ResponseEntity.ok("Location added successfully");
     }
 
