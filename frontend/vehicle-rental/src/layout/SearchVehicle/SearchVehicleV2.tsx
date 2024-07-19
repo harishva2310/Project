@@ -13,6 +13,8 @@ import AvailableVehicleV2 from './components/AvailableVehicleV2';
 import { Link, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import _ from "lodash";
+import VehicleTypeModel from '../../model/VehicleTypeModel';
+import { fetchVehicleTypeData } from '../../service/FetchVehicleType';
 
 
 
@@ -28,13 +30,16 @@ const SearchVehicleV2 = () => {
     const [fromTime, setFromTime] = useState<string>('00:00');
     const [toTime, setToTime] = useState<string>('23:59');
     const [availableVehicles, setAvailableVehicles] = useState<AvailableVehicleV2[]>([]);
-
+    const [vehicleTypes, setVehicleTypes]=useState<VehicleTypeModel[]>([]);
     const [vehicles, setVehicles] = useState<VehicleModel[]>([]);
     const [vehicleLocations, setVehicleLocations] = useState<VehicleLocationModel[]>([]);
     const [page, setPage] = useState<number>(0);
     const [size, setSize] = useState<number>(5);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [totalRate, setTotalRate] = useState<number[]>([]);
+    const [sortOption, setSortOption] = useState<string>('');
+    const [filterOption, setFilterOption] = useState<string>('');
+    const [filteredVehicles, setFilteredVehicles] = useState<VehicleModel[]>([]);
 
     const navigate = useNavigate();
 
@@ -66,11 +71,27 @@ const SearchVehicleV2 = () => {
     }, []);
 
     useEffect(() => {
+        async function loadVehicleTypes() {
+            try {
+                const data = await fetchVehicleTypeData();
+                setVehicleTypes(data);
+            } catch (error) {
+                console.error('Error fetching locations:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        loadVehicleTypes();
+    }, []);
+
+
+    useEffect(() => {
         console.log("Total Pages in result:", totalPages);
     }, [totalPages]);
 
     useEffect(() => {
-        if (selectedCity !== '' && selectedCountry !== '' && fromDate !== '' && toDate !== '' && fromTime !== '' && toTime !== '') {
+        if (selectedCity !== '' && selectedCountry !== '' && fromDate !== '' && toDate !== '' && fromTime !== '' && toTime !== '' && (filterOption==='' || filterOption!=='')) {
             handleSearch(page);
         }
     }, [selectedCity, selectedCountry, fromDate, toDate, fromTime, toTime]);
@@ -89,7 +110,7 @@ const SearchVehicleV2 = () => {
 
     const handleFromDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFromDate(event.target.value);
-        
+        setToDate(event.target.value);
     };
 
     const handleToDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,6 +145,7 @@ const SearchVehicleV2 = () => {
             setSelectedLocations([]);
             setVehicleLocations([]);
             setTotalRate([]);
+            
             try {
                 const fromDateTime = formatDateTime(fromDate, fromTime);
                 const toDateTime = formatDateTime(toDate, toTime);
@@ -156,6 +178,7 @@ const SearchVehicleV2 = () => {
         setSelectedLocations([]);
         setVehicleLocations([]);
         setTotalRate([]);
+        
         for (const vehicle of availableVehicles) {
             const {vehicleId, vehicleLocationId, locationId} = vehicle;
             console.log("Available Vehicles Line 158: ",vehicle)
@@ -176,6 +199,50 @@ const SearchVehicleV2 = () => {
                 console.error('Error fetching vehicle data:', error);
             }
         }
+        
+    };
+
+    const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSortOption(event.target.value);
+        sortVehicles(event.target.value);
+    };
+
+    const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setFilterOption(event.target.value);
+        console.log("Select filter option:",filterOption)
+        filterVehicles(event.target.value);
+    };
+    
+
+    const sortVehicles = (option: string) => {
+        const sortedVehiclesAndRates = [...vehicles].map((vehicle, index) => ({
+            vehicle,
+            totalRate: totalRate[index]
+        })).sort((a, b) => {
+            if (option === 'asc') {
+                return a.vehicle.day_rate - b.vehicle.day_rate;
+            } else if (option === 'desc') {
+                return b.vehicle.day_rate - a.vehicle.day_rate;
+            } else {
+                return 0;
+            }
+        });
+        setVehicles(sortedVehiclesAndRates.map(v => v.vehicle));
+        setTotalRate(sortedVehiclesAndRates.map(v => v.totalRate));
+    };
+
+    const filterVehicles = (option: string) => {
+        if (option === '') {
+            setAvailableVehicles(availableVehicles);
+            handleSearch();
+            return;
+        }
+        else {
+        
+        const filteredVehicles = vehicles.filter(vehicle => vehicle.vehicle_type === option);
+        setVehicles(filteredVehicles);
+        }
+        
     };
 
     if (loading) {
@@ -215,6 +282,7 @@ const SearchVehicleV2 = () => {
 
     const uniqueCities = getUniqueValues(locations.map(location => location.location_city));
     const uniqueCountries = getUniqueValues(locations.map(location => location.location_country));
+    const uniqueVehicleTypes = getUniqueValues(vehicleTypes.map(vehicle => vehicle.vehicle_type));
 
     const handleNextPage = () => {
         if (page < totalPages - 1) {
@@ -313,6 +381,31 @@ const SearchVehicleV2 = () => {
                     </div>
                 </div>
 
+                <div className="container">
+                    <div className="row mb-4">
+                        <div className="col-md-4 offset-md-4">
+                            <label htmlFor="sort" className="form-label">Sort by Fare</label>
+                            <select id="sort" value={sortOption} onChange={handleSortChange} className="form-select">
+                                
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="col-md-4">
+                            <label htmlFor="filter" className="form-label">Filter by Type</label>
+                            <select id="filter" value={filterOption} onChange={handleFilterChange} className="form-select">
+                                <option value="">Select a type</option>
+                                {uniqueVehicleTypes.map(type => (
+                                    <option key={type} value={type}>
+                                        {type}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
                 <section data-bs-version="5.1" className="features9 cid-uhChHy94BR mbr-parallax-background" id="features9-0">
 
 
@@ -341,7 +434,12 @@ const SearchVehicleV2 = () => {
                                                                     <strong> {vehicle.vehicle_name} </strong>
                                                                 </h6>
                                                                 <p className="mbr-text mbr-fonts-style display-7">
+                                                                    
                                                                     {vehicle.vehicle_description}
+                                                                </p>
+                                                                <p className="mbr-text mbr-fonts-style display-7">
+                                                                    
+                                                                    {vehicle.vehicle_type}
                                                                 </p>
                                                                 <p className="mbr-text mbr-fonts-style display-7">
                                                                     Rate per day: ${vehicle.day_rate}

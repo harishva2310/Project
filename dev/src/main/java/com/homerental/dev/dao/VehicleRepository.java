@@ -150,7 +150,7 @@ FROM (
             bv.vehicle_id IS NULL
             AND l1.location_city = :city
             AND l1.location_country= :country
-        ORDER BY v1.vehicle_name
+        ORDER BY v1.day_rate
                     """,countQuery =count_queryV2, nativeQuery = true)
                     List<Object[]> findAvailableVehiclesV2 (
             @Param("fromdate") Timestamp fromDate,
