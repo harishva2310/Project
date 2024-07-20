@@ -33,7 +33,9 @@ public class VehicleService {
                 ((Number) obj[0]).longValue(), 
                 (String) obj[1], 
                 ((Number) obj[2]).longValue(), 
-                ((Number) obj[3]).longValue()))
+                ((Number) obj[3]).longValue(),
+                (String) obj[4]
+                ))
             .collect(Collectors.toList());
             long totalElements = vehicleRepository.countAvailableVehiclesV2(fromDate, toDate, city, country);
         return new PageImpl<>(availableVehicles, pageable, totalElements);

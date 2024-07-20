@@ -99,7 +99,8 @@ FROM (
             v1.vehicle_id,
             v1.vehicle_name,
             vl1.vehicle_location_id,
-            l1.location_id
+            l1.location_id,
+            v1.vehicle_type
           FROM
             vehicle v1
             JOIN vehicle_location vl1 ON v1.vehicle_id = vl1.vehicle_id
@@ -136,7 +137,8 @@ FROM (
             v1.vehicle_id,
             v1.vehicle_name,
             vl1.vehicle_location_id,
-            l1.location_id
+            l1.location_id,
+            v1.vehicle_type
         
         FROM
             vehicle v1

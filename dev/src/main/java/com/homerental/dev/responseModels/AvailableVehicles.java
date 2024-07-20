@@ -5,12 +5,14 @@ public class AvailableVehicles {
     private String vehicleName;
     private Long vehicleLocationId;
     private Long locationId;
+    private String vehicleType;
 
-    public AvailableVehicles(Long vehicleId, String vehicleName, Long vehicleLocationId, Long locationId) {
+    public AvailableVehicles(Long vehicleId, String vehicleName, Long vehicleLocationId, Long locationId, String vehicleType) {
         this.vehicleId = vehicleId;
         this.vehicleName = vehicleName;
         this.vehicleLocationId = vehicleLocationId;
         this.locationId = locationId;
+        this.vehicleType=vehicleType;
     }
     // Getters and setters
     
@@ -31,6 +33,15 @@ public class AvailableVehicles {
     
     public void setVehicleName(String vehicleName) {
         this.vehicleName = vehicleName;
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
     }
 
     

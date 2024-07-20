@@ -30,7 +30,8 @@ const SearchVehicleV2 = () => {
     const [fromTime, setFromTime] = useState<string>('00:00');
     const [toTime, setToTime] = useState<string>('23:59');
     const [availableVehicles, setAvailableVehicles] = useState<AvailableVehicleV2[]>([]);
-    const [vehicleTypes, setVehicleTypes]=useState<VehicleTypeModel[]>([]);
+    const [availableVehiclesFiltered, setAvailableVehiclesFiltered]= useState<AvailableVehicleV2[]>([]);
+    const [vehicleTypes, setVehicleTypes] = useState<VehicleTypeModel[]>([]);
     const [vehicles, setVehicles] = useState<VehicleModel[]>([]);
     const [vehicleLocations, setVehicleLocations] = useState<VehicleLocationModel[]>([]);
     const [page, setPage] = useState<number>(0);
@@ -91,21 +92,21 @@ const SearchVehicleV2 = () => {
     }, [totalPages]);
 
     useEffect(() => {
-        if (selectedCity !== '' && selectedCountry !== '' && fromDate !== '' && toDate !== '' && fromTime !== '' && toTime !== '' && (filterOption==='' || filterOption!=='')) {
+        if (selectedCity !== '' && selectedCountry !== '' && fromDate !== '' && toDate !== '' && fromTime !== '' && toTime !== '' && (filterOption === '' || filterOption !== '')) {
             handleSearch(page);
         }
     }, [selectedCity, selectedCountry, fromDate, toDate, fromTime, toTime]);
 
-    
+
 
     const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCity(event.target.value);
-        
+
     };
 
     const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCountry(event.target.value);
-        
+
     };
 
     const handleFromDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,17 +116,17 @@ const SearchVehicleV2 = () => {
 
     const handleToDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setToDate(event.target.value);
-        
+
     };
 
     const handleFromTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFromTime(event.target.value);
-        
+
     };
 
     const handleToTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setToTime(event.target.value);
-        
+
     };
 
     const formatDateTime = (date: string, time: string) => {
@@ -145,7 +146,7 @@ const SearchVehicleV2 = () => {
             setSelectedLocations([]);
             setVehicleLocations([]);
             setTotalRate([]);
-            
+
             try {
                 const fromDateTime = formatDateTime(fromDate, fromTime);
                 const toDateTime = formatDateTime(toDate, toTime);
@@ -160,10 +161,12 @@ const SearchVehicleV2 = () => {
                     }
                 });
                 setAvailableVehicles(response.data.content);
+                setAvailableVehiclesFiltered(response.data.content);
+
                 setTotalPages(response.data.page.totalPages);
 
                 loadVehicleData(response.data.content);
-                
+
             } catch (error) {
                 console.error('Error fetching available vehicles:', error);
             } finally {
@@ -178,18 +181,16 @@ const SearchVehicleV2 = () => {
         setSelectedLocations([]);
         setVehicleLocations([]);
         setTotalRate([]);
-        
+        setFilteredVehicles([]);
         for (const vehicle of availableVehicles) {
-            const {vehicleId, vehicleLocationId, locationId} = vehicle;
-            console.log("Available Vehicles Line 158: ",vehicle)
+            const { vehicleId, vehicleLocationId, locationId } = vehicle;
+            console.log("Available Vehicles Line 158: ", vehicle)
             try {
                 const vehicleData = await fetchVehicleDataByID(vehicleId);
                 const fromDateTime = formatDateTime(fromDate, fromTime);
                 const toDateTime = formatDateTime(toDate, toTime);
-
                 setVehicles(prevVehicles => [...prevVehicles, vehicleData]);
-
-
+                setFilteredVehicles(prevVehicles => [...prevVehicles, vehicleData]);
                 const locationData = await fetchLocationDataByID(locationId);
                 setSelectedLocations(prevLocations => [...prevLocations, locationData]);
                 const vehicleLocationData = await fetchVehicleLocationDataByID(vehicleLocationId);
@@ -199,7 +200,7 @@ const SearchVehicleV2 = () => {
                 console.error('Error fetching vehicle data:', error);
             }
         }
-        
+
     };
 
     const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -209,13 +210,13 @@ const SearchVehicleV2 = () => {
 
     const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setFilterOption(event.target.value);
-        console.log("Select filter option:",filterOption)
+        console.log("Select filter option:", filterOption)
         filterVehicles(event.target.value);
     };
-    
+
 
     const sortVehicles = (option: string) => {
-        const sortedVehiclesAndRates = [...vehicles].map((vehicle, index) => ({
+        const sortedVehiclesAndRates = [...filteredVehicles].map((vehicle, index) => ({
             vehicle,
             totalRate: totalRate[index]
         })).sort((a, b) => {
@@ -227,28 +228,41 @@ const SearchVehicleV2 = () => {
                 return 0;
             }
         });
-        setVehicles(sortedVehiclesAndRates.map(v => v.vehicle));
+        
+        //setVehicles(sortedVehiclesAndRates.map(v => v.vehicle));
+        setFilteredVehicles(sortedVehiclesAndRates.map(v => v.vehicle));
         setTotalRate(sortedVehiclesAndRates.map(v => v.totalRate));
+        const sortedAvailableVehiclesFiltered = filteredVehicles.map(vehicle => 
+            availableVehiclesFiltered.find(av => av.vehicleId === vehicle.vehicle_id)
+        ).filter(av => av !== undefined) as AvailableVehicleV2[];
+        
+        setAvailableVehiclesFiltered(sortedAvailableVehiclesFiltered);
     };
 
     const filterVehicles = (option: string) => {
         if (option === '') {
-            setAvailableVehicles(availableVehicles);
-            handleSearch();
-            return;
+            setAvailableVehiclesFiltered(availableVehicles);
+            setFilteredVehicles(vehicles);
         }
         else {
-        
-        const filteredVehicles = vehicles.filter(vehicle => vehicle.vehicle_type === option);
-        setVehicles(filteredVehicles);
+            setVehicles(vehicles);
+            const filteredVehicles = vehicles.filter(vehicle => vehicle.vehicle_type === option);
+            //const filteredVehicles = availableVehicles.filter(vehicle => vehicle.vehicleType === option);
+            //setAvailableVehicles(filteredVehicles);
+
+            //setVehicles(vehicles.filter(vehicle => vehicle.vehicle_type === option));
+
+            setFilteredVehicles(filteredVehicles);
+            setAvailableVehiclesFiltered(availableVehicles.filter(vehicle => vehicle.vehicleType === option));
+            
         }
-        
+
     };
 
     if (loading) {
         return <SpinnerLoading />;
     }
-    
+
     const handlePageClick = (pageNumber: number) => {
         setPage(pageNumber);
         handleSearch(pageNumber);
@@ -374,27 +388,23 @@ const SearchVehicleV2 = () => {
                                     <input type="time" id="toTime" className="form-control" value={toTime} onChange={handleToTimeChange} required min="09:00" max="17:00" />
                                 </div>
                             </div>
-                            <div className='col-12 text-center'>
-                                <button type="submit" className="btn btn-primary" onClick={handleSearchClick}>Search</button>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
 
                 <div className="container">
                     <div className="row mb-4">
-                        <div className="col-md-4 offset-md-4">
+                        <div className="col-md-4">
                             <label htmlFor="sort" className="form-label">Sort by Fare</label>
                             <select id="sort" value={sortOption} onChange={handleSortChange} className="form-select">
-                                
+
                                 <option value="asc">Ascending</option>
                                 <option value="desc">Descending</option>
                             </select>
                         </div>
-                    </div>
-                </div>
 
-                <div className="col-md-4">
+                        <div className="col-md-4">
                             <label htmlFor="filter" className="form-label">Filter by Type</label>
                             <select id="filter" value={filterOption} onChange={handleFilterChange} className="form-select">
                                 <option value="">Select a type</option>
@@ -406,6 +416,14 @@ const SearchVehicleV2 = () => {
                             </select>
                         </div>
 
+                        <div className='col-12 text-center'>
+                                <button type="submit" className="btn btn-primary" onClick={handleSearchClick}>Search</button>
+                        </div>
+                    </div>
+                </div>
+
+                
+
                 <section data-bs-version="5.1" className="features9 cid-uhChHy94BR mbr-parallax-background" id="features9-0">
 
 
@@ -415,9 +433,9 @@ const SearchVehicleV2 = () => {
                     </div>
 
                     <div className="container">
-                        {availableVehicles.length > 0 ? (
+                        {availableVehiclesFiltered.length > 0 ? (
                             <>
-                                {vehicles.map((vehicle, index) => (
+                                {filteredVehicles.map((vehicle, index) => (
                                     <div className="item features-image" key={vehicle.vehicle_id}>
                                         <div className="item-wrapper">
                                             <div className="row align-items-center">
@@ -434,11 +452,11 @@ const SearchVehicleV2 = () => {
                                                                     <strong> {vehicle.vehicle_name} </strong>
                                                                 </h6>
                                                                 <p className="mbr-text mbr-fonts-style display-7">
-                                                                    
+
                                                                     {vehicle.vehicle_description}
                                                                 </p>
                                                                 <p className="mbr-text mbr-fonts-style display-7">
-                                                                    
+
                                                                     {vehicle.vehicle_type}
                                                                 </p>
                                                                 <p className="mbr-text mbr-fonts-style display-7">
@@ -448,7 +466,7 @@ const SearchVehicleV2 = () => {
                                                             <div className="col-md-auto">
                                                                 <p className="price mbr-fonts-style display-2">${totalRate[index]}</p>
                                                                 <div className="mbr-section-btn"><a
-                                                                    className="btn btn-primary display-4" onClick={() => handleViewDetails(availableVehicles[index])}>
+                                                                    className="btn btn-primary display-4" onClick={() => handleViewDetails(availableVehiclesFiltered[index])}>
                                                                     View Details
                                                                 </a></div>
                                                             </div>
@@ -460,7 +478,7 @@ const SearchVehicleV2 = () => {
                                         </div>
                                     </div>
                                 ))}
-                                
+
                                 <div className="d-flex justify-content-center mt-5 mb-5">
                                     <ul className="pagination pagination-lg justify-content-end">
                                         <li className="page-item">
@@ -468,7 +486,7 @@ const SearchVehicleV2 = () => {
                                         </li>
 
                                         {renderPageNumbers()}
-                                        
+
                                         <li className="page-item">
                                             <a className="page-link" onClick={handleNextPage}>Next</a>
                                         </li>
