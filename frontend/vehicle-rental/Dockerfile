@@ -14,7 +14,7 @@ RUN npm install
 COPY . ./
 
 # Build the application
-RUN npm run build
+RUN HTTPS=true npm start
 
 # Stage 2: Serve the react app
 FROM nginx:alpine
