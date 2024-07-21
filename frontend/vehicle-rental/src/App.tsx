@@ -17,6 +17,13 @@ import { RequiredAuth } from './Auth/SecureRoute';
 import SearchVehicle from './layout/SearchVehicle/SearchVehicle';
 import Checkout from './layout/Checkout/Checkout';
 import UserBookings from './layout/UserBookings/UserBookings';
+import Payment from './layout/PaymentPage/PaymentPage';
+import ConfirmationPage from './layout/ConfirmationPage/ConfirmationPage';
+import UserBookingsV2 from './layout/UserBookings/UserBookingsV2';
+import AddVehicleLocations from './layout/AddVehicleLocations/AddVehicleLocations';
+import AdminPage from './layout/AdminPage/AdminPage';
+import SearchVehicleV2 from './layout/SearchVehicle/SearchVehicleV2';
+import AddNewLocations from './layout/AddNewLocations/AddNewLocations';
 
 
 
@@ -33,6 +40,7 @@ export const App = () => {
 
   const restoreOriginalUri = async (_oktaAuth: any, originalUri: any) => {
     navigate(toRelativeUrl(originalUri || '/', window.location.origin), { replace: true });
+    window.location.reload();
   };
 
   return (
@@ -45,10 +53,16 @@ export const App = () => {
         <Route path="/" element={<Navigate to="/home" />} />
           
           <Route path="/login/callback" element={<LoginCallback />} />
-          <Route path="/searchvehicles" element={<SearchVehicle />} />
+          <Route path="/searchvehicles" element={<SearchVehicleV2 />} />
           
           <Route path="/addnewvehicle" element={<RequiredAuth />}>
             <Route path='' element={<AddNewVehicle />} />
+          </Route>
+          <Route path="/addnewlocations" element={<RequiredAuth />}>
+            <Route path='' element={<AddNewLocations />} />
+          </Route>
+          <Route path="/addvehiclelocations" element={<RequiredAuth />}>
+            <Route path='' element={<AddVehicleLocations />} />
           </Route>
           <Route path="/login" element={<RequiredAuth />}>
             <Route path='' element={<Navigate to="/home" />}/>
@@ -57,9 +71,18 @@ export const App = () => {
             <Route path='' element={<Checkout />} />
           </Route>
           <Route path="/myBookings" element={<RequiredAuth />}>
-            <Route path='' element={<UserBookings />} />
+            <Route path='' element={<UserBookingsV2 />} />
           </Route>
 
+          <Route path="/admin" element={<RequiredAuth />}>
+            <Route path='' element={<AdminPage />} />
+          </Route>
+          <Route path="/payment" element={<RequiredAuth />}>
+            <Route path='' element={<Payment />} />
+          </Route>
+          <Route path="/confirmation" element={<RequiredAuth />}>
+            <Route path='' element={<ConfirmationPage />} />
+          </Route>
         </Routes>
         </div>
         <Footer />

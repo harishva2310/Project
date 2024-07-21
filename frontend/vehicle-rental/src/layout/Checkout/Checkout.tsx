@@ -31,6 +31,7 @@ const Checkout = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const formData = new FormData();
     const navigate = useNavigate();
+    const [showPayNowModal, setPayNowShowModal]= useState<boolean>(false);
 
     const calculateTotalRate = (dayRate: number, fromDate: string, toDate: string) => {
         const from = new Date(fromDate);
@@ -134,6 +135,15 @@ const Checkout = () => {
         return new UserModel(user_id, user_first_name, user_last_name, user_driver_license_num, user_address, user_email);
     };
 
+
+    const handlePayNowClick = () =>{
+        setPayNowShowModal(true);
+    }
+
+    const handlePayNowClose = () =>{
+        setPayNowShowModal(false);
+    }
+
     const handlePayLaterClick = () => {
         setShowModal(true);
     };
@@ -142,33 +152,58 @@ const Checkout = () => {
         setShowModal(false);
     };
 
+    const handleStripeConfirmBooking = () => {
+        console.log("Navigating to Payment");
+        const bookingDetails = {
+            vehicle_id: vehicleDetails.vehicle_id,
+            location_id: vehicleDetails.location_id,
+            vehicle_location_id: vehicleDetails.vehicle_location_id,
+            total_fare: totalRate,
+            from_date: vehicleDetails.from_date,
+            to_date: vehicleDetails.to_date,
+            user_email: userInfo?.email
+        };
+
+        navigate('/payment', { state: bookingDetails });
+    }
+
     const handleConfirmBooking = async () => {
         setShowModal(false);
         try {
             console.log("Vehicle ID:", vehicleDetails.vehicle_id)
             formData.append('vehicle_id', vehicleDetails.vehicle_id);
             formData.append('location_id', vehicleDetails.location_id);
-            formData.append('vehicle_location_id',vehicleDetails.vehicle_location_id)
-            formData.append('total_fare',totalRate.toString())
+            formData.append('vehicle_location_id', vehicleDetails.vehicle_location_id)
+            formData.append('total_fare', totalRate.toString())
             formData.append('from_date', vehicleDetails.from_date)
             formData.append('to_date', vehicleDetails.to_date)
             if (userInfo?.email) {
                 formData.append('user_email', userInfo.email);
-              }
-
-            const response = await axios.post(`/api/vehicleBookings`, formData, 
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                  },
             }
-        
-        
-        );
+
+            const response = await axios.post(`/api/vehicleBookings`, formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${authState?.accessToken?.accessToken}`
+                    },
+                }
+
+
+            );
             console.log('Booking confirmed:', response.data);
             // Handle any further logic or state updates after successful booking
-            navigate('/myBookings');
-            
+            const bookingDetails = {
+                vehicle_id: vehicleDetails.vehicle_id,
+                location_id: vehicleDetails.location_id,
+                vehicle_location_id: vehicleDetails.vehicle_location_id,
+                total_fare: totalRate.toString(),
+                from_date: vehicleDetails.from_date,
+                to_date: vehicleDetails.to_date,
+                user_email: userInfo?.email
+            };
+            navigate('/confirmation', { state: bookingDetails });
+
         } catch (error) {
             console.error('Error confirming booking:', error);
         }
@@ -188,46 +223,10 @@ const Checkout = () => {
             
         </div>
         </>*/
-        <div className="px-4 py-5 my-5 text-center">
-            <img className="d-block mx-auto mb-4" src={`data:image/jpg;base64,${vehicles?.img}`} alt="" width="512" height="300" />
-            <h1 className="display-5 fw-bold text-body-emphasis">{vehicles?.vehicle_name}</h1>
-            <div className="col-lg-6 mx-auto">
-                <p className="lead mb-4">{vehicles?.vehicle_description}</p>
-                <h1 className="display-5 fw-bold text-body-emphasis">Renter details</h1>
-                {userInfo && (
-                    <div>
-                        <p className="lead mb-4">User: {userInfo.name}</p>
-                        <p className="lead mb-4">Email: {userInfo.email}</p>
-                        <p className="lead mb-4">Address: {user?.user_address}</p>
-
-
-                    </div>
-                )}
-                <h3 className="display-5 fw-bold text-body-emphasis">Location Pickup/Drop Details</h3>
-                <p className="lead mb-4">{locations?.location_name}</p>
-                <p className="lead mb-4">{locations?.location_address}</p>
-                <p className="lead mb-4">{locations?.location_city}</p>
-                <p className="lead mb-4">{locations?.location_state}</p>
-                <p className="lead mb-4">{locations?.location_country}</p>
-                <p className="lead mb-4">{locations?.location_zip}</p>
-                <h3 className="display-5 fw-bold text-body-emphasis">Fare Details</h3>
-                <p className="lead mb-4">Rate per day: {vehicles?.day_rate} USD</p>
-                <p className="lead mb-4">Total Rate: {totalRate} USD</p>
-                <p className="lead mb-4">From : {formatDate(vehicleDetails.from_date)} </p>
-                <p className="lead mb-4">To : {formatDate(vehicleDetails.to_date)} </p>
-
-
-                <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <button type="button" className="btn btn-primary btn-lg px-4 gap-3">Pay Now</button>
-                    <button type="button" className="btn btn-outline-secondary btn-lg px-4" onClick={handlePayLaterClick}>Pay Later</button>
-                </div>
-
-
-            </div>
-
-            {showModal && (
+        <>
+        {showModal && (
                 <div className="modal fade show d-block" tabIndex={-1} role="dialog">
-                    <div className="modal-dialog" role="document">
+                    <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Confirm Booking</h5>
@@ -236,7 +235,7 @@ const Checkout = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <p>Do you want to finish the booking?</p>
+                                <p>Do you want to finish the booking without paying now?</p>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-primary" onClick={handleConfirmBooking}>Confirm</button>
@@ -246,8 +245,148 @@ const Checkout = () => {
                     </div>
                 </div>
             )}
-        </div>
 
+{showPayNowModal && (
+                <div className="modal fade show d-block" tabIndex={-1} role="dialog">
+                    <div className="modal-dialog modal-dialog-centered" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Confirm Booking</h5>
+                                <button type="button" className="close" aria-label="Close" onClick={handlePayNowClose}>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <p>Do you want to finish the booking? This will lead you to a Stripe Payment page for entering Credit card Details. Use test cards provided in Stripe Docs for testing</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-primary" onClick={handleStripeConfirmBooking}>Confirm</button>
+                                <button type="button" className="btn btn-secondary" onClick={handlePayNowClose}>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <section data-bs-version="5.1" className="header14 cid-sFzz5E692j" id="header14-1j">
+                <div className="container">
+                    <div className="row justify-content-center align-items-center">
+                        <div className="col-12 col-md-6 image-wrapper">
+                            <img src={`data:image/jpg;base64,${vehicles?.img}`} alt="..." />
+                        </div>
+                        <div className="col-12 col-md">
+                            <div className="text-wrapper">
+                                <h1 className="mbr-section-title mbr-fonts-style mb-3 display-2">
+                                    <strong> {vehicles?.vehicle_name} </strong>
+                                </h1>
+                                <p className="mbr-text mbr-fonts-style display-7">{vehicles?.vehicle_description}</p>
+                                <p className="mbr-fonts-style panel-text display-7">Pickup and Drop Location: {locations?.location_name} </p>
+                                <p className="mbr-fonts-style panel-text display-7"> Rate per day: {vehicles?.day_rate} USD</p>
+                                <p className="mbr-fonts-style panel-text display-7">Total Fare: {totalRate} USD</p>
+                                <p className="mbr-fonts-style panel-text display-7">From : {formatDate(vehicleDetails.from_date)} </p>
+                                <p className="mbr-fonts-style panel-text display-7">To : {formatDate(vehicleDetails.to_date)} </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+ <section data-bs-version="5.1" className="content17 cid-uhGpKnH4UK" id="content17-f">
+
+
+    <div className="container">
+
+        <div className="row justify-content-center">
+            <div className="col-12 col-md-10">
+                <div className="section-head align-center mb-4">
+                    <h3 className="mbr-section-title mb-0 mbr-fonts-style display-2">
+                        <strong>Booking Details</strong>
+                    </h3>
+
+                </div>
+
+                <div id="bootstrap-toggle" className="toggle-panel accordionStyles tab-content">
+                    <div className="card mb-3">
+                        <div className="card-header" role="tab" id="headingOne">
+                            <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse1_31" aria-expanded="false" aria-controls="collapse1">
+                                <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>User Details</strong>
+                                </h6>
+                                <span className="sign mbr-iconfont mbri-arrow-down"></span>
+                            </a>
+                        </div>
+                        <div id="collapse1_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingOne">
+                            <div className="panel-body">
+                                {userInfo && (
+                                    <div className="panel-body">
+                                        <p className="mbr-fonts-style panel-text display-7">User: {userInfo.name}</p>
+                                        <p className="mbr-fonts-style panel-text display-7">Email: {userInfo.email}</p>
+                                        <p className="mbr-fonts-style panel-text display-7">Address: {user?.user_address}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="card mb-3">
+                        <div className="card-header" role="tab" id="headingTwo">
+                            <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse2_31" aria-expanded="false" aria-controls="collapse2">
+                                <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>Location Pickup/Drop Details </strong>
+                                </h6>
+                                <span className="sign mbr-iconfont mbri-arrow-down"></span>
+                            </a>
+
+                        </div>
+                        <div id="collapse2_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div className="panel-body">
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_name} </p>
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_address}</p>
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_city}</p>
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_state}</p>
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_country}</p>
+                                <p className="mbr-fonts-style panel-text display-7">{locations?.location_zip}</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div className="card mb-3">
+                        <div className="card-header" role="tab" id="headingThree">
+                            <a role="button" className="collapsed panel-title text-black" data-toggle="collapse" data-bs-toggle="collapse" data-core="" href="#collapse2_31" aria-expanded="false" aria-controls="collapse3">
+                                <h6 className="panel-title-edit mbr-fonts-style mb-0 display-7"><strong>Fare Details </strong>
+                                </h6>
+                                <span className="sign mbr-iconfont mbri-arrow-down"></span>
+                            </a>
+
+                        </div>
+                        <div id="collapse2_31" className="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div className="panel-body">
+                                <p className="mbr-fonts-style panel-text display-7"> Rate per day: {vehicles?.day_rate} USD</p>
+                                <p className="mbr-fonts-style panel-text display-7">Total Fare: {totalRate} USD</p>
+                                <p className="mbr-fonts-style panel-text display-7">From : {formatDate(vehicleDetails.from_date)} </p>
+                                <p className="mbr-fonts-style panel-text display-7">To : {formatDate(vehicleDetails.to_date)} </p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    
+                </div>
+                <div className="d-flex justify-content-between">
+                    <button type="button" className="btn btn-primary btn-lg px-4 gap-3" onClick={handlePayNowClick}>Pay Now</button>
+                    <button type="button" className="btn btn-outline-secondary btn-lg px-4" onClick={handlePayLaterClick}>Pay Later</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+            
+
+            
+
+
+        </>
 
     );
 };

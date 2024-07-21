@@ -4,31 +4,10 @@
     --mainOpacity: rgba(0, 0, 0, 0.55);
 }
 
-.header {
-  background-image: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) ), url("./Images/PublicImages/2016-ducati-xdiavel-beauty-2244-2000x1226.jpg");
-  opacity: var(--mainOpacity);
-  height: 25em !important;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 150vh; /* Adjust the height as needed */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
 
-.dark-overlay {
-    background-color: rgba(0, 0, 0, 0.35);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
 
 .main-color {
-background-color: #0e76a8 ;
+background-color: #3bafe4 ;
 }
 
 
@@ -42,33 +21,6 @@ background-color: #0e76a8 ;
     cursor: default;
  }
 
- .card {
-  width: 286px; /* Maintain desired card width */
-  background-color: #2d79cf; /* Set a white background */
-  border-radius: 5px; /* Add subtle rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional subtle shadow for depth */
-  
-}
-
-.card-img {
-  width: 100%; /* Ensure image fills the card width */
-  height: 180px; /* Maintain desired image height */
-  object-fit: cover; /* Crop image to fit within the container */
-}
-
-.card-body {
-  padding: 20px; /* Add some padding for content breathing room */
-  text-align: center; /* Center text content vertically and horizontally */
-}
-
-.card-title {
-  margin-bottom: 10px; /* Add spacing between title and text */
-  font-weight: bold; /* Emphasize title text */
-}
-
-.card-text {
-  color: #333; /* Set text color for good readability */
-}
 
 .carousel-item {
   position: relative;
@@ -83,33 +35,5 @@ background-color: #0e76a8 ;
   
 }
 
-.custom-card {
-  max-width: 100%;
-  width: 100%;
-}
 
-.custom-card-img {
-  height: 100%;
-  object-fit: cover;
-}
 
-.card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.d-flex.justify-content-center.mt-5.mb-5 {
-  display: flex;
-  justify-content: center;
-  margin-top: 3rem !important; /* Add space at the top */
-  margin-bottom: 3rem !important; /* Add space at the bottom */
-}
-
-.d-flex.justify-content-center.mt-5.mb-5 .btn {
-  margin: 0 5px; /* Add some spacing between the buttons */
-}
-
-.text-center.mb-5 {
-  margin-bottom: 3rem !important; /* Add space below the search button */
-}

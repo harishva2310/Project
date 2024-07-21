@@ -1,6 +1,6 @@
 import axios from "axios";
 import VehicleTypeModel from "../model/VehicleTypeModel";
-export async function fetchVehicleData(): Promise<VehicleTypeModel[]> {
+export async function fetchVehicleTypeData(): Promise<VehicleTypeModel[]> {
     const defaultApiUrl = "http://vehicle-rental-service:8080";
     const apiUrl = process.env.REACT_APP_API || defaultApiUrl;
     if (!apiUrl) {

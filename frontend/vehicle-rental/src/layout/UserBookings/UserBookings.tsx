@@ -7,15 +7,14 @@ import UserModel from "../../model/UserModel";
 import { fetchLocationDataByID } from "../../service/FetchLocationByID";
 import VehicleBookingModel from "../../model/VehicleBookingModel";
 import axios from "axios";
-import { fetchUserBookingData } from "../../service/FetchUserBookingByEmail";
+
 import { fetchVehicleDataByID } from "../../service/FetchVehicleByID";
 import { SpinnerLoading } from "../../util/SpinnerLoading";
 import { useNavigate } from "react-router-dom";
 
 
 const UserBookings = () => {
-    const defaultApiUrl = "http://vehicle-rental-service:8080";
-    const apiUrl = process.env.REACT_APP_API || defaultApiUrl;
+    
     const [locations, setLocations] = useState<Record<number, LocationModel>>({});
     const [vehicles, setVehicles] = useState<Record<number, VehicleModel>>({});
     const { authState, oktaAuth } = useOktaAuth();
@@ -83,15 +82,42 @@ const UserBookings = () => {
 
     useEffect(() => {
         async function loadBookings() {
-            if (userInfo && userInfo.email) {
+            if (userInfo && userInfo.email && authState?.accessToken) {
                 try {
-                    const response = await fetchUserBookingData(userInfo.email);
+                    
+                    const apiResponse = await axios.get(`/api/vehicleBookings/getuserbookings?email=${userInfo.email}`, {
+                        responseType: 'json',
+                        headers:
+                        {
+                            Authorization: `Bearer ${authState.accessToken?.accessToken}`
+                        }
+                    });
+            
+                    const data = apiResponse.data;
+                    console.log("User booking data:", data);
+                    const response= data.map((item: any) => new VehicleBookingModel(
+                        item.vehicle_booking_id,
+                        item.location_id,
+                        item.vehicle_id,
+                        item.user_email,
+                        item.vehicle_location_id,
+                        item.from_date,
+                        item.to_date,
+                        item.total_fare
+                    ));
+                    
+                    
+                    //const response = await fetchUserBookingData(userInfo.email);
+
+                    
+
                     setBookings(response);
+
                     console.log("Booking IDs:", (bookings));
-                    console.log("Locations in booking:", response.map(booking => booking.location_id));
-                    console.log("Vehicles in booking:", response.map(booking => booking.vehicle_id));
-                    const locationPromises = response.map(booking => fetchLocationDataByID(booking.location_id));
-                    const vehiclePromises = response.map(booking => fetchVehicleDataByID(booking.vehicle_id));
+                    console.log("Locations in booking:", response.map((booking :VehicleBookingModel) => booking.location_id));
+                    console.log("Vehicles in booking:", response.map((booking :VehicleBookingModel) => booking.vehicle_id));
+                    const locationPromises = response.map((booking :VehicleBookingModel)=> fetchLocationDataByID(booking.location_id));
+                    const vehiclePromises = response.map((booking :VehicleBookingModel) => fetchVehicleDataByID(booking.vehicle_id));
 
                     const locations = await Promise.all(locationPromises);
                     const vehicles = await Promise.all(vehiclePromises);

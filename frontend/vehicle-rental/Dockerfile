@@ -25,8 +25,12 @@ COPY --from=build /app/build /usr/share/nginx/html
 # Copy custom nginx configuration file
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80
-EXPOSE 80
+# Copy SSL certificates
+COPY nginx-selfsigned.crt /etc/nginx/ssl/nginx-selfsigned.crt
+COPY nginx-selfsigned.key /etc/nginx/ssl/nginx-selfsigned.key
+
+# Expose ports 80 and 443
+EXPOSE 80 443
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]

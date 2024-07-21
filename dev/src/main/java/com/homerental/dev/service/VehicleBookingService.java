@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.homerental.dev.dao.VehicleBookingRepository;
 import com.homerental.dev.entity.VehicleBooking;
+import com.homerental.dev.responseModels.BookingResponse;
 
 @Service
 public class VehicleBookingService {
@@ -16,5 +17,9 @@ public class VehicleBookingService {
 
     public List<VehicleBooking> getAllUserBookingsByEmail(String email){
         return vehicleBookingRepository.findUserBookingByEmail(email);
+    }
+
+    public List<BookingResponse> getBookingsByUserEmail(String email) {
+        return vehicleBookingRepository.findBookingsByUserEmail(email);
     }
 }

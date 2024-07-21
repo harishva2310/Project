@@ -40,4 +40,6 @@ public class VehicleBooking {
 
     @Column(name="total_fare")
     private Double total_fare;
+
+
 }
