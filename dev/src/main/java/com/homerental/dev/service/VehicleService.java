@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -51,12 +52,8 @@ public class VehicleService {
         redisTemplate.opsForValue().set(VEHICLE_CACHE_KEY, vehicles);
     }
 
-    public List<Vehicle> getCachedVehicles() {
-        // Retrieve cached data from Redis
-        Object cachedData = redisTemplate.opsForValue().get(VEHICLE_CACHE_KEY);
-        if (cachedData instanceof List) {
-            return (List<Vehicle>) cachedData;
-        }
-        return null;
+    @Cacheable(cacheNames = "vehicles") // Name of the cache
+    public List<Vehicle> getAllVehicles() {
+        return vehicleRepository.findAll();
     }
 }

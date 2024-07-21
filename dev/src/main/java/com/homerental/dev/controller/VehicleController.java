@@ -123,17 +123,8 @@ public class VehicleController {
     }
 
     @GetMapping("/cacheVehicles")
-    public ResponseEntity<?> cacheVehicles() {
-        try {
-            vehicleService.cacheVehicleData();
-            List<Vehicle> cachedVehicles = vehicleService.getCachedVehicles();
-            if (cachedVehicles != null) {
-                return ResponseEntity.ok(cachedVehicles);
-            } else {
-                return ResponseEntity.status(404).body("No cached data found");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error caching or retrieving vehicle data: " + e.getMessage());
-        }
+    public ResponseEntity<List<Vehicle>> getCachedVehicles() {
+        // Since "getAllVehicles" is cached, this will retrieve data from cache
+        return ResponseEntity.ok(vehicleService.getAllVehicles());
     }
 }
