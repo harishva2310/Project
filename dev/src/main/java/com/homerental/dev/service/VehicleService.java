@@ -1,7 +1,6 @@
 package com.homerental.dev.service;
 
 import java.sql.Timestamp;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.homerental.dev.dao.VehicleRepository;
 import com.homerental.dev.entity.Vehicle;
-import com.homerental.dev.entity.VehicleCache;
 import com.homerental.dev.responseModels.AvailableVehicles;
 
 
@@ -26,6 +24,8 @@ public class VehicleService {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    private static final String VEHICLE_CACHE_KEY = "vehicles";
 
     public Page<Object[]> getAvailableVehicles(Timestamp fromDate, Timestamp toDate, String city, String country,Pageable pageable) {
         return vehicleRepository.findAvailableVehicles(fromDate, toDate, city, country, pageable);
@@ -48,17 +48,15 @@ public class VehicleService {
     
     public void cacheVehicleData() {
         List<Vehicle> vehicles = vehicleRepository.findAll();
+        redisTemplate.opsForValue().set(VEHICLE_CACHE_KEY, vehicles);
+    }
 
-        for (Vehicle vehicle : vehicles) {
-            VehicleCache vehicleCache = new VehicleCache();
-            vehicleCache.setVehicleId(vehicle.getVehicle_id());
-            vehicleCache.setVehicleDescription(vehicle.getVehicle_description());
-            vehicleCache.setVehicleName(vehicle.getVehicle_name());
-            vehicleCache.setVehicleType(vehicle.getVehicle_type());
-            vehicleCache.setDayRate(vehicle.getDay_rate());
-            vehicleCache.setImg(Base64.getEncoder().encodeToString(vehicle.getImg()));
-
-            redisTemplate.opsForValue().set(String.valueOf(vehicle.getVehicle_id()), vehicleCache);
+    public List<Vehicle> getCachedVehicles() {
+        // Retrieve cached data from Redis
+        Object cachedData = redisTemplate.opsForValue().get(VEHICLE_CACHE_KEY);
+        if (cachedData instanceof List) {
+            return (List<Vehicle>) cachedData;
         }
+        return null;
     }
 }

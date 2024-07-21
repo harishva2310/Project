@@ -1,11 +1,13 @@
 package com.homerental.dev.entity;
 
-import lombok.AllArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@RedisHash("Vehicle")
 @Getter
 @Setter
 @Data
@@ -16,7 +18,7 @@ public class VehicleCache {
     private String vehicleName;
     private String vehicleType;
     private Double dayRate;
-    private String img;
+    private byte[] img;
 
 
 }
