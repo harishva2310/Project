@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Carousel } from 'react-bootstrap';
 import { SpinnerLoading } from "../../../util/SpinnerLoading";
 import VehicleModel from "../../../model/VehicleModel";
-import { fetchVehicleData } from "../../../service/FetchVehicle";
+import { fetchVehicleData } from "../../../service/FetchVehicleCache";
 import blobToBase64 from "../../../util/ConvertBlobtoBase64";
 import { ReturnVehicle } from "./ReturnVehicle";
 
