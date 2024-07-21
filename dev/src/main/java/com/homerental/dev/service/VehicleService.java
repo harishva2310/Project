@@ -52,7 +52,7 @@ public class VehicleService {
         redisTemplate.opsForValue().set(VEHICLE_CACHE_KEY, vehicles);
     }
 
-    @Cacheable(cacheNames = "vehicles") // Name of the cache
+    @Cacheable(value = "vehicles")// Name of the cache
     public List<Vehicle> getAllVehicles() {
         return vehicleRepository.findAll();
     }
