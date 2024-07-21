@@ -121,4 +121,10 @@ public class VehicleController {
 
         return ResponseEntity.ok("Vehicle added successfully");
     }
+
+    @GetMapping("/cacheVehicles")
+    public String cacheVehicles() {
+        vehicleService.cacheVehicleData();
+        return "Vehicle data cached successfully!";
+    }
 }
