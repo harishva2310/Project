@@ -3,6 +3,8 @@ package com.homerental.dev.entity;
 
 
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +17,9 @@ import lombok.Data;
 @Entity
 @Table(name="VEHICLE")
 @Data
-public class Vehicle {
+public class Vehicle implements Serializable{
+
+    private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
