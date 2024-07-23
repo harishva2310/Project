@@ -56,7 +56,7 @@ private VehicleLocationRepository vehiclelocationRepository;
             vehicleLocation.setLocation_id(locationId);
             vehicleLocation.setVehicle_id(vehicleId);
             vehiclelocationRepository.save(vehicleLocation);
-            return ResponseEntity.ok("Vehicle added successfully");
+            return ResponseEntity.ok("Vehicle added to location successfully");
         }
 
 }
