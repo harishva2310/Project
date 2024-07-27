@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.homerental.dev.dao.VehicleRepository;
 import com.homerental.dev.entity.Vehicle;
 import com.homerental.dev.responseModels.AvailableVehicles;
+import com.homerental.dev.responseModels.AvailableVehiclesV3;
 
 
 @Service
@@ -47,6 +48,24 @@ public class VehicleService {
         return new PageImpl<>(availableVehicles, pageable, totalElements);
     }
     
+    public Page<AvailableVehiclesV3> getAvailableVehiclesV3(Timestamp fromDate, Timestamp toDate, String city, String country,Pageable pageable) {
+        List<Object[]> results = vehicleRepository.findAvailableVehiclesV3(fromDate, toDate, city, country, pageable);
+        List<AvailableVehiclesV3> availableVehicles = results.stream()
+            .map(obj -> new AvailableVehiclesV3(
+                ((Number) obj[0]).longValue(), 
+                (String) obj[1], 
+                ((Number) obj[2]).longValue(), 
+                ((Number) obj[3]).longValue(),
+                (String) obj[4],
+                (String) obj[5],
+                (String) obj[6],
+                (String) obj[7]
+                ))
+            .collect(Collectors.toList());
+            long totalElements = vehicleRepository.countAvailableVehiclesV2(fromDate, toDate, city, country);
+        return new PageImpl<>(availableVehicles, pageable, totalElements);
+    }
+
     public void cacheVehicleData() {
         List<Vehicle> vehicles = vehicleRepository.findAll();
         redisTemplate.opsForValue().set(VEHICLE_CACHE_KEY, vehicles);
