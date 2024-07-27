@@ -1,6 +1,7 @@
 package com.homerental.dev.service;
 
 import java.sql.Timestamp;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,8 +52,11 @@ public class VehicleService {
     public Page<AvailableVehiclesV3> getAvailableVehiclesV3(Timestamp fromDate, Timestamp toDate, String city, String country,Pageable pageable) {
         List<Object[]> results = vehicleRepository.findAvailableVehiclesV3(fromDate, toDate, city, country, pageable);
         List<AvailableVehiclesV3> availableVehicles = results.stream()
-            .map(obj -> new AvailableVehiclesV3(
-                ((Number) obj[0]).longValue(), 
+        .map(obj -> {
+            Long vehicleId = ((Number) obj[0]).longValue();
+            byte[] img = vehicleRepository.findVehicleImageById(vehicleId);
+            return new AvailableVehiclesV3(
+                vehicleId, 
                 (String) obj[1], 
                 ((Number) obj[2]).longValue(), 
                 ((Number) obj[3]).longValue(),
@@ -62,12 +66,15 @@ public class VehicleService {
                 (String) obj[7],
                 ((Number) obj[8]).doubleValue(),
                 (String) obj[9],
-                (byte[]) obj[10]
-                ))
-            .collect(Collectors.toList());
+                Base64.getEncoder().encodeToString(img)
+            );
+        })
+        .collect(Collectors.toList());
             long totalElements = vehicleRepository.countAvailableVehiclesV2(fromDate, toDate, city, country);
         return new PageImpl<>(availableVehicles, pageable, totalElements);
     }
+
+    
 
     public void cacheVehicleData() {
         List<Vehicle> vehicles = vehicleRepository.findAll();

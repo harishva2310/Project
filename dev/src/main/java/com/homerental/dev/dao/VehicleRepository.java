@@ -233,8 +233,7 @@ FROM (
             l1.location_address,
             l1.location_zip,
             v1.day_rate,
-            v1.vehicle_description,
-            v1.img,
+            v1.vehicle_description
 
         FROM
             vehicle v1
@@ -249,7 +248,7 @@ FROM (
             AND l1.location_city = :city
             AND l1.location_country= :country
         ORDER BY v1.day_rate
-                    """,countQuery =count_queryV2, nativeQuery = true)
+                    """,countQuery =count_queryV3, nativeQuery = true)
                     List<Object[]> findAvailableVehiclesV3 (
             @Param("fromdate") Timestamp fromDate,
             @Param("todate") Timestamp toDate,
@@ -264,4 +263,7 @@ FROM (
     @Param("todate") Timestamp toDate, 
     @Param("city") String city, 
     @Param("country") String country);
+
+    @Query("SELECT v.img FROM Vehicle v WHERE v.vehicle_id = :vehicleId")
+    byte[] findVehicleImageById(@Param("vehicleId") Long vehicleId);
 }

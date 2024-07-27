@@ -11,10 +11,10 @@ public class AvailableVehiclesV3 {
     private String locationZip;
     private Double dayRate; 
     private String vehicleDescription;
-    private byte[] img;
+    private String img;
 
 
-    public AvailableVehiclesV3(Long vehicleId, String vehicleName, Long vehicleLocationId, Long locationId, String vehicleType,String locationName,String locationAddress,String locationZip, Double dayRate, String vehicleDescription, byte[] img) {
+    public AvailableVehiclesV3(Long vehicleId, String vehicleName, Long vehicleLocationId, Long locationId, String vehicleType,String locationName,String locationAddress,String locationZip, Double dayRate, String vehicleDescription, String img) {
         this.vehicleId = vehicleId;
         this.vehicleName = vehicleName;
         this.vehicleLocationId = vehicleLocationId;
@@ -117,11 +117,11 @@ public class AvailableVehiclesV3 {
         this.vehicleDescription = vehicleDescription;
     }
 
-    public byte[] getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(byte[] img) {
+    public void setImg(String img) {
         this.img = img;
     }
 }
