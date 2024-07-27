@@ -231,7 +231,8 @@ FROM (
             v1.vehicle_type,
             l1.location_name,
             l1.location_address,
-            l1.location_zip
+            l1.location_zip,
+            v1.day_rate
         FROM
             vehicle v1
         JOIN

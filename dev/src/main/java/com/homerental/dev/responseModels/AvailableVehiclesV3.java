@@ -9,9 +9,10 @@ public class AvailableVehiclesV3 {
     private String locationName;
     private String locationAddress;
     private String locationZip;
+    private Double dayRate; 
 
 
-    public AvailableVehiclesV3(Long vehicleId, String vehicleName, Long vehicleLocationId, Long locationId, String vehicleType,String locationName,String locationAddress,String locationZip) {
+    public AvailableVehiclesV3(Long vehicleId, String vehicleName, Long vehicleLocationId, Long locationId, String vehicleType,String locationName,String locationAddress,String locationZip, Double dayRate) {
         this.vehicleId = vehicleId;
         this.vehicleName = vehicleName;
         this.vehicleLocationId = vehicleLocationId;
@@ -20,6 +21,7 @@ public class AvailableVehiclesV3 {
         this.locationName=locationName;
         this.locationAddress=locationAddress;
         this.locationZip=locationZip;
+        this.dayRate=dayRate;
     }
     // Getters and setters
     
@@ -93,5 +95,13 @@ public class AvailableVehiclesV3 {
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
+    }
+
+    public Double getDayRate() {
+        return dayRate;
+    }
+
+    public void setDayRate(Double dayRate) {
+        this.dayRate = dayRate;
     }
 }
