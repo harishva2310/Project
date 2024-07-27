@@ -10,9 +10,11 @@ public class AvailableVehiclesV3 {
     private String locationAddress;
     private String locationZip;
     private Double dayRate; 
+    private String vehicleDescription;
+    private byte[] img;
 
 
-    public AvailableVehiclesV3(Long vehicleId, String vehicleName, Long vehicleLocationId, Long locationId, String vehicleType,String locationName,String locationAddress,String locationZip, Double dayRate) {
+    public AvailableVehiclesV3(Long vehicleId, String vehicleName, Long vehicleLocationId, Long locationId, String vehicleType,String locationName,String locationAddress,String locationZip, Double dayRate, String vehicleDescription, byte[] img) {
         this.vehicleId = vehicleId;
         this.vehicleName = vehicleName;
         this.vehicleLocationId = vehicleLocationId;
@@ -22,6 +24,8 @@ public class AvailableVehiclesV3 {
         this.locationAddress=locationAddress;
         this.locationZip=locationZip;
         this.dayRate=dayRate;
+        this.vehicleDescription=vehicleDescription;
+        this.img=img;
     }
     // Getters and setters
     
@@ -103,5 +107,21 @@ public class AvailableVehiclesV3 {
 
     public void setDayRate(Double dayRate) {
         this.dayRate = dayRate;
+    }
+
+    public String getVehicleDescription() {
+        return vehicleDescription;
+    }
+
+    public void setVehicleDescription(String vehicleDescription) {
+        this.vehicleDescription = vehicleDescription;
+    }
+
+    public byte[] getImg() {
+        return img;
+    }
+
+    public void setImg(byte[] img) {
+        this.img = img;
     }
 }

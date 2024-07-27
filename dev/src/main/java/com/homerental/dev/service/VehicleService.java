@@ -60,7 +60,9 @@ public class VehicleService {
                 (String) obj[5],
                 (String) obj[6],
                 (String) obj[7],
-                ((Number) obj[8]).doubleValue()
+                ((Number) obj[8]).doubleValue(),
+                (String) obj[9],
+                (byte[]) obj[10]
                 ))
             .collect(Collectors.toList());
             long totalElements = vehicleRepository.countAvailableVehiclesV2(fromDate, toDate, city, country);
