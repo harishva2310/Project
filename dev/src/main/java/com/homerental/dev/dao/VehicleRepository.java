@@ -232,7 +232,10 @@ FROM (
             l1.location_name,
             l1.location_address,
             l1.location_zip,
-            v1.day_rate
+            v1.day_rate,
+            v1.vehicle_description,
+            v1.img,
+
         FROM
             vehicle v1
         JOIN
