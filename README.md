@@ -3,6 +3,19 @@
 
 This is a fully scalable, Docker and Kubernetes-ready application built using Typescript ,ReactJS with Bootstrap and Mobirise CSS for the frontend service, Spring framework for backend service, Oracle Autonomous Database for transaction processing and Redis for caching.
 
+# Technologies and Softwares Used
+
+•	Oracle Autonomous Database for transaction processing and storage
+•	Spring Boot backend microservice for REST APIs, query processing
+•	Typescript and ReactJS frontend microservice with Bootstrap CSS for user-friendly UI
+•	Okta for OAuth2.0 authentication with JWT tokens for security
+•	Stripe API for payments processing
+•	Nginx for load-balancing and reverse-proxy requests
+•	Redis caching for improving response time and reducing load on database
+•	Deployed using Docker and Kubernetes for high scalability and availability
+•	Jenkins and Git for CI/CD
+
+
 # Screenshots
 
 ## Home Page
