@@ -8,6 +8,8 @@ class AvailableVehicleV3{
     locationAddress: string;
     locationZip: string;
     dayRate: number;
+    vehicleDescription: string;
+    img: string;
     constructor (vehicleId: number,
         vehicleName: string,
         vehicleLocationId: number,
@@ -16,7 +18,9 @@ class AvailableVehicleV3{
         locationName: string,
         locationAddress: string,
         locationZip: string,
-        dayRate: number){
+        dayRate: number,
+        vehicleDescription: string,
+        img: string){
             this.vehicleId=vehicleId;
             this.vehicleName=vehicleName;
             this.vehicleLocationId=vehicleLocationId;
@@ -26,6 +30,8 @@ class AvailableVehicleV3{
             this.locationAddress=locationAddress;
             this.locationZip=locationZip;
             this.dayRate=dayRate;
+            this.vehicleDescription=vehicleDescription;
+            this.img=img;
         }
 }
 export default AvailableVehicleV3;
