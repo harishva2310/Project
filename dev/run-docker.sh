@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 sudo docker rmi --force harishva1910/backend || true
 
 

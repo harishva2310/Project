@@ -167,4 +167,103 @@ FROM (
     @Param("todate") Timestamp toDate, 
     @Param("city") String city, 
     @Param("country") String country);
+
+
+
+    String count_queryV3 = """
+                    WITH booked_vehicles AS (
+          SELECT vb.vehicle_id
+          FROM vehicle v
+          JOIN vehicle_booking vb ON v.vehicle_id = vb.vehicle_id
+          JOIN vehicle_location vl ON vb.vehicle_location_id = vl.vehicle_location_id
+          JOIN location l ON vl.location_id = l.location_id
+          WHERE vb.from_date <= :todate
+            AND vb.to_date >= :fromdate
+        )
+        SELECT COUNT(*)
+        FROM (
+          SELECT
+            v1.vehicle_id,
+            v1.vehicle_name,
+            vl1.vehicle_location_id,
+            l1.location_id,
+            v1.vehicle_type,
+            l1.location_name,
+            l1.location_address,
+            l1.location_zip
+          FROM
+            vehicle v1
+            JOIN vehicle_location vl1 ON v1.vehicle_id = vl1.vehicle_id
+            JOIN location l1 ON vl1.location_id = l1.location_id
+            LEFT JOIN booked_vehicles bv ON v1.vehicle_id = bv.vehicle_id
+          WHERE
+            bv.vehicle_id IS NULL
+            AND l1.location_city = :city
+            AND l1.location_country = :country
+        ) subquery""";
+
+        @Query(value = """
+                    
+    WITH booked_vehicles
+
+    AS (
+            
+
+    SELECT
+                vb.vehicle_id
+            FROM
+                vehicle v
+            JOIN
+                vehicle_booking vb ON v.vehicle_id = vb.vehicle_id
+            JOIN
+                vehicle_location vl ON vb.vehicle_location_id = vl.vehicle_location_id
+            JOIN
+                location l ON vl.location_id = l.location_id
+            WHERE
+                vb.from_date <= :todate
+                AND vb.to_date >= :fromdate
+        )
+        SELECT 
+            v1.vehicle_id,
+            v1.vehicle_name,
+            vl1.vehicle_location_id,
+            l1.location_id,
+            v1.vehicle_type,
+            l1.location_name,
+            l1.location_address,
+            l1.location_zip,
+            v1.day_rate,
+            v1.vehicle_description
+
+        FROM
+            vehicle v1
+        JOIN
+            vehicle_location vl1 ON v1.vehicle_id = vl1.vehicle_id
+        JOIN
+            location l1 ON vl1.location_id = l1.location_id
+        LEFT JOIN
+            booked_vehicles bv ON v1.vehicle_id = bv.vehicle_id
+        WHERE
+            bv.vehicle_id IS NULL
+            AND l1.location_city = :city
+            AND l1.location_country= :country
+        ORDER BY v1.day_rate
+                    """,countQuery =count_queryV3, nativeQuery = true)
+                    List<Object[]> findAvailableVehiclesV3 (
+            @Param("fromdate") Timestamp fromDate,
+            @Param("todate") Timestamp toDate,
+            @Param("city") String city,
+            @Param("country") String country,
+            Pageable pageable);
+
+
+    @Query(value=count_queryV3, nativeQuery=true)
+    long countAvailableVehiclesV3(
+    @Param("fromdate") Timestamp fromDate, 
+    @Param("todate") Timestamp toDate, 
+    @Param("city") String city, 
+    @Param("country") String country);
+
+    @Query("SELECT v.img FROM Vehicle v WHERE v.vehicle_id = :vehicleId")
+    byte[] findVehicleImageById(@Param("vehicleId") Long vehicleId);
 }

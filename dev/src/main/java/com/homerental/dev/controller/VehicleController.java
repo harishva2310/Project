@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.homerental.dev.dao.VehicleRepository;
 import com.homerental.dev.entity.Vehicle;
 import com.homerental.dev.responseModels.AvailableVehicles;
+import com.homerental.dev.responseModels.AvailableVehiclesV3;
 import com.homerental.dev.service.VehicleService;
 @RestController
 @RequestMapping("/api/vehicles")
@@ -86,6 +87,25 @@ public class VehicleController {
             Timestamp toDate = Timestamp.valueOf(toDateStr.replace("T", " "));
             Pageable pageable = PageRequest.of(page, size);
             Page<AvailableVehicles> availableVehiclesV2 = vehicleService.getAvailableVehiclesV2(fromDate, toDate, city, country, pageable);
+            return ResponseEntity.ok(availableVehiclesV2);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/v3/availablevehicles")
+    public ResponseEntity<Page<AvailableVehiclesV3>> getAvailableVehiclesV3(
+            @RequestParam("fromdate") String fromDateStr,
+            @RequestParam("todate") String toDateStr,
+            @RequestParam("city") String city,
+            @RequestParam("country") String country,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        try {
+            Timestamp fromDate = Timestamp.valueOf(fromDateStr.replace("T", " "));
+            Timestamp toDate = Timestamp.valueOf(toDateStr.replace("T", " "));
+            Pageable pageable = PageRequest.of(page, size);
+            Page<AvailableVehiclesV3> availableVehiclesV2 = vehicleService.getAvailableVehiclesV3(fromDate, toDate, city, country, pageable);
             return ResponseEntity.ok(availableVehiclesV2);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);

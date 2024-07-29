@@ -16,7 +16,6 @@ import com.homerental.dev.dao.PaymentRepository;
 import com.homerental.dev.entity.Payment;
 import com.homerental.dev.requestModels.PaymentInfoRequest;
 import com.stripe.Stripe;
-
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 
