@@ -8,7 +8,8 @@ import { SpinnerLoading } from '../../util/SpinnerLoading';
 import { fetchVehicleDataByID } from '../../service/FetchVehicleByID';
 import { useOktaAuth } from '@okta/okta-react';
 import { CustomUserClaims, UserClaims } from '@okta/okta-auth-js';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+
 export interface UserInfo {
     name?: string;
     email?: string;
@@ -23,12 +24,82 @@ const ConfirmationPage = () => {
     const [totalRate, setTotalRate] = useState<number>(0);
     const { authState, oktaAuth } = useOktaAuth();
     const [userInfo, setUserInfo] = useState<UserClaims<CustomUserClaims> | null>(null);
+    const [response, setResponse] = useState(null);
+    const [error, setError] = useState(null);
 
     const formatDate = (isoDateString: string): string => {
         const date = new Date(isoDateString);
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' } as const;
         return date.toLocaleDateString('en-US', options);
     };
+
+    const MJ_APIKEY_PUBLIC="50b59ad087f0ed770ccbbcc5acc7d519";
+    const MJ_APIKEY_PRIVATE="9f57b1ad4d3af0e054a82b44a61d3943";
+    
+    const mailjetApiUrl = 'https://api.mailjet.com/v3.1/send';
+    const email_body={
+        "Messages": [
+            {
+                "From": {
+                    "Email": "harish.va1910@gmail.com",
+                    "Name": "Vehicle Rental Inc"
+                },
+                "To": [
+                    {
+                        "Email": userInfo?.email,
+                        "Name": userInfo?.name
+                    }
+                ],
+                "TemplateID": 6183517,
+                "TemplateLanguage": true,
+                "Subject": "Booking Details",
+                "Variables": {
+                    "firstname": userInfo?.name,
+                    "vehicle_name": vehicles?.vehicle_name,
+                    "vehicle_type": vehicles?.vehicle_type,
+                    "vehicle_description": vehicles?.vehicle_description,
+                    "day_rate": vehicles?.day_rate,
+                    "location_name": locations?.location_name,
+                    "location_description": locations?.location_description,
+                    "location_address": locations?.location_address,
+                    "location_city": locations?.location_city,
+                    "location_state": locations?.location_state,
+                    "location_country": locations?.location_country,
+                    "location_zip": locations?.location_zip,
+                    "from": formatDate(bookingDetails.from_date),
+                    "to": formatDate(bookingDetails.to_date),
+                    "total": bookingDetails.total_fare
+                }
+            }
+        ]
+    }
+
+    useEffect(() => {
+        const config = {
+          method: 'post',
+          url: `${mailjetApiUrl}`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Basic ${btoa(`${MJ_APIKEY_PUBLIC}:${MJ_APIKEY_PRIVATE}`)}`
+          },
+          data: JSON.stringify(email_body),
+        };
+        
+      
+        console.log(config); // Log the config object to verify the Authorization header
+      
+        const sendEmail = () => {
+          axios(config)
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        };
+        sendEmail();
+      }, [authState, oktaAuth, userInfo, vehicles, locations, bookingDetails]);
+        
 
     useEffect(() => {
         console.log(authState, oktaAuth)
@@ -66,7 +137,7 @@ const ConfirmationPage = () => {
             try {
                 const data = await fetchVehicleDataByID(bookingDetails.vehicle_id);
                 setVehicles(data);
-                
+
             } catch (error) {
                 console.error('Error fetching locations:', error);
             } finally {
@@ -81,9 +152,9 @@ const ConfirmationPage = () => {
         return <SpinnerLoading />;
     }
 
-    return(
+    return (
         <>
-        <section data-bs-version="5.1" className="header14 cid-sFzz5E692j" id="header14-1j">
+            <section data-bs-version="5.1" className="header14 cid-sFzz5E692j" id="header14-1j">
                 <div className="container">
                     <div className="row justify-content-center align-items-center">
                         <div className="col-12 col-md-6 image-wrapper">
@@ -109,7 +180,7 @@ const ConfirmationPage = () => {
                     </div>
                 </div>
             </section>
-            </>
+        </>
     );
 
 }

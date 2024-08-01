@@ -27,7 +27,7 @@ const SearchVehicleV3 = () => {
     const [fromTime, setFromTime] = useState<string>('00:00');
     const [toTime, setToTime] = useState<string>('23:59');
     const [availableVehicles, setAvailableVehicles] = useState<AvailableVehicleV3[]>([]);
-    const [availableVehiclesFiltered, setAvailableVehiclesFiltered]= useState<AvailableVehicleV3[]>([]);
+    const [availableVehiclesFiltered, setAvailableVehiclesFiltered] = useState<AvailableVehicleV3[]>([]);
     const [vehicleTypes, setVehicleTypes] = useState<VehicleTypeModel[]>([]);
     const [vehicles, setVehicles] = useState<VehicleModel[]>([]);
     const [vehicleLocations, setVehicleLocations] = useState<VehicleLocationModel[]>([]);
@@ -38,7 +38,8 @@ const SearchVehicleV3 = () => {
     const [sortOption, setSortOption] = useState<string>('');
     const [filterOption, setFilterOption] = useState<string>('');
     const [filteredVehicles, setFilteredVehicles] = useState<VehicleModel[]>([]);
-    
+    const sysDate = new Date();
+
     const navigate = useNavigate();
 
     const calculateTotalRates = (vehicles: AvailableVehicleV3[], fromDate: string, toDate: string) => {
@@ -87,9 +88,9 @@ const SearchVehicleV3 = () => {
     }, [totalPages]);
 
     useEffect(() => {
-        if (selectedCity !== '' && selectedCountry !== '' && fromDate !== '' && toDate !== '' && fromTime !== '' && toTime !== '' && (filterOption==='' || filterOption!=='')) {
+        if (selectedCity !== '' && selectedCountry !== '' && fromDate !== '' && toDate !== '' && fromTime !== '' && toTime !== '' && (filterOption === '' || filterOption !== '')) {
             handleSearch(page);
-            
+
         }
     }, [selectedCity, selectedCountry, fromDate, toDate, fromTime, toTime]);
 
@@ -109,12 +110,27 @@ const SearchVehicleV3 = () => {
     };
 
     const handleFromDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFromDate(event.target.value);
-        setToDate(event.target.value);
+        const selectedDate = new Date(event.target.value);
+        if (selectedDate >= sysDate) {
+            setFromDate(event.target.value);
+            setToDate(event.target.value);
+        }
+        else
+        {
+            const sysDateStr = sysDate.toISOString().split('T')[0];
+            setFromDate(sysDateStr);
+            setToDate(sysDateStr);
+        }
     };
 
     const handleToDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setToDate(event.target.value);
+        if (event.target.value >= fromDate) {
+            setToDate(event.target.value);
+        }
+        else {
+            setToDate(fromDate);
+        }
+
 
     };
 
@@ -148,12 +164,12 @@ const SearchVehicleV3 = () => {
             setSelectedLocations([]);
             setVehicleLocations([]);
             setTotalRate([]);
-            
+
 
             try {
                 const fromDateTime = formatDateTime(fromDate, fromTime);
                 const toDateTime = formatDateTime(toDate, toTime);
-                
+
                 const response = await axios.get(`/api/vehicles/v3/availablevehicles`, {
                     params: {
                         fromdate: fromDateTime,
@@ -203,7 +219,7 @@ const SearchVehicleV3 = () => {
         });
 
         setAvailableVehiclesFiltered(sortedVehicles);
-        
+
     };
 
     const filterVehicles = (option: string) => {
@@ -214,7 +230,7 @@ const SearchVehicleV3 = () => {
             setAvailableVehiclesFiltered(filtered);
         }
 
-        
+
     };
 
     if (loading) {
@@ -290,182 +306,182 @@ const SearchVehicleV3 = () => {
 
     return (
         <>
-            <div>
-                <div className='container'>
-                    <div>
-                        <div className='row mt-5'>
-                            <div className='col-md-2'>
-                                <div className='mb-2'>
-                                    <label htmlFor="city" className="form-label">City</label>
-                                    <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select" required>
-                                        <option value="">Select a city</option>
-                                        {uniqueCities.map(city => (
-                                            <option key={city} value={city}>
-                                                {city}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+
+            <div className='container'>
+                <div>
+                    <div className='row mt-5'>
+                        <div className='col-md-2'>
+                            <div className='mb-2'>
+                                <label htmlFor="city" className="form-label">City</label>
+                                <select id="city" value={selectedCity} onChange={handleCityChange} className="form-select" required>
+                                    <option value="">Select a city</option>
+                                    {uniqueCities.map(city => (
+                                        <option key={city} value={city}>
+                                            {city}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
-                            <div className='col-md-2'>
-                                <div className="mb-2">
-                                    <label htmlFor="country" className="form-label">Country</label>
-                                    <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select" required>
-                                        <option value="">Select Country</option>
-                                        {uniqueCountries.map(country => (
-                                            <option key={country} value={country}>
-                                                {country}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className='col-md-2'>
-                                <div className="mb-2">
-                                    <label htmlFor="fromDate" className="form-label">From</label>
-                                    <input type="date" id="fromDate" className="form-control" required value={fromDate} onChange={handleFromDateChange} />
-                                </div>
-                            </div>
-                            <div className='col-md-2'>
-                                <div className="mb-2">
-                                    <label htmlFor="toDate" className="form-label">To</label>
-                                    <input type="date" id="toDate" className="form-control" required value={toDate} onChange={handleToDateChange} />
-                                </div>
-                            </div>
-                            <div className='col-md-2'>
-                                <div className="mb-2">
-                                    <label htmlFor="fromTime" className="form-label">From Time</label>
-                                    <input type="time" id="fromTime" className="form-control" value={fromTime} onChange={handleFromTimeChange} required min="09:00" max="17:00" />
-                                </div>
-                            </div>
-                            <div className='col-md-2'>
-                                <div className="mb-2">
-                                    <label htmlFor="toTime" className="form-label">To Time</label>
-                                    <input type="time" id="toTime" className="form-control" value={toTime} onChange={handleToTimeChange} required min="09:00" max="17:00" />
-                                </div>
-                            </div>
-                            
                         </div>
+                        <div className='col-md-2'>
+                            <div className="mb-2">
+                                <label htmlFor="country" className="form-label">Country</label>
+                                <select id="country" value={selectedCountry} onChange={handleCountryChange} className="form-select" required>
+                                    <option value="">Select Country</option>
+                                    {uniqueCountries.map(country => (
+                                        <option key={country} value={country}>
+                                            {country}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                        <div className='col-md-2'>
+                            <div className="mb-2">
+                                <label htmlFor="fromDate" className="form-label">From</label>
+                                <input type="date" id="fromDate" className="form-control" required value={fromDate} onChange={handleFromDateChange} />
+                            </div>
+                        </div>
+                        <div className='col-md-2'>
+                            <div className="mb-2">
+                                <label htmlFor="toDate" className="form-label">To</label>
+                                <input type="date" id="toDate" className="form-control" required value={toDate} onChange={handleToDateChange} />
+                            </div>
+                        </div>
+                        <div className='col-md-2'>
+                            <div className="mb-2">
+                                <label htmlFor="fromTime" className="form-label">From Time</label>
+                                <input type="time" id="fromTime" className="form-control" value={fromTime} onChange={handleFromTimeChange} required min="09:00" max="17:00" />
+                            </div>
+                        </div>
+                        <div className='col-md-2'>
+                            <div className="mb-2">
+                                <label htmlFor="toTime" className="form-label">To Time</label>
+                                <input type="time" id="toTime" className="form-control" value={toTime} onChange={handleToTimeChange} required min="09:00" max="17:00" />
+                            </div>
+                        </div>
+
                     </div>
+                </div>
+            </div>
+
+            <div className="container">
+                <div className="row mb-4">
+                    <div className="col-md-4">
+                        <label htmlFor="sort" className="form-label">Sort by Fare</label>
+                        <select id="sort" value={sortOption} onChange={handleSortChange} className="form-select">
+
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </div>
+
+                    <div className="col-md-4">
+                        <label htmlFor="filter" className="form-label">Filter by Type</label>
+                        <select id="filter" value={filterOption} onChange={handleFilterChange} className="form-select">
+                            <option value="">All types</option>
+                            {uniqueVehicleTypes.map(type => (
+                                <option key={type} value={type}>
+                                    {type}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className='col-12 text-center'>
+                        <button type="submit" className="btn btn-primary" onClick={handleSearchClick}>Search</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <section data-bs-version="5.1" className="features9 cid-uhChHy94BR mbr-parallax-background" id="features9-0">
+
+
+
+
+                <div className="mbr-overlay" style={{ opacity: 0.5, backgroundColor: 'rgb(190, 211, 249)' }}>
                 </div>
 
                 <div className="container">
-                    <div className="row mb-4">
-                        <div className="col-md-4">
-                            <label htmlFor="sort" className="form-label">Sort by Fare</label>
-                            <select id="sort" value={sortOption} onChange={handleSortChange} className="form-select">
-
-                                <option value="asc">Ascending</option>
-                                <option value="desc">Descending</option>
-                            </select>
-                        </div>
-
-                        <div className="col-md-4">
-                            <label htmlFor="filter" className="form-label">Filter by Type</label>
-                            <select id="filter" value={filterOption} onChange={handleFilterChange} className="form-select">
-                                <option value="">All types</option>
-                                {uniqueVehicleTypes.map(type => (
-                                    <option key={type} value={type}>
-                                        {type}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className='col-12 text-center'>
-                                <button type="submit" className="btn btn-primary" onClick={handleSearchClick}>Search</button>
-                        </div>
-                    </div>
-                </div>
-
-                
-
-                <section data-bs-version="5.1" className="features9 cid-uhChHy94BR mbr-parallax-background" id="features9-0">
-
-
-
-
-                    <div className="mbr-overlay" style={{ opacity: 0.5, backgroundColor: 'rgb(190, 211, 249)' }}>
-                    </div>
-
-                    <div className="container">
-                        {availableVehiclesFiltered.length > 0 ? (
-                            <>
-                                {availableVehiclesFiltered.map((vehicle, index) => (
-                                    <div className="item features-image" key={vehicle.vehicleId}>
-                                        <div className="item-wrapper">
-                                            <div className="row align-items-center">
-                                                <div className="col-12 col-md-4">
-                                                    <div className="image-wrapper">
-                                                        <img src={`data:image/jpg;base64,${vehicle.img}`} alt="..." />
-                                                    </div>
+                    {availableVehiclesFiltered.length > 0 ? (
+                        <>
+                            {availableVehiclesFiltered.map((vehicle, index) => (
+                                <div className="item features-image" key={vehicle.vehicleId}>
+                                    <div className="item-wrapper">
+                                        <div className="row align-items-center">
+                                            <div className="col-12 col-md-4">
+                                                <div className="image-wrapper">
+                                                    <img src={`data:image/jpg;base64,${vehicle.img}`} alt="..." />
                                                 </div>
-                                                <div className="col-12 col-md">
-                                                    <div className="card-box">
-                                                        <div className="row">
-                                                            <div className="col-md">
-                                                                <h6 className="card-title mbr-fonts-style display-5">
-                                                                    <strong> {vehicle.vehicleName} </strong>
-                                                                </h6>
-                                                                <p className="mbr-text mbr-fonts-style display-7">
+                                            </div>
+                                            <div className="col-12 col-md">
+                                                <div className="card-box">
+                                                    <div className="row">
+                                                        <div className="col-md">
+                                                            <h6 className="card-title mbr-fonts-style display-5">
+                                                                <strong> {vehicle.vehicleName} </strong>
+                                                            </h6>
+                                                            <p className="mbr-text mbr-fonts-style display-7">
 
-                                                                    {vehicle.vehicleDescription}
-                                                                </p>
-                                                                <p className="mbr-text mbr-fonts-style display-7">
+                                                                {vehicle.vehicleDescription}
+                                                            </p>
+                                                            <p className="mbr-text mbr-fonts-style display-7">
 
-                                                                    {vehicle.vehicleType}
-                                                                </p>
-                                                                <p className="mbr-text mbr-fonts-style display-7">
-                                                                    Rate per day: ${vehicle.dayRate}
-                                                                </p>
-                                                            </div>
-                                                            <div className="col-md-auto">
-                                                                <p className="price mbr-fonts-style display-2">${totalRate[index]}</p>
-                                                                <div className="mbr-section-btn"><a
-                                                                    className="btn btn-primary display-4" onClick={() => handleViewDetails(availableVehiclesFiltered[index])}>
-                                                                    View Details
-                                                                </a></div>
-                                                            </div>
-                                                            <div></div>
+                                                                {vehicle.vehicleType}
+                                                            </p>
+                                                            <p className="mbr-text mbr-fonts-style display-7">
+                                                                Rate per day: ${vehicle.dayRate}
+                                                            </p>
                                                         </div>
+                                                        <div className="col-md-auto">
+                                                            <p className="price mbr-fonts-style display-2">${totalRate[index]}</p>
+                                                            <div className="mbr-section-btn"><a
+                                                                className="btn btn-primary display-4" onClick={() => handleViewDetails(availableVehiclesFiltered[index])}>
+                                                                View Details
+                                                            </a></div>
+                                                        </div>
+                                                        <div></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                ))}
-
-                                <div className="d-flex justify-content-center mt-5 mb-5">
-                                    <ul className="pagination pagination-lg justify-content-end">
-                                        <li className="page-item">
-                                            <a className="page-link" onClick={handlePreviousPage}>Previous</a>
-                                        </li>
-
-                                        {renderPageNumbers()}
-
-                                        <li className="page-item">
-                                            <a className="page-link" onClick={handleNextPage}>Next</a>
-                                        </li>
-
-                                    </ul>
                                 </div>
-                            </>
-                        ) : (
+                            ))}
 
-                            <div className="mbr-section-head">
-                                <h4 className="mbr-section-title mbr-fonts-style align-center mb-5 display-2">
-                                    <strong>Select the location and timings to see all available Vehicles</strong></h4>
+                            <div className="d-flex justify-content-center mt-5 mb-5">
+                                <ul className="pagination pagination-lg justify-content-end">
+                                    <li className="page-item">
+                                        <a className="page-link" onClick={handlePreviousPage}>Previous</a>
+                                    </li>
 
+                                    {renderPageNumbers()}
+
+                                    <li className="page-item">
+                                        <a className="page-link" onClick={handleNextPage}>Next</a>
+                                    </li>
+
+                                </ul>
                             </div>
+                        </>
+                    ) : (
 
-                        )}
+                        <div className="mbr-section-head">
+                            <h4 className="mbr-section-title mbr-fonts-style align-center mb-5 display-2">
+                                <strong>Select the location and timings to see all available Vehicles</strong></h4>
 
-                    </div>
-                </section>
+                        </div>
+
+                    )}
+
+                </div>
+            </section>
 
 
 
-            </div>
+
         </>
     );
 
