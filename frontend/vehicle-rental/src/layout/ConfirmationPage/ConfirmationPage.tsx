@@ -9,6 +9,7 @@ import { fetchVehicleDataByID } from '../../service/FetchVehicleByID';
 import { useOktaAuth } from '@okta/okta-react';
 import { CustomUserClaims, UserClaims } from '@okta/okta-auth-js';
 import axios, { AxiosError } from 'axios';
+import mailjet from 'node-mailjet';
 
 export interface UserInfo {
     name?: string;
@@ -33,8 +34,7 @@ const ConfirmationPage = () => {
         return date.toLocaleDateString('en-US', options);
     };
 
-    const MJ_APIKEY_PUBLIC="50b59ad087f0ed770ccbbcc5acc7d519";
-    const MJ_APIKEY_PRIVATE="9f57b1ad4d3af0e054a82b44a61d3943";
+    
     
     const mailjetApiUrl = 'https://api.mailjet.com/v3.1/send';
     const email_body={
