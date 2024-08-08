@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.homerental.dev.dao.LocationRepository;
 import com.homerental.dev.dao.VehicleLocationRepository;
+import com.homerental.dev.dao.VehicleRepository;
+import com.homerental.dev.entity.Location;
+import com.homerental.dev.entity.Vehicle;
 import com.homerental.dev.entity.VehicleLocation;
+import com.homerental.dev.service.KafkaProducerService;
 
 
 @RestController
@@ -23,6 +28,15 @@ import com.homerental.dev.entity.VehicleLocation;
 public class VehicleLocationController {
 @Autowired
 private VehicleLocationRepository vehiclelocationRepository;
+
+@Autowired
+private LocationRepository locationRepository;
+
+@Autowired
+private KafkaProducerService kafkaProducerService;
+
+@Autowired
+private VehicleRepository vehicleRepository;
 
     @GetMapping
     public ResponseEntity<List<VehicleLocation>> getAllLocations(){
@@ -56,6 +70,19 @@ private VehicleLocationRepository vehiclelocationRepository;
             vehicleLocation.setLocation_id(locationId);
             vehicleLocation.setVehicle_id(vehicleId);
             vehiclelocationRepository.save(vehicleLocation);
+
+            Optional<Vehicle> vehicle=vehicleRepository.findById(vehicleId);
+            Optional<Location> location=locationRepository.findById(locationId);
+            if(vehicle.isPresent() && location.isPresent())
+            {
+                Vehicle vehicleEntity=vehicle.get();
+                Location locationEntity=location.get();
+                String locationCity=locationEntity.getLocation_city();
+                String locationName=locationEntity.getLocation_name();
+                String vehicleName=vehicleEntity.getVehicle_name();
+                String message = String.format("%s is now available at %s at our %s location. Book now!", vehicleName, locationCity,locationName);
+                kafkaProducerService.sendMessage(message);
+            }
             return ResponseEntity.ok("Vehicle added to location successfully");
         }
 

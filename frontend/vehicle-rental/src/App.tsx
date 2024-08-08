@@ -25,6 +25,7 @@ import AdminPage from './layout/AdminPage/AdminPage';
 import SearchVehicleV2 from './layout/SearchVehicle/SearchVehicleV2';
 import AddNewLocations from './layout/AddNewLocations/AddNewLocations';
 import SearchVehicleV3 from './layout/SearchVehicle/SearchVehicleV3';
+import Notifications from './layout/NotificationPage/Notifications';
 
 
 
@@ -55,6 +56,8 @@ export const App = () => {
           
           <Route path="/login/callback" element={<LoginCallback />} />
           <Route path="/searchvehicles" element={<SearchVehicleV3 />} />
+
+          <Route path="/notifications" element={<Notifications />} />
           
           <Route path="/addnewvehicle" element={<RequiredAuth />}>
             <Route path='' element={<AddNewVehicle />} />
