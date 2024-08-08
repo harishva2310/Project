@@ -8,7 +8,9 @@ import { SpinnerLoading } from '../../util/SpinnerLoading';
 import { fetchVehicleDataByID } from '../../service/FetchVehicleByID';
 import { useOktaAuth } from '@okta/okta-react';
 import { CustomUserClaims, UserClaims } from '@okta/okta-auth-js';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import mailjet from 'node-mailjet';
+
 export interface UserInfo {
     name?: string;
     email?: string;
@@ -23,6 +25,8 @@ const ConfirmationPage = () => {
     const [totalRate, setTotalRate] = useState<number>(0);
     const { authState, oktaAuth } = useOktaAuth();
     const [userInfo, setUserInfo] = useState<UserClaims<CustomUserClaims> | null>(null);
+    const [response, setResponse] = useState(null);
+    const [error, setError] = useState(null);
 
     const formatDate = (isoDateString: string): string => {
         const date = new Date(isoDateString);
@@ -30,6 +34,7 @@ const ConfirmationPage = () => {
         return date.toLocaleDateString('en-US', options);
     };
 
+    
     useEffect(() => {
         console.log(authState, oktaAuth)
         if (!authState || !authState.isAuthenticated) {
@@ -66,7 +71,7 @@ const ConfirmationPage = () => {
             try {
                 const data = await fetchVehicleDataByID(bookingDetails.vehicle_id);
                 setVehicles(data);
-                
+
             } catch (error) {
                 console.error('Error fetching locations:', error);
             } finally {
@@ -81,9 +86,9 @@ const ConfirmationPage = () => {
         return <SpinnerLoading />;
     }
 
-    return(
+    return (
         <>
-        <section data-bs-version="5.1" className="header14 cid-sFzz5E692j" id="header14-1j">
+            <section data-bs-version="5.1" className="header14 cid-sFzz5E692j" id="header14-1j">
                 <div className="container">
                     <div className="row justify-content-center align-items-center">
                         <div className="col-12 col-md-6 image-wrapper">
@@ -109,7 +114,7 @@ const ConfirmationPage = () => {
                     </div>
                 </div>
             </section>
-            </>
+        </>
     );
 
 }

@@ -98,90 +98,140 @@ const UserBookingsV2 = () => {
                     const data = apiResponse.data;
                     console.log("User booking data:", data);
                     const response = data.map((item: any) => new UserVehicleBookingsModel(
-                    item.vehicleBookingId ,
-                    item.vehicleName ,
-                    item.vehicleDescription ,
-                    item.vehicleType ,
-                    item.vehicleId ,
-                    item.dayRate ,
-                    item.locationId ,
-                    item.locationName ,
-                    item.locationDescription,
-                    item.locationAddress,
-                    item.locationCity ,
-                    item.locationState ,
-                    item.locationCountry,
-                    item.locationZip ,
-                    item.fromDate ,
-                    item.toDate ,
-                    item.totalFare,
-                    item.userEmail
+                        item.vehicleBookingId,
+                        item.vehicleName,
+                        item.vehicleDescription,
+                        item.vehicleType,
+                        item.vehicleId,
+                        item.dayRate,
+                        item.locationId,
+                        item.locationName,
+                        item.locationDescription,
+                        item.locationAddress,
+                        item.locationCity,
+                        item.locationState,
+                        item.locationCountry,
+                        item.locationZip,
+                        item.fromDate,
+                        item.toDate,
+                        item.totalFare,
+                        item.userEmail
                     ));
 
 
-    //const response = await fetchUserBookingData(userInfo.email);
+                    //const response = await fetchUserBookingData(userInfo.email);
 
 
 
-    setBookings(response);
+                    setBookings(response);
 
-    console.log("Booking IDs:", (bookings));
+                    console.log("Booking IDs:", (bookings));
 
 
-} catch (error) {
-    console.error('Error fetching Booking details:', error);
-} finally {
-    setLoading(false);
-}
+                } catch (error) {
+                    console.error('Error fetching Booking details:', error);
+                } finally {
+                    setLoading(false);
+                }
             }
         }
 
-loadBookings();
+        loadBookings();
     }, [userInfo]);
 
-const mapArrayToUserModel = (data: any[]): UserModel => {
-    const [user_id, user_first_name, user_last_name, user_driver_license_num, user_address, user_email] = data;
-    return new UserModel(user_id, user_first_name, user_last_name, user_driver_license_num, user_address, user_email);
-};
+    const mapArrayToUserModel = (data: any[]): UserModel => {
+        const [user_id, user_first_name, user_last_name, user_driver_license_num, user_address, user_email] = data;
+        return new UserModel(user_id, user_first_name, user_last_name, user_driver_license_num, user_address, user_email);
+    };
 
-if (loading) {
-    return <SpinnerLoading />;
-}
+    if (loading) {
+        return <SpinnerLoading />;
+    }
 
 
 
-return (
-    <div className="container mt-5">
-        <h2>User Bookings</h2>
-        <table className="table table-striped">
-            <thead>
-                <tr>
-                    <th>Booking ID</th>
-                    <th>Vehicle</th>
-                    <th>Location</th>
-                    <th>City</th>
-                    
-                    <th>From Date</th>
-                    <th>To Date</th>
-                    <th>Total Fare</th>
-                </tr>
-            </thead>
-            <tbody>
-                {bookings.map(booking => (
-                    <tr key={booking.vehicleBookingId}>
-                        <td>{booking.vehicleBookingId}</td>
-                        <td>{booking.vehicleName} </td>
-                        <td>{booking.locationName}</td>
-                        <td>{booking.locationCity}</td>
-                        <td>{formatDate(booking.fromDate)}</td>
-                        <td>{formatDate(booking.toDate)}</td>
-                        <td>{booking.totalFare}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    </div>
-);
+    return (
+        <>
+        <section>
+            <div className="container mt-5">
+                <h2>Upcoming Bookings</h2>
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Vehicle</th>
+                            <th>Location</th>
+                            <th>City</th>
+
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Total Fare</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {bookings.filter(booking => {
+                            const fromDate = new Date(booking.fromDate);
+                            const toDate = new Date(booking.toDate);
+                            const sysDate = new Date();
+                            return fromDate > sysDate && toDate > sysDate;
+                        })
+                            .map(booking => (
+                                <tr key={booking.vehicleBookingId}>
+                                    <td>{booking.vehicleBookingId}</td>
+                                    <td>{booking.vehicleName} </td>
+                                    <td>{booking.locationName}</td>
+                                    <td>{booking.locationCity}</td>
+                                    <td>{formatDate(booking.fromDate)}</td>
+                                    <td>{formatDate(booking.toDate)}</td>
+                                    <td>{booking.totalFare}</td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section>
+            <div className="container mt-5">
+                <h2>Past Bookings</h2>
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Vehicle</th>
+                            <th>Location</th>
+                            <th>City</th>
+
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Total Fare</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {bookings.filter(booking => {
+                            const fromDate = new Date(booking.fromDate);
+                            const toDate = new Date(booking.toDate);
+                            const sysDate = new Date();
+                            return fromDate < sysDate && toDate < sysDate;
+                        })
+                            .map(booking => (
+                                <tr key={booking.vehicleBookingId}>
+                                    <td>{booking.vehicleBookingId}</td>
+                                    <td>{booking.vehicleName} </td>
+                                    <td>{booking.locationName}</td>
+                                    <td>{booking.locationCity}</td>
+                                    <td>{formatDate(booking.fromDate)}</td>
+                                    <td>{formatDate(booking.toDate)}</td>
+                                    <td>{booking.totalFare}</td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        </>
+    );
 }
 
 export default UserBookingsV2;
