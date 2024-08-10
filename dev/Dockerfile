@@ -19,7 +19,7 @@ RUN mvn package
 RUN ls -la target/
 
 # Copy the built application to the target directory
-COPY target/*.jar /app/DevApplication.jar
+COPY target/dev-0.0.1-SNAPSHOT.jar /app/DevApplication.jar
 
 # Copy the keystore file
 COPY src/main/resources/harish-keystore.p12 /app/harish-keystore.p12
