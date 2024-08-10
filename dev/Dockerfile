@@ -16,6 +16,8 @@ COPY src /app/src/
 # Build the application
 RUN mvn package
 
+RUN ls -la target/
+
 # Copy the built application to the target directory
 COPY target/*.jar /app/DevApplication.jar
 
