@@ -23,6 +23,7 @@ public class VaultConfigV1 {
     
     private String stripeApiKey;
     private String dbPassword;
+    private String dbUrl;
     
     @Autowired
     private VaultTemplate vaultTemplate;
@@ -41,7 +42,11 @@ public class VaultConfigV1 {
                     setStripeApiKey(stripeApiKey);
                     System.setProperty("stripe.apiKey", stripeApiKey);
 
+                    dbUrl= (String) data.get("dbUrl");
+                    setDbUrl(dbUrl);
+
                     dbPassword= (String) data.get("dbPassword");
+                    System.setProperty("spring.datasource.url", dbUrl);
                     setDbPassword(dbPassword);
                     //System.setProperty("spring.datasource.password", dbPassword);
                     
@@ -62,7 +67,8 @@ public class VaultConfigV1 {
     public DataSource dataSource() throws SQLException{
         PoolDataSource pds = PoolDataSourceFactory.getPoolDataSource();
                     pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
-                    pds.setURL(environment.getProperty("spring.datasource.url"));
+                    //pds.setURL(environment.getProperty("spring.datasource.url"));
+                    pds.setURL(dbUrl);
                     pds.setUser(environment.getProperty("spring.datasource.username"));
                     pds.setPassword(dbPassword);
                     pds.setConnectionPoolName("connectionPoolName1");
@@ -89,4 +95,13 @@ public class VaultConfigV1 {
     public String getDbPassword() {
         return dbPassword;
     }
+
+    public void setDbUrl(String dbUrl){
+        this.dbUrl=dbUrl;
+    }
+
+    public String getDbUrl(){
+        return dbUrl;
+    }
+
 }
