@@ -18,8 +18,10 @@ RUN mvn package
 
 RUN ls -la target/
 
+FROM maven:3.8.5-openjdk-17-slim
+WORKDIR /app
 # Copy the built application to the target directory
-COPY target/dev-0.0.1-SNAPSHOT.jar /app/DevApplication.jar
+COPY --from=build target/dev-0.0.1-SNAPSHOT.jar /app/DevApplication.jar
 
 # Copy the keystore file
 COPY src/main/resources/harish-keystore.p12 /app/harish-keystore.p12
