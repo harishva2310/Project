@@ -8,7 +8,6 @@ sudo docker build --no-cache -t harishva1910/backend:latest .
 
 sudo docker push harishva1910/backend:latest
 
-#sudo docker run -p 8443:8443 harishva1910/backend:latest
 sudo docker run -p 8443:8443 --network my-network --name backend harishva1910/backend:latest
 
 # Note: The container will continue to run in the foreground. 

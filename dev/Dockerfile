@@ -4,6 +4,9 @@ FROM openjdk:17-jdk-slim as build
 # Set the working directory to /app
 WORKDIR /app
 
+# Install Maven
+RUN apt-get update && apt-get install -y maven
+
 # Copy the Maven pom.xml file
 COPY pom.xml /app/
 
