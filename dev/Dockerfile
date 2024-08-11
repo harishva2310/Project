@@ -26,11 +26,8 @@ COPY --from=build /app/target/dev-0.0.1-SNAPSHOT.jar /app/DevApplication.jar
 # Copy the keystore file
 COPY src/main/resources/harish-keystore.p12 /app/harish-keystore.p12
 
-# Persist the keystore file
-VOLUME /app/harish-keystore.p12
-
 # Make port 8443 available to the world outside this container
 EXPOSE 8443
 
 # Run the application with SSL configuration
-ENTRYPOINT ["java", "-Djavax.net.ssl.trustStore=harish-keystore.p12", "-Djavax.net.ssl.trustStorePassword=your_password", "-Djavax.net.ssl.keyStore=harish-keystore.p12", "-Djavax.net.ssl.keyStorePassword=your_password", "-jar", "/app/DevApplication.jar"]
+ENTRYPOINT ["java", "-jar", "/app/DevApplication.jar"]
