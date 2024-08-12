@@ -1,4 +1,3 @@
-
 # Vehicle Rental Application
 
 This is a fully scalable, Docker and Kubernetes-ready application built on Oracle Cloud Infrastructure using Oracle Autonomous Database. This application can be deployed on Azure with Oracle Autonomous Database or AWS with Oracle Database with minimum configuration changes. This can also be configured to use other open-source databases like MySQL, PostgreSQL provided native queries in the Spring backend and configuration for database connections are updated.
