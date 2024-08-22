@@ -22,7 +22,42 @@ This is a fully scalable, Docker and Kubernetes-ready application built on Oracl
 ## Home Page
 ![home page](https://github.com/harishva2310/Project/blob/19602c99de03d300c10b6fdc14270678a24aab94/assets/Project%20Screenshots/Home%20Page.png)
 
+## Okta Sign-In Page
+![signin page](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/OktaSignInPage.png)
 
+## Search Vehicle Pages
+
+![search1](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/Search%20Vehicles.png)
+
+![search2](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/Search%20Vehicles%20Pagination.png)
+
+## Booking Page
+
+![booking page](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/BookingPage.png)
+
+## Stripe Payment Page
+
+![payment page](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/Custom%20Stripe%20Payment%20Page.png)
+
+## Confirmation Page
+
+![confirmation page](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/Confirmation%20Page.png)
+
+## My Bookings Page
+
+![mybookings](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/AllBookingsPage.png)
+
+## Admin Page
+
+![admin](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/BusinessAdminPage.png)
+
+## Add Vehicle to Location Page
+
+![addvehiclelocation](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/AddNewVehicleLocationPage.png)
+
+## Notification Page using Apache Kafka
+
+![notificationpage](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/Notification%20Page2.png)
 
 ## System design of application using Oracle Cloud Infrastructure
 
