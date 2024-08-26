@@ -4,7 +4,7 @@ sudo docker network create my-network || true
 
 sudo docker rmi --force harishva1910/backend || true
 
-sudo docker build --network=my-network -t harishva1910/backend:latest .
+sudo docker build --no-cache --push --network=host -t harishva1910/backend:latest .
 
 sudo docker push harishva1910/backend:latest
 

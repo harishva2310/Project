@@ -2,7 +2,7 @@
 
 sudo docker rmi --force harishva1910/frontend|| true
 
-sudo docker build --no-cache -t --network=host harishva1910/frontend:latest .
+sudo docker build --no-cache --push --network=host -t harishva1910/frontend:latest .
 
 sudo docker push harishva1910/frontend:latest
 
