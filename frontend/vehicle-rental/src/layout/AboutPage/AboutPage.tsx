@@ -3,39 +3,35 @@ import axios from 'axios';
 import { SpinnerLoading } from '../../util/SpinnerLoading';
 
 const AboutPage = () => {
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [about, setAbout] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
     const [question, setQuestion] = useState<string>('');
     const [answer, setAnswer] = useState<string>('');
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-
         setQuestion(event.target.value);
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         const formData = new FormData();
         formData.append('question', question);
         try {
+            setLoading(true);
             const response = await axios.post('/api/help/generate-content', formData);
             console.log(response.data);
+            
             setAnswer(response.data);
-            setLoading(false);
         } catch (error) {
             console.error('Error sending question:', error);
+        } finally {
+            setLoading(false);
         }
     }
 
-    if (loading) {
-        return <SpinnerLoading />;
-    }
-
     return (
-
         <section data-bs-version="5.1" className="form5 cid-sFzDs3t9EG" id="form5-1m">
-
-
             <div className="container">
                 <div className="mbr-section-head">
                     <h3 className="mbr-section-title mbr-fonts-style align-center mb-0 display-2"><strong>Frequently Asked Qusetions</strong></h3>
@@ -45,9 +41,7 @@ const AboutPage = () => {
                     <div className="col-lg-8 mx-auto mbr-form" data-form-type="formoid">
                         <form className="mbr-form form-with-styler"
                             data-form-title="Form Name" onSubmit={handleSubmit}>
-
                             <div className="dragArea row">
-
                                 <div className="col-12 form-group mb-3" data-for="textarea">
                                     <textarea name="textarea" placeholder="Message" data-form-field="textarea" className="form-control" id="textarea-form5-1m" value={question} onChange={handleChange}></textarea>
                                 </div>
@@ -57,7 +51,11 @@ const AboutPage = () => {
                         </form>
                     </div>
                 </div>
-                {answer && (
+                {loading ? (
+                    <div className="mt-4">
+                        <SpinnerLoading />
+                    </div>
+                ) : answer && (
                     <div className="mt-4">
                         <h4>Answer:</h4>
                         <p>{answer}</p>
@@ -68,4 +66,4 @@ const AboutPage = () => {
     );
 };
 
-export default  AboutPage;
+export default AboutPage;
