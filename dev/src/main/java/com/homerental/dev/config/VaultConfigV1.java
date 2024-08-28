@@ -24,6 +24,7 @@ public class VaultConfigV1 {
     private String stripeApiKey;
     private String dbPassword;
     private String dbUrl;
+    private String geminiApiKey;
     
     @Autowired
     private VaultTemplate vaultTemplate;
@@ -49,6 +50,9 @@ public class VaultConfigV1 {
                     System.setProperty("spring.datasource.url", dbUrl);
                     setDbPassword(dbPassword);
                     //System.setProperty("spring.datasource.password", dbPassword);
+                    geminiApiKey= (String) data.get("GoogleGeminiAPIKEY");
+                    System.setProperty("gemini.apiKey", geminiApiKey);
+                    
                     
 
                 } else {
@@ -62,6 +66,8 @@ public class VaultConfigV1 {
             throw new RuntimeException("Failed to fetch data from Vault", e);
         }
     }
+
+
 
     @Bean
     public DataSource dataSource() throws SQLException{

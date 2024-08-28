@@ -40,7 +40,7 @@ export const Footer = () => {
                             </li>
                             <li className="foot-menu-item mbr-fonts-style display-7"><NavLink to="/searchvehicles"
                                 className="text-white">Search Vehicles</NavLink></li>
-                            <li className="foot-menu-item mbr-fonts-style display-7"><NavLink to=""
+                            <li className="foot-menu-item mbr-fonts-style display-7"><NavLink to="/about"
                                 className="text-white">About</NavLink></li>
                             <li className="foot-menu-item mbr-fonts-style display-7"><NavLink to=""
                                 className="text-white text-primary">Pricing</NavLink></li>

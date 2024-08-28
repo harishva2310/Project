@@ -253,7 +253,6 @@ const SearchVehicleV3 = () => {
                         <a
                             className="page-link"
                             onClick={() => handlePageClick(i)}
-
                         >
                             {i + 1}
                         </a>
@@ -478,9 +477,6 @@ const SearchVehicleV3 = () => {
 
                 </div>
             </section>
-
-
-
 
         </>
     );
