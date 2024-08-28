@@ -34,7 +34,7 @@ const AboutPage = () => {
         <section data-bs-version="5.1" className="form5 cid-sFzDs3t9EG" id="form5-1m">
             <div className="container">
                 <div className="mbr-section-head">
-                    <h3 className="mbr-section-title mbr-fonts-style align-center mb-0 display-2"><strong>Frequently Asked Qusetions</strong></h3>
+                    <h3 className="mbr-section-title mbr-fonts-style align-center mb-0 display-2"><strong>Frequently Asked Questions</strong></h3>
                     <h4 className="mbr-section-subtitle mbr-fonts-style align-center mb-0 mt-2 display-7">Powered by Google Gemini GenAI assistant, you can ask questions about the application such as "What are the available vehicles" or "Who is the developer", "Payment methods accepted" etc. Please note this feature is experimental and for demo purposes for now</h4>
                 </div>
                 <div className="row justify-content-center mt-4">
