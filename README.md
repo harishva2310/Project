@@ -15,12 +15,21 @@ This is a fully scalable, Docker and Kubernetes-ready application built on Oracl
 *	Jenkins and Git for CI/CD
 *	Apache Kafka for streaming, notifications
 *	Spring Hashicorp Vault for secrets storage
+*	Google Gemini AI API for customer support, queries
 
 
 # Screenshots
 
 ## Home Page
 ![home page](https://github.com/harishva2310/Project/blob/19602c99de03d300c10b6fdc14270678a24aab94/assets/Project%20Screenshots/Home%20Page.png)
+
+## About Page
+
+### Google Gemini GenAI-powered Agent 
+![about page](https://github.com/harishva2310/Project/blob/82ec58054b73619308a0d4c46ef7f1d59e16343a/assets/Project%20Screenshots/AboutPage1.png)
+
+### Google Gemini GenAI-powered Agent
+![about page2](https://github.com/harishva2310/Project/blob/82ec58054b73619308a0d4c46ef7f1d59e16343a/assets/Project%20Screenshots/AboutPage2.png)
 
 ## Okta Sign-In Page
 ![signin page](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/OktaSignInPage.png)
