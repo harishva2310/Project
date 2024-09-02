@@ -17,6 +17,10 @@ This is a fully scalable, Docker and Kubernetes-ready application built on Oracl
 *	Spring Hashicorp Vault for secrets storage
 *	Google Gemini AI API for customer support, queries
 
+## System design of application using Oracle Cloud Infrastructure
+
+![[Vehicle Rental High Level System Design](https://github.com/Vehicle Rental High Level System Design.drawio.png)](https://github.com/harishva2310/Project/blob/9eec44450c584541587ef299198ba8ef19b12df5/Vehicle%20Rental%20High%20Level%20System%20Design.drawio.png)
+
 
 # Screenshots
 
@@ -68,6 +72,4 @@ This is a fully scalable, Docker and Kubernetes-ready application built on Oracl
 
 ![notificationpage](https://github.com/harishva2310/Project/blob/451b7e28d978f32a6361e3dbac03ec003a7103b1/assets/Project%20Screenshots/Notification%20Page2.png)
 
-## System design of application using Oracle Cloud Infrastructure
 
-![[Vehicle Rental High Level System Design](https://github.com/Vehicle Rental High Level System Design.drawio.png)](https://github.com/harishva2310/Project/blob/9eec44450c584541587ef299198ba8ef19b12df5/Vehicle%20Rental%20High%20Level%20System%20Design.drawio.png)
