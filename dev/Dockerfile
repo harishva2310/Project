@@ -1,6 +1,7 @@
 # Use the official Maven image with Java 17
 FROM maven:3.8.5-openjdk-17-slim as build
-
+ARG VAULT_TOKEN
+ENV VAULT_TOKEN=$VAULT_TOKEN
 # Set the working directory to /app
 WORKDIR /app
 
