@@ -35,6 +35,8 @@ public class VaultConfigV1 {
     @PostConstruct
     public void init() {
         try {
+            String token = environment.getProperty("VAULT_TOKEN");
+            System.out.println("Vault Token: " + token);
             VaultResponse response = vaultTemplate.read("secret/data/credentials");
             if (response != null) {
                 Map<String, Object> data = (Map<String, Object>) response.getData().get("data");
