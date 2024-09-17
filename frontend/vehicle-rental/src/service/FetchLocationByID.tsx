@@ -11,7 +11,7 @@ export async function fetchLocationDataByID(location_id: number): Promise<Locati
     {
         console.log(apiUrl);
     }
-    const response = await axios.get(`/api/locations/${location_id}`, { responseType: 'json' }); // Adjust the endpoint as needed
+    const response = await axios.get(`$${process.env.REACT_APP_API}/api/locations/${location_id}`, { responseType: 'json' }); // Adjust the endpoint as needed
     const data = response.data;
     console.log(data);
     return new LocationModel(

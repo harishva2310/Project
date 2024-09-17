@@ -52,7 +52,7 @@ export const Payment = () => {
         let paymentInfo = new PaymentInfoRequest(Math.round(fare*100), 'USD', authState?.accessToken?.claims.sub);
 
         try {
-            const stripeResponse = await axios.post(`/api/payment/secure/payment-intent`, paymentInfo, {
+            const stripeResponse = await axios.post(`${process.env.REACT_APP_API}/api/payment/secure/payment-intent`, paymentInfo, {
                 headers: {
                     Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
                     'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export const Payment = () => {
                                     formData.append('user_email', userInfo.email);
                                 }
 
-                                const response = await axios.post(`/api/vehicleBookings`, formData, {
+                                const response = await axios.post(`${process.env.REACT_APP_API}/api/vehicleBookings`, formData, {
                                     headers: {
                                         'Content-Type': 'multipart/form-data',
                                         Authorization: `Bearer ${authState?.accessToken?.accessToken}`,

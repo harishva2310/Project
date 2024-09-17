@@ -75,7 +75,7 @@ const AddNewLocations: React.FC = () => {
         formData.append('location_zip', locations.location_zip);
         //formData.append('userEmail',  userInfo?.email);
         try {
-            const response = await axios.post(`/api/locations?userEmail=${userInfo?.email}`, formData, {
+            const response = await axios.post(`${process.env.REACT_APP_API}/api/locations?userEmail=${userInfo?.email}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${authState.accessToken?.accessToken}`

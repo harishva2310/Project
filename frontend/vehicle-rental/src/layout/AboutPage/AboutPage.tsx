@@ -19,7 +19,7 @@ const AboutPage = () => {
         formData.append('question', question);
         try {
             setLoading(true);
-            const response = await axios.post('/api/help/generate-content', formData);
+            const response = await axios.post(`${process.env.REACT_APP_API}/api/help/generate-content`, formData);
             console.log(response.data);
             
             setAnswer(response.data);

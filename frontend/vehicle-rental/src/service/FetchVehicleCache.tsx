@@ -4,7 +4,7 @@ import VehicleModel from "../model/VehicleModel";
 export async function fetchVehicleData(): Promise<VehicleModel[]> {
 
     
-    const response = await axios.get(`/api/vehicles/cacheVehicles`, { responseType: 'json' }); // Adjust the endpoint as needed
+    const response = await axios.get(`${process.env.REACT_APP_API}/api/vehicles/cacheVehicles`, { responseType: 'json' }); // Adjust the endpoint as needed
     const data = response.data;
     console.log(data);
     return data.map((item: any) => new VehicleModel(

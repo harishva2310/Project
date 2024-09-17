@@ -11,7 +11,7 @@ export async function fetchUserbyEmail(email: string): Promise<UserModel>{
     {
         console.log(apiUrl);
     }
-    const response = await axios.get(`/api/users/byemail?email=${email}`, { responseType: 'json' }); // Adjust the endpoint as needed
+    const response = await axios.get(`${process.env.REACT_APP_API}/api/users/byemail?email=${email}`, { responseType: 'json' }); // Adjust the endpoint as needed
     const data = response.data;
     console.log(data);
     return new UserModel(

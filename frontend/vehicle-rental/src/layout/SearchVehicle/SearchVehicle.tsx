@@ -125,7 +125,7 @@ const SearchVehicle = () => {
             try {
                 const fromDateTime = formatDateTime(fromDate, fromTime);
                 const toDateTime = formatDateTime(toDate, toTime);
-                const response = await axios.get(`/api/vehicles/availablevehicles`, {
+                const response = await axios.get(`${process.env.REACT_APP_API}/api/vehicles/availablevehicles`, {
                     params: {
                         fromdate: fromDateTime,
                         todate: toDateTime,

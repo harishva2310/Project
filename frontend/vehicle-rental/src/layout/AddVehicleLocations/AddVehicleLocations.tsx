@@ -109,7 +109,7 @@ const AddVehicleLocations: React.FC = () => {
         formData.append('location_id', selectedLocationId.toString());
         //formData.append('userEmail',  userInfo?.email);
         try {
-            const response = await axios.post(`/api/vehicleLocations?user_email=${userInfo?.email}`, formData, {
+            const response = await axios.post(`${process.env.REACT_APP_API}/api/vehicleLocations?user_email=${userInfo?.email}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${authState.accessToken?.accessToken}`

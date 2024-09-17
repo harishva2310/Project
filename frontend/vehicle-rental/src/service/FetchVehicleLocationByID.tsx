@@ -11,7 +11,7 @@ export async function fetchVehicleLocationDataByID(vehicle_location_id: number):
     {
         console.log(apiUrl);
     }
-    const response = await axios.get(`/api/vehicleLocations/${vehicle_location_id}`, { responseType: 'json' }); // Adjust the endpoint as needed
+    const response = await axios.get(`${process.env.REACT_APP_API}/api/vehicleLocations/${vehicle_location_id}`, { responseType: 'json' }); // Adjust the endpoint as needed
     const data = response.data;
     console.log(data);
     return new VehicleLocationModel(

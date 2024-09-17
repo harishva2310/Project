@@ -13,7 +13,7 @@ export async function fetchVehicleDataByID(vehicle_id: number): Promise<VehicleM
     {
         console.log(apiUrl);
     }
-    const response = await axios.get(`/api/vehicles/${vehicle_id}`, { responseType: 'json' }); // Adjust the endpoint as needed
+    const response = await axios.get(`${process.env.REACT_APP_API}/api/vehicles/${vehicle_id}`, { responseType: 'json' }); // Adjust the endpoint as needed
     const data = response.data;
     console.log(data);
     return new VehicleModel(

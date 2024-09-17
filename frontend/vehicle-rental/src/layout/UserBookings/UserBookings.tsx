@@ -56,7 +56,7 @@ const UserBookings = () => {
         async function loadUser() {
             if (userInfo && userInfo.email) {
                 try {
-                    const response = await axios.get(`/api/users/byemail`, {
+                    const response = await axios.get(`${process.env.REACT_APP_API}/api/users/byemail`, {
                         params:
                         {
                             email: userInfo.email
@@ -85,7 +85,7 @@ const UserBookings = () => {
             if (userInfo && userInfo.email && authState?.accessToken) {
                 try {
                     
-                    const apiResponse = await axios.get(`/api/vehicleBookings/getuserbookings?email=${userInfo.email}`, {
+                    const apiResponse = await axios.get(`${process.env.REACT_APP_API}/api/vehicleBookings/getuserbookings?email=${userInfo.email}`, {
                         responseType: 'json',
                         headers:
                         {

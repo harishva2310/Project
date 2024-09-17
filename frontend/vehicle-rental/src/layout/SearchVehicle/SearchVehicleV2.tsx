@@ -150,7 +150,7 @@ const SearchVehicleV2 = () => {
             try {
                 const fromDateTime = formatDateTime(fromDate, fromTime);
                 const toDateTime = formatDateTime(toDate, toTime);
-                const response = await axios.get(`/api/vehicles/v2/availablevehicles`, {
+                const response = await axios.get(`${process.env.REACT_APP_API}/api/vehicles/v2/availablevehicles`, {
                     params: {
                         fromdate: fromDateTime,
                         todate: toDateTime,

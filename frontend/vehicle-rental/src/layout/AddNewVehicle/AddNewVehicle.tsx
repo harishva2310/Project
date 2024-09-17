@@ -68,7 +68,7 @@ const AddNewVehicle: React.FC = () => {
     }
 
     try {
-      const response = await axios.post(`/api/vehicles?user_email=${userInfo?.email}`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API}/api/vehicles?user_email=${userInfo?.email}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${authState.accessToken?.accessToken}`

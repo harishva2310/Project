@@ -181,7 +181,7 @@ const Checkout = () => {
                 formData.append('user_email', userInfo.email);
             }
 
-            const response = await axios.post(`/api/vehicleBookings`, formData,
+            const response = await axios.post(`${process.env.REACT_APP_API}/api/vehicleBookings`, formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',

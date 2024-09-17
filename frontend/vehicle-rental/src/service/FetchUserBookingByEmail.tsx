@@ -9,7 +9,7 @@ export async function fetchUserBookingData(email: string): Promise<VehicleBookin
     
     
     
-        const response = await axios.get(`/api/vehicleBookings/getuserbookings?email=${email}`, {
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/vehicleBookings/getuserbookings?email=${email}`, {
             responseType: 'json',
             
         });

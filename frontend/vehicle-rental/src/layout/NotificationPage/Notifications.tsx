@@ -19,7 +19,7 @@ const Notifications: React.FC = () => {
 
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get('/api/messages/newVehicle');
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/messages/newVehicle`);
         // Filter notifications containing the word "available"
         const filteredNotifications = response.data.filter((notification: string) =>
           notification.toLowerCase().includes('available')
@@ -58,7 +58,7 @@ const Notifications: React.FC = () => {
     const fetchBookingNotifications = async () => {
       try {
         if(authState?.isAuthenticated){
-        const response = await axios.get('/api/messages/userBookingNotifications');
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/messages/userBookingNotifications`);
         // Filter notifications containing the word "available"
         const email = userInfo?.email as string | undefined;
         const filteredNotifications = email

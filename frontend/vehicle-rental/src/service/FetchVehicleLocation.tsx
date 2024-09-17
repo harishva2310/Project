@@ -11,7 +11,7 @@ export async function fetchVehicleLocationData(): Promise<VehicleLocationModel[]
     {
         console.log(apiUrl);
     }
-    const response = await axios.get(`/api/vehicleLocations`, { responseType: 'json' }); // Adjust the endpoint as needed
+    const response = await axios.get(`${process.env.REACT_APP_API}/api/vehicleLocations`, { responseType: 'json' }); // Adjust the endpoint as needed
     const data = response.data;
     console.log(data);
     return data.map((item: any) => new VehicleLocationModel(

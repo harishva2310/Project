@@ -18,7 +18,7 @@ export function useFetchUserBookings(email: string) {
 
         const accessToken = authState.accessToken; // Access token here
 
-        const response = await axios.get(`/api/vehicleBookings/getuserbookings?email=${email}`, {
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/vehicleBookings/getuserbookings?email=${email}`, {
           responseType: 'json',
           headers: {
             Authorization: `Bearer ${accessToken}`,
