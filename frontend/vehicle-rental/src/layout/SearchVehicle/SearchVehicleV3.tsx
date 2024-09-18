@@ -60,7 +60,7 @@ const SearchVehicleV3 = () => {
             } catch (error) {
                 console.error('Error fetching locations:', error);
             } finally {
-                setLoading(false);
+                
             }
         }
 
@@ -75,7 +75,7 @@ const SearchVehicleV3 = () => {
             } catch (error) {
                 console.error('Error fetching locations:', error);
             } finally {
-                setLoading(false);
+                
             }
         }
 

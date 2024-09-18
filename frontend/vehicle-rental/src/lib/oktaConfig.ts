@@ -2,7 +2,7 @@ import OktaConfig from "./oktaInterface";
 const oktaConfig : OktaConfig ={
     clientId: `0oahrszeybHhLlisT5d7`,
     issuer: `https://dev-02389618.okta.com/oauth2/default`,
-    redirectUri: `https://150.136.151.38/login/callback`,
+    redirectUri: `https://vehicle-rental-production.up.railway.app/login/callback`,
     scopes: ['openid', 'profile', 'email'],
     pkce: true,
     disableHttpsCheck: true,
