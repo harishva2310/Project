@@ -74,7 +74,7 @@ export const Payment = () => {
                         alert('There was an error');
                     } else {
                         try {
-                            const completeResponse = await axios.put(`api/payment/secure/payment-complete?email=${authState?.accessToken?.claims.sub}`, {}, {
+                            const completeResponse = await axios.put(`${process.env.REACT_APP_API}/api/payment/secure/payment-complete?email=${authState?.accessToken?.claims.sub}`, {}, {
                                 headers: {
                                     Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
                                     'Content-Type': 'application/json',
