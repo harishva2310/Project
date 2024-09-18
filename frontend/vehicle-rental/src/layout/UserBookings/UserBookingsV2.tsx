@@ -137,7 +137,7 @@ const UserBookingsV2 = () => {
         }
 
         loadBookings();
-    }, [userInfo,authState?.accessToken, bookings]);
+    }, [userInfo,authState?.accessToken]);
 
     const mapArrayToUserModel = (data: any[]): UserModel => {
         const [user_id, user_first_name, user_last_name, user_driver_license_num, user_address, user_email] = data;
