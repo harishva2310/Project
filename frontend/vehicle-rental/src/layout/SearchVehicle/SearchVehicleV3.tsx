@@ -21,7 +21,7 @@ const SearchVehicleV3 = () => {
     const [selectedlocations, setSelectedLocations] = useState<LocationModel[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>('');
     const [selectedCountry, setSelectedCountry] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [fromDate, setFromDate] = useState<string>('');
     const [toDate, setToDate] = useState<string>('');
     const [fromTime, setFromTime] = useState<string>('00:00');
